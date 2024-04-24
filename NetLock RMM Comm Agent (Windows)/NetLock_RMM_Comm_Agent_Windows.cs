@@ -8,6 +8,7 @@ using System.Net;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using _x101.HWID_System;
 using NetLock_RMM_Comm_Agent_Windows.Initialization;
 using NetLock_RMM_Comm_Agent_Windows.Online_Mode;
@@ -19,7 +20,6 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool debug_mode = false; //enables/disables logging
 
         // Server config
-        public static string communication_server = String.Empty;
         public static string main_communication_server = String.Empty;
         public static string fallback_communication_server = String.Empty;
         public static string main_update_server = String.Empty;
@@ -34,21 +34,27 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string hwid = String.Empty;
         public static bool authorized = false;
 
-        public async void ServiceAsync()
-        {
-            // Load server config
-            if (!await Server_Config_Handler.Load()) // 
-            {
-                Logging.Handler.Debug("OnStart", "Server_Config_Handler.Load", "Failed to load server config");
-                Stop();
-            }
+        // Server communication
+        public static string communication_server = String.Empty;
+        public static string trust_server = String.Empty;
+        public static string update_server = String.Empty;
 
+        // Timers
+        public static System.Timers.Timer start_timer;
+        public static System.Timers.Timer sync_timer;
+
+        // Status
+        public static bool connection_status = false;
+
+
+        public void ServiceAsync()
+        {
             InitializeComponent();
         }
 
         protected override async void OnStart(string[] args)
         {
-            Logging.Handler.Debug("Service", "Service started", "Service started");
+            Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.Service", "Service started", "Service started");
 
             hwid = ENGINE.HW_UID;
             device_name = Environment.MachineName;
@@ -74,22 +80,69 @@ namespace NetLock_RMM_Comm_Agent_Windows
             // Load server config
             if (!await Server_Config_Handler.Load()) // 
             {
-                Logging.Handler.Debug("OnStart", "Server_Config_Handler.Load", "Failed to load server config");
+                Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.OnStart", "Server_Config_Handler.Load", "Failed to load server config");
                 Stop();
             }
 
-            communication_server = main_communication_server;
-            Logging.Handler.Debug("OnStart", "main_communication_server", main_communication_server);
+            // Setup synchronize timer
+            try
+            {
+                sync_timer = new System.Timers.Timer(600000); //sync 10 minutes
+                sync_timer.Elapsed += new ElapsedEventHandler(Initialize);
+                sync_timer.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("NetLock_RMM_Comm_Agent_Windows.OnStart", "Start sync_timer", ex.ToString());
+            }
 
-            // hier weiter
+            //Start Init Timer. We are doing this to get the service instantly running on service manager. Afterwards we will dispose the timer in Synchronize function
+            try
+            {
+                start_timer = new System.Timers.Timer(2500);
+                start_timer.Elapsed += new ElapsedEventHandler(Initialize);
+                start_timer.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.OnStart", "Start start_timer", ex.ToString());
+            }
 
             // Authenticate online
-            await Online_Mode.Authenticate.Authenticate_Online();
+            //await Online_Mode.Authenticate.Authenticate_Online();
         }
 
         protected override void OnStop()
         {
-            Logging.Handler.Debug("Service", "Service stopped", "Service stopped");
+            Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.Service", "Service stopped", "Service stopped");
+        }
+
+        private async void Initialize(object sender, ElapsedEventArgs e)
+        {
+            Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.Initialize", "Initialize", "Start");
+
+            //Disable start timer to prevent concurrent executions
+            if (start_timer.Enabled)
+                start_timer.Dispose();
+
+            // Check if connection to communication server is available
+            connection_status = Check_Connection.Communication_Server().Result;
+
+            // Online mode
+            if (connection_status)
+            {
+                Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.Initialize", "connection_status", "Online mode.");
+
+                // Check version
+                
+            }
+        }
+
+        private void Synchronize()
+        {
+            Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.Initialize", "Initialize", "Start");
+
+            
         }
     }
 }

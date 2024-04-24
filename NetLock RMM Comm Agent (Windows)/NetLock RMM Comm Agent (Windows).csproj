@@ -106,8 +106,10 @@
     <Compile Include="HWID_System\disk.cs" />
     <Compile Include="HWID_System\gen.cs" />
     <Compile Include="HWID_System\winid.cs" />
+    <Compile Include="Initialization\Check_Connection.cs" />
     <Compile Include="Initialization\Health.cs" />
     <Compile Include="Initialization\Server_Config_Handler.cs" />
+    <Compile Include="Initialization\Version_Handler.cs" />
     <Compile Include="NetLock_RMM_Comm_Agent_Windows.cs">
       <SubType>Component</SubType>
     </Compile>

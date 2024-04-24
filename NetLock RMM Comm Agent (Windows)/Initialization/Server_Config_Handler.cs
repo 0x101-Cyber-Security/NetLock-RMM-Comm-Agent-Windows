@@ -26,6 +26,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                     {
                         JsonElement element = document.RootElement.GetProperty("main_communication_server");
                         Service.main_communication_server = element.ToString();
+
+                        Service.communication_server = Service.main_communication_server;
                         Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (main_communication_server)", Service.main_communication_server);
                     }
                     catch (Exception ex)
@@ -37,7 +39,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                     try
                     {
                         JsonElement element = document.RootElement.GetProperty("fallback_communication_server");
-                        Service.main_communication_server = element.ToString();
+                        Service.fallback_communication_server = element.ToString();
                         Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (fallback_communication_server)", Service.fallback_communication_server);
                     }
                     catch (Exception ex)
@@ -109,7 +111,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                     try
                     {
                         JsonElement element = document.RootElement.GetProperty("location_name");
-                        Service.tenant_name = element.ToString();
+                        Service.location_name = element.ToString();
                         Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (location_name)", Service.location_name);
                     }
                     catch (Exception ex)

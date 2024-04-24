@@ -47,10 +47,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                      
-                    Logging.Handler.Debug("Authenticate_Online", "communication_server", Service.main_communication_server + "/Agent/Windows/Verify_Device");
+                    Logging.Handler.Debug("Authenticate_Online", "communication_server", Service.communication_server + "/Agent/Windows/Verify_Device");
 
                     // Send the JSON data to the server
-                    var response = await httpClient.PostAsync(new Uri(Service.communication_server + "/Agent/Windows/Verify_Device").AbsoluteUri, new StringContent(json, Encoding.UTF8, "application/json"));
+                    var response = await httpClient.PostAsync(Service.communication_server + "/Agent/Windows/Verify_Device", new StringContent(json, Encoding.UTF8, "application/json"));
 
                     // Check if the request was successful
                     if (response.IsSuccessStatusCode)
