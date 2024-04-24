@@ -46,6 +46,9 @@ namespace NetLock_RMM_Comm_Agent_Windows
         // Status
         public static bool connection_status = false;
 
+        //Lists
+        public static string processes_list = "[]";
+
 
         public void ServiceAsync()
         {
@@ -134,15 +137,44 @@ namespace NetLock_RMM_Comm_Agent_Windows
                 Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.Initialize", "connection_status", "Online mode.");
 
                 // Check version
-                
+                bool up2date = await Initialization.Version_Handler.Check_Version();
+
+                if (up2date) // No update required. Continue logic
+                {
+                    // Authenticate online
+                    string auth_result = await Online_Mode.Handler.Authenticate();
+
+                    // Check authorization status
+                    //if (auth_result == "authorized" || auth_result == "not_synced" || auth_result == "synced")
+                    if (authorized)
+                    {
+                        // Update device information
+                        await Online_Mode.Handler.Update_Device_Information();
+                    }
+
+                    // Check sync status
+                    if (auth_result == "authorized" || auth_result == "not_synced")
+                    {
+                        //Sync all settings & rulesets
+                    }
+                    else if (auth_result == "synced")
+                    {
+                        // placeholder, nothing to do here right now
+                    }
+                }
+                else // Outdated. Trigger update
+                {
+
+                }
             }
         }
 
-        private void Synchronize()
+        private void Synchronize(bool force)
         {
             Logging.Handler.Debug("NetLock_RMM_Comm_Agent_Windows.Initialize", "Initialize", "Start");
 
-            
+            // Authenticate online
+
         }
     }
 }

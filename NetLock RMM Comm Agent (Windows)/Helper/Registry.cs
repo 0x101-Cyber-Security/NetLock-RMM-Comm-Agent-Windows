@@ -7,9 +7,9 @@ using Microsoft.Win32;
 using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace Registry
+namespace NetLock_RMM_Comm_Agent_Windows.Helper
 {
-    internal class Handler
+    internal class Registry
     {
         public static bool HKLM_Key_Exists(string path)
         {

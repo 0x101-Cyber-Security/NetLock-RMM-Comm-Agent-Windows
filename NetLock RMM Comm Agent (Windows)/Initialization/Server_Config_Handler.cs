@@ -131,6 +131,18 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (access_key) - Parsing", ex.ToString());
                     }
 
+                    // Get the authorized status
+                    try
+                    {
+                        JsonElement element = document.RootElement.GetProperty("authorized");
+                        Service.authorized = element.ToString() == "1" ? true : false;
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (authorized)", Service.authorized.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (authorized) - Parsing", ex.ToString());
+                    }
+
                     // Check if the access key is valid
                     if (Service.access_key == String.Empty)
                     {
@@ -150,7 +162,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                             fallback_trust_server = Service.fallback_trust_server,
                             tenant_name = Service.tenant_name,
                             location_name = Service.location_name,
-                            access_key = Service.access_key
+                            access_key = Service.access_key,
+                            authorized = "0",
                         }, Formatting.Indented);
 
                         // Write the new server config JSON to the file

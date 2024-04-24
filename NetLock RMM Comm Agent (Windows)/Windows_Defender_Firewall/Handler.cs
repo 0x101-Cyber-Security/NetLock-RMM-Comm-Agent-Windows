@@ -9,6 +9,21 @@ namespace NetLock_RMM_Comm_Agent_Windows.Windows_Defender_Firewall
 {
     internal class Handler
     {
+        // Check if Windows Firewall is enabled
+        public static bool Status()
+        {
+            try
+            {
+                INetFwMgr mgr = (INetFwMgr)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwMgr", false));
+                return mgr.LocalPolicy.CurrentProfile.FirewallEnabled;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Windows_Defender_Firewall.Handler.Status", "Windows Firewall Status", ex.ToString());
+                return false;
+            }
+        }
+        
         public static void NetLock_RMM_Comm_Agent_Rule_Outbound()
         {
             try

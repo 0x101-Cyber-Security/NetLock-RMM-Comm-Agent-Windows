@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
+using NetLock_RMM_Comm_Agent_Windows.Helper;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Initialization
 {
@@ -51,12 +52,12 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             try
             {
                 // Check if netlock key exists
-                if (!Registry.Handler.HKLM_Key_Exists(Application_Paths.netlock_reg_path))
-                    Registry.Handler.HKLM_Create_Key(Application_Paths.netlock_reg_path);
+                if (!Registry.HKLM_Key_Exists(Application_Paths.netlock_reg_path))
+                    Registry.HKLM_Create_Key(Application_Paths.netlock_reg_path);
 
                 // Check if msdav key exists
-                if (!Registry.Handler.HKLM_Key_Exists(Application_Paths.netlock_microsoft_defender_antivirus_reg_path))
-                    Registry.Handler.HKLM_Create_Key(Application_Paths.netlock_microsoft_defender_antivirus_reg_path);
+                if (!Registry.HKLM_Key_Exists(Application_Paths.netlock_microsoft_defender_antivirus_reg_path))
+                    Registry.HKLM_Create_Key(Application_Paths.netlock_microsoft_defender_antivirus_reg_path);
             }
             catch (Exception ex)
             {

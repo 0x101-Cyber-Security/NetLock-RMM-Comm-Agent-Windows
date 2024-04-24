@@ -98,10 +98,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application_Paths.cs" />
+    <Compile Include="Application_Settings.cs" />
+    <Compile Include="Client_Information\Processes.cs" />
     <Compile Include="Helper\Base64.cs" />
+    <Compile Include="Helper\Globalization.cs" />
     <Compile Include="Helper\Logging.cs" />
+    <Compile Include="Helper\Network.cs" />
+    <Compile Include="Helper\Process_User.cs" />
     <Compile Include="Helper\Random.cs" />
     <Compile Include="Helper\Registry.cs" />
+    <Compile Include="Helper\Windows.cs" />
+    <Compile Include="Helper\WMI.cs" />
     <Compile Include="HWID_System\cpu.cs" />
     <Compile Include="HWID_System\disk.cs" />
     <Compile Include="HWID_System\gen.cs" />
@@ -116,7 +123,7 @@
     <Compile Include="NetLock_RMM_Comm_Agent_Windows.Designer.cs">
       <DependentUpon>NetLock_RMM_Comm_Agent_Windows.cs</DependentUpon>
     </Compile>
-    <Compile Include="Online_Mode\Authenticate.cs" />
+    <Compile Include="Online_Mode\Handler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>

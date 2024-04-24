@@ -92,7 +92,7 @@ namespace Logging
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
-                json_object.type = "Debug";
+                json_object.type = "Windows_Defender_Firewall";
                 json_object.date = DateTime.Now.ToString();
                 json_object.reported_by = reported_by;
                 json_object._event = _event;
@@ -106,6 +106,32 @@ namespace Logging
                 string log_json = JsonSerializer.Serialize(json_object, options);
 
                 File.AppendAllText(Application_Paths.program_data_logs + @"\Windows_Defender_Firewall.txt", log_json + Environment.NewLine);
+            }
+            catch
+            { }
+        }
+        
+        public static void Client_Information(string reported_by, string _event, string content)
+        {
+            try
+            {
+                Check_Dir();
+
+                Log_Data json_object = new Log_Data();
+                json_object.type = "Client_Information";
+                json_object.date = DateTime.Now.ToString();
+                json_object.reported_by = reported_by;
+                json_object._event = _event;
+                json_object.content = content;
+
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                };
+
+                string log_json = JsonSerializer.Serialize(json_object, options);
+
+                File.AppendAllText(Application_Paths.program_data_logs + @"\Client_Information.txt", log_json + Environment.NewLine);
             }
             catch
             { }
