@@ -47,7 +47,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool connection_status = false;
 
         //Lists
-        public static string processes_list = "[]";
+        //public static string processes_list = "[]";
 
 
         public void ServiceAsync()

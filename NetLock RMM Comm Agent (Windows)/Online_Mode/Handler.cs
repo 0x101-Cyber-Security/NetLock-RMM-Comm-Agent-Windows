@@ -16,7 +16,7 @@ using System.Management;
 using System.Reflection.Emit;
 using NetFwTypeLib;
 using System.Diagnostics;
-using NetLock_RMM_Comm_Agent_Windows.Client_Information;
+using NetLock_RMM_Comm_Agent_Windows.Device_Information;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
 {
@@ -107,6 +107,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
         {
             public string name { get; set; }
             public string description { get; set; }
+            public string manufacturer { get; set; }
             public string type { get; set; }
             public string link_speed { get; set; }
             public string service_name { get; set; }
@@ -515,96 +516,16 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 };
 
                 // Get the processes list
-                Client_Information.Processes.Collect();
+                string processes_json = Device_Information.Processes.Collect();
 
-                #region cpu_information
                 // Create the data for "cpu_information"
-                string cpu_information_json = string.Empty;
+                string cpu_information_json = Device_Information.Hardware.CPU_Information();
 
-                try
-                {
-                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor"))
-                    {
-                        HashSet<string> uniqueSockets = new HashSet<string>();
+                string ram_information_json = Device_Information.Hardware.RAM_Information();
 
-                        foreach (ManagementObject obj in searcher.Get())
-                        {
-                            string socket_designation = obj["SocketDesignation"].ToString();
+                string network_adapters_json = Device_Information.Network.Network_Adapter_Information();
 
-                            //To determine the number of sockets, you can query the number of unique values for the "SocketDesignation" attribute across all processors. Each unique value for "SocketDesignation" corresponds to a single socket.
-                            if (!string.IsNullOrEmpty(socket_designation))
-                            {
-                                uniqueSockets.Add(socket_designation);
-                            }
-
-                            int numberOfSockets = uniqueSockets.Count;
-
-                            CPU_Information cpuInfo = new CPU_Information
-                            {
-                                name = obj["Name"].ToString(),
-                                socket_designation = obj["SocketDesignation"].ToString(),
-                                processor_id = obj["ProcessorId"].ToString(),
-                                revision = obj["Revision"].ToString(),
-                                usage = obj["LoadPercentage"].ToString(),
-                                voltage = obj["CurrentVoltage"].ToString(),
-                                currentclockspeed = obj["CurrentClockSpeed"].ToString(),
-                                processes = Process.GetProcesses().Length.ToString(),
-                                threads = Process.GetCurrentProcess().Threads.Count.ToString(),
-                                handles = Process.GetCurrentProcess().HandleCount.ToString(),
-                                maxclockspeed = obj["MaxClockSpeed"].ToString(),
-                                sockets = numberOfSockets.ToString(),
-                                cores = obj["NumberOfCores"].ToString(),
-                                logical_processors = obj["NumberOfLogicalProcessors"].ToString(),
-                                virtualization = obj["VirtualizationFirmwareEnabled"].ToString(),
-                                l1_cache = obj["L2CacheSize"].ToString(),
-                                l2_cache = obj["L2CacheSize"].ToString(),
-                                l3_cache = obj["L3CacheSize"].ToString()
-                            };
-
-                            cpu_information_json = JsonConvert.SerializeObject(cpuInfo, Formatting.Indented);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Handler.Error("Online_Mode.Handler.Update_Device_Information", "CPU_Information", "An error occurred while querying for WMI data: " + ex.ToString());
-                }
-                #endregion
-
-                #region ram_information
-                string ram_information_json = string.Empty;
-
-                try
-                {
-                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PhysicalMemory"))
-                    {
-                        foreach (ManagementObject obj in searcher.Get())
-                        {
-                            RAM_Information ramInfo = new RAM_Information
-                            {
-                                name = obj["Name"].ToString(),
-                                available = obj["Capacity"].ToString(),
-                                assured = obj["AssuredSpeed"].ToString(), //n
-                                cache = obj["MaxCacheSize"].ToString(), //n
-                                outsourced_pool = obj["OutsourcedPool"].ToString(), //n
-                                not_outsourced_pool = obj["NonOutsourcedPool"].ToString(), //n
-                                speed = obj["Speed"].ToString(),
-                                slots = obj["MemoryType"].ToString(), //r
-                                slots_used = obj["BankLabel"].ToString(), //r
-                                form_factor = obj["FormFactor"].ToString(), //r
-                                hardware_reserved = obj["HardwareReserved"].ToString() //n
-                            };
-
-                            ram_information_json = JsonConvert.SerializeObject(ramInfo, Formatting.Indented);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Handler.Error("Online_Mode.Handler.Update_Device_Information", "RAM_Information", "An error occurred while querying for WMI data: " + ex.ToString());
-                }
-                #endregion
-
+                string disks_json = Device_Information.Hardware.Disks();
 
                 // Create the data for "ram_information"
                 RAM_Information ramInformation = new RAM_Information
@@ -672,11 +593,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 var jsonObject = new
                 {
                     device_identity = identity,
-                    processes = Service.processes_list,
+                    processes = processes_json,
                     cpu_information = cpu_information_json,
-                    ram_information = ramInformation,
-                    network_adapters = networkAdapters,
-                    disks = disks,
+                    ram_information = ram_information_json,
+                    network_adapters = network_adapters_json,
+                    disks = disks_json,
                     applications_installed = applicationsInstalled,
                     applications_logon = applicationsLogon,
                     applications_scheduled_tasks = applicationsScheduledTasks,

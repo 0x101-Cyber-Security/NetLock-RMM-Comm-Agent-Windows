@@ -99,7 +99,9 @@
   <ItemGroup>
     <Compile Include="Application_Paths.cs" />
     <Compile Include="Application_Settings.cs" />
-    <Compile Include="Client_Information\Processes.cs" />
+    <Compile Include="Device_Information\Hardware.cs" />
+    <Compile Include="Device_Information\Network.cs" />
+    <Compile Include="Device_Information\Processes.cs" />
     <Compile Include="Helper\Base64.cs" />
     <Compile Include="Helper\Globalization.cs" />
     <Compile Include="Helper\Logging.cs" />

@@ -8,7 +8,7 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetLock_RMM_Comm_Agent_Windows.Client_Information
+namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
 {
     public class Process_Data
     {
@@ -32,7 +32,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Client_Information
 
     internal class Processes
     {
-        public static void Collect()
+        public static string Collect()
         {
             try
             {
@@ -108,19 +108,21 @@ namespace NetLock_RMM_Comm_Agent_Windows.Client_Information
                         }
                         catch (Exception ex)
                         {
-                            Logging.Handler.Client_Information("Client_Information.Process_List.Collect", "Failed.", ex.Message);
+                            Logging.Handler.Device_Information("Device_Information.Process_List.Collect", "Failed.", ex.Message);
                         }
                     });
                 }
 
                 // Create and log JSON array
-                Service.processes_list = "[" + string.Join("," + Environment.NewLine, processJsonList) + "]";
+                string processes_json = "[" + string.Join("," + Environment.NewLine, processJsonList) + "]";
 
-                Logging.Handler.Client_Information("Client_Information.Process_List.Collect", "Collected the following process information.", Service.processes_list);
+                Logging.Handler.Device_Information("Device_Information.Process_List.Collect", "Collected the following process information.", processes_json);
+                return processes_json;
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Client_Information.Process_List.Collect", "Failed.", ex.ToString());
+                Logging.Handler.Error("Device_Information.Process_List.Collect", "Failed.", ex.ToString());
+                return "[]";
             }   
         }
     }

@@ -111,7 +111,7 @@ namespace Logging
             { }
         }
         
-        public static void Client_Information(string reported_by, string _event, string content)
+        public static void Device_Information(string reported_by, string _event, string content)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace Logging
 
                 string log_json = JsonSerializer.Serialize(json_object, options);
 
-                File.AppendAllText(Application_Paths.program_data_logs + @"\Client_Information.txt", log_json + Environment.NewLine);
+                File.AppendAllText(Application_Paths.program_data_logs + @"\Device_Information.txt", log_json + Environment.NewLine);
             }
             catch
             { }
