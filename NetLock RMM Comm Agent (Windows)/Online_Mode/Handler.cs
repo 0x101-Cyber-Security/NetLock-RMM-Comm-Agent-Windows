@@ -131,6 +131,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
             public string firmware_revision { get; set; }
             public string serial_number { get; set; }
             public string interface_type { get; set; }
+            public string drive_type { get; set; }
+            public string drive_format { get; set; }
+            public string drive_ready { get; set; }
             public string capacity { get; set; }
             public string usage { get; set; }
             public string status { get; set; }
@@ -155,7 +158,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
             public string user_sid { get; set; }
         }
 
-        public class Application_Scheduled_Tasks
+        public class Applications_Scheduled_Tasks
         {
             public string name { get; set; }
             public string status { get; set; }
@@ -527,67 +530,19 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
 
                 string disks_json = Device_Information.Hardware.Disks();
 
-                // Create the data for "ram_information"
-                RAM_Information ramInformation = new RAM_Information
-                {
-                    // Hier füge die RAM-Informationen hinzu
-                };
+                string antivirus_products_json = Device_Information.Windows.Antivirus_Products();
 
-                // Create the data for "network_adapters"
-                List<Network_Adapters> networkAdapters = new List<Network_Adapters>
-                {
-                    // Hier füge die Netzwerkadapterdaten hinzu
-                };
+                string applications_installed_json = Device_Information.Software.Applications_Installed();
 
-                // Erstelle die Daten für "disks"
-                List<Disks> disks = new List<Disks>
-                {
-                    // Hier füge die Diskdaten hinzu
-                };
+                string applications_logon_json = Device_Information.Software.Applications_Logon();
 
-                // Erstelle die Daten für "applications_installed"
-                List<Applications_Installed> applicationsInstalled = new List<Applications_Installed>
-                {
-                    // Hier füge die installierten Anwendungsdaten hinzu
-                };
+                string applications_scheduled_tasks_json = Device_Information.Software.Applications_Scheduled_Tasks();
 
-                // Erstelle die Daten für "applications_logon"
-                List<Applications_Logon> applicationsLogon = new List<Applications_Logon>
-                {
-                    // Hier füge die Anmeldedaten der Anwendungen hinzu
-                };
+                string applications_services_json = Device_Information.Software.Applications_Services();
 
-                // Erstelle die Daten für "applications_scheduled_tasks"
-                List<Application_Scheduled_Tasks> applicationsScheduledTasks = new List<Application_Scheduled_Tasks>
-                {
-                    // Hier füge die Daten der geplanten Tasks hinzu
-                };
+                string applications_drivers_json = Device_Information.Software.Applications_Drivers();
 
-                // Erstelle die Daten für "applications_services"
-                List<Applications_Services> applicationsServices = new List<Applications_Services>
-                {
-                    // Hier füge die Servicedaten hinzu
-                };
-
-                // Erstelle die Daten für "applications_drivers"
-                List<Applications_Drivers> applicationsDrivers = new List<Applications_Drivers>
-                {
-                    // Hier füge die Treiberdaten hinzu
-                };
-
-                // Erstelle die Daten für "antivirus_products"
-                List<Antivirus_Products> antivirusProducts = new List<Antivirus_Products>
-                {
-                    // Hier füge die Antivirenprodukte hinzu
-                };
-
-                // Erstelle die Daten für "antivirus_information"
-                List<Antivirus_Information> antivirusInformation = new List<Antivirus_Information>
-                {
-                    // Hier füge die Antivirenprodukte hinzu
-                };
-
-
+                string antivirus_information_json = Device_Information.Windows.Antivirus_Information();
 
                 // Erstelle das JSON-Objekt
                 var jsonObject = new
@@ -598,13 +553,13 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     ram_information = ram_information_json,
                     network_adapters = network_adapters_json,
                     disks = disks_json,
-                    applications_installed = applicationsInstalled,
-                    applications_logon = applicationsLogon,
-                    applications_scheduled_tasks = applicationsScheduledTasks,
-                    applications_services = applicationsServices,
-                    applications_drivers = applicationsDrivers,
-                    antivirus_products = antivirusProducts,
-                    antivirus_information = antivirusInformation,
+                    applications_installed = applications_installed_json,
+                    applications_logon = applications_logon_json,
+                    applications_scheduled_tasks = applications_scheduled_tasks_json,
+                    applications_services = applications_services_json,
+                    applications_drivers = applications_drivers_json,
+                    antivirus_products = antivirus_products_json,
+                    antivirus_information = antivirus_information_json,
                 };
 
                 // Konvertiere das Objekt in ein JSON-String

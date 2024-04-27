@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -164,7 +165,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
             {
                 // Create a list of JSON strings for each process
                 List<string> disksJsonList = new List<string>();
-                
+                List<string> collectedLettersList = new List<string>();
+
                 using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_DiskDrive"))
                 {
                     // Parallel execution of the loop
@@ -184,7 +186,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                                     foreach (ManagementObject obj2 in new ManagementObjectSearcher("root\\CIMV2", "ASSOCIATORS OF {Win32_DiskPartition.DeviceID='" + obj1["DeviceID"].ToString() + "'} WHERE AssocClass = Win32_LogicalDiskToPartition").Get())
                                     {   
                                         letter = obj2["Name"].ToString();
-                                        volume_label = new DriveInfo(letter).VolumeLabel;
+                                        volume_label = new DriveInfo(letter)?.VolumeLabel ?? "N/A";
                                     }
                                 }
                             }
@@ -194,21 +196,28 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                             string totalCapacityGBString = ((double)driveInfo.TotalSize / (1024 * 1024 * 1024)).ToString("0.00");
                             string usedCapacityPercentageString = $"{((double)(driveInfo.TotalSize - driveInfo.AvailableFreeSpace) / driveInfo.TotalSize) * 100:F2}";
 
+                            //Add the letter to the list of collected letters
+                            collectedLettersList.Add(letter);
+                            Logging.Handler.Device_Information("Device_Information.Hardware.Disks", "Collected the following disk information.", $"Letter: {letter}, Volume Label: {volume_label}, DeviceID: {DeviceID}, PNPDeviceID: {PNPDeviceID}");
+
                             // Create disk object
                             Disks diskInfo = new Disks
                             {
                                 letter = letter, // wmi SELECT * FROM Win32_LogicalDisk -> Name
-                                label = volume_label, //wmi SELECT * FROM Win32_LogicalDisk -> Name
+                                label = string.IsNullOrEmpty(volume_label) ? "N/A" : volume_label, //wmi SELECT * FROM Win32_LogicalDisk -> Name
                                 model = obj["Model"].ToString(), //wmi SELECT * FROM Win32_DiskDrive
                                 firmware_revision = obj["FirmwareRevision"].ToString(), //wmi SELECT * FROM Win32_DiskDrive
                                 serial_number = obj["SerialNumber"].ToString(), //wmi SELECT * FROM Win32_DiskDrive
                                 interface_type = obj["InterfaceType"].ToString(), // wmi SELECT * FROM Win32_DiskDrive
+                                drive_type = driveInfo.DriveType.ToString() == "Removable" ? "0" : driveInfo.DriveType.ToString() == "Fixed" ? "1" : driveInfo.DriveType.ToString() == "Network" ? "2" : driveInfo.DriveType.ToString() == "CDRom" ? "3" : driveInfo.DriveType.ToString() == "Ram" ? "4" : "5", // Removable = 0, Fixed = 1, Network = 2, CDRom = 3, Ram = 4, Unknown = 5
+                                drive_format = driveInfo.DriveFormat,
+                                drive_ready = driveInfo.IsReady.ToString(),
                                 capacity = totalCapacityGBString,
                                 usage = usedCapacityPercentageString,
                                 status = obj["Status"].ToString(), //wmi SELECT * FROM Win32_DiskDrive
                             };
 
-                            // Serialize the process object into a JSON string and add it to the list
+                            // Serialize the disk object into a JSON string and add it to the list
                             string disksJson = JsonConvert.SerializeObject(diskInfo, Formatting.Indented);
                             disksJsonList.Add(disksJson);
                         }
@@ -217,6 +226,49 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                             Logging.Handler.Device_Information("Device_Information.Hardware.Disks", "Failed.", ex.ToString());
                         }
                     });
+
+                    //Try to gather basic disk information for each letter that failed
+                    try
+                    {
+                        foreach (DriveInfo drive in DriveInfo.GetDrives())
+                        {
+                            string letter_short = drive.Name.Replace("\\", "");
+
+                            try
+                            {
+                                if (!collectedLettersList.Contains(letter_short)) // Check if the letter is already in the list
+                                {
+                                    Disks diskInfo = new Disks
+                                    {
+                                        letter = drive.Name.Replace("\\", ""),
+                                        label = string.IsNullOrEmpty(drive.VolumeLabel) ? "N/A" : drive.VolumeLabel,
+                                        model = "N/A",
+                                        firmware_revision = "N/A",
+                                        serial_number = "N/A",
+                                        interface_type = "N/A",
+                                        drive_type = drive.DriveType.ToString() == "Removable" ? "0" : drive.DriveType.ToString() == "Fixed" ? "1" : drive.DriveType.ToString() == "Network" ? "2" : drive.DriveType.ToString() == "CDRom" ? "3" : drive.DriveType.ToString() == "Ram" ? "4" : "5", // Removable = 0, Fixed = 1, Network = 2, CDRom = 3, Ram = 4, Unknown = 5
+                                        drive_format = drive.DriveFormat,
+                                        drive_ready = drive.IsReady.ToString(),
+                                        capacity = ((double)drive.TotalSize / (1024 * 1024 * 1024)).ToString("0.00"),
+                                        usage = $"{((double)(drive.TotalSize - drive.AvailableFreeSpace) / drive.TotalSize) * 100:F2}",
+                                        status = "N/A",
+                                    };
+
+                                    // Serialize the disk object into a JSON string and add it to the list
+                                    string disksJson = JsonConvert.SerializeObject(diskInfo, Formatting.Indented);
+                                    disksJsonList.Add(disksJson);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logging.Handler.Device_Information("Device_Information.Hardware.Disks", "Failed to gather basic disk information for each letter that failed.", ex.ToString());
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Handler.Device_Information("Device_Information.Hardware.Disks", "Failed to gather basic disk information for each letter that failed. (general error)", ex.ToString());
+                    }
 
                     // Create and log JSON array
                     string disks_json = "[" + string.Join("," + Environment.NewLine, disksJsonList) + "]";
