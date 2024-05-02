@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using NetLock_RMM_Comm_Agent_Windows.Helper;
+using System.Diagnostics;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Initialization
 {
@@ -42,7 +43,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Health.Directories", "", ex.Message);
+                Logging.Handler.Error("Initialization.Health.Check_Directories", "", ex.Message);
             }
         }
 
@@ -61,7 +62,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Health.Registry", "", ex.Message);
+                Logging.Handler.Error("Initialization.Health.Check_Registry", "", ex.Message);
             }
         }
 
@@ -73,6 +74,41 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             Windows_Defender_Firewall.Handler.NetLock_RMM_Health_Service_Rule();
             Windows_Defender_Firewall.Handler.NetLock_Installer_Rule();
             Windows_Defender_Firewall.Handler.NetLock_Uninstaller_Rule();
+        }
+
+        public static void Clean_Service_Restart()
+        {
+            Logging.Handler.Debug("Initialization.Health.Clean_Service_Restart", "Starting.", "");
+
+            Process cmd_process = new Process();
+            cmd_process.StartInfo.UseShellExecute = true;
+            cmd_process.StartInfo.CreateNoWindow = true;
+            cmd_process.StartInfo.FileName = "cmd.exe";
+            cmd_process.StartInfo.Arguments = "/c powershell" + " Stop-Service 'NetLock_RMM_Comm_Agent_Windows'; Remove-Item 'C:\\ProgramData\\0x101 Cyber Security\\NetLock RMM\\Comm Agent\\policy.nlock'; Remove-Item 'C:\\ProgramData\\0x101 Cyber Security\\NetLock RMM\\Comm Agent\\reports.nlock'; Start-Service 'NetLock_RMM_Comm_Agent_Windows'";
+            cmd_process.Start();
+            cmd_process.WaitForExit();
+
+            Logging.Handler.Error("Initialization.Health.Clean_Service_Restart", "Stopping.", "");
+        }
+
+        public static void Setup_Events_Virtual_Datatable()
+        {
+            try
+            {
+                Service.events_data_table.Columns.Clear();
+                Service.events_data_table.Columns.Add("severity");
+                Service.events_data_table.Columns.Add("reported_by");
+                Service.events_data_table.Columns.Add("event");
+                Service.events_data_table.Columns.Add("description");
+                Service.events_data_table.Columns.Add("type");
+                Service.events_data_table.Columns.Add("language");
+
+                Logging.Handler.Debug("Initialization.Health.Setup_Events_Virtual_Datatable", "Create datatable", "Done.");
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Initialization.Health.Setup_Events_Virtual_Datatable", "Create datatable", ex.Message);
+            }
         }
     }
 }

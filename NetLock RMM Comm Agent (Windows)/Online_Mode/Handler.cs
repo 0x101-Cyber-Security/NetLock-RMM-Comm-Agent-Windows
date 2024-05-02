@@ -17,6 +17,9 @@ using System.Reflection.Emit;
 using NetFwTypeLib;
 using System.Diagnostics;
 using NetLock_RMM_Comm_Agent_Windows.Device_Information;
+using System.Text.Json;
+using System.Data.SQLite;
+using System.Runtime;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
 {
@@ -649,6 +652,193 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
             catch (Exception ex)
             {
                 Logging.Handler.Error("Online_Mode.Handler.Update_Device_Information", "General error", ex.ToString());
+                return "invalid";
+            }
+        }
+
+        public static async Task<string> Policy()
+        {
+            try
+            {
+                // Get ip_address_internal
+                string ip_address_internal = Helper.Network.Get_Local_IP_Address();
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "ip_address_internal", ip_address_internal);
+
+                // Get Windows version
+                string operating_system = Windows.Windows_Version();
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "operating_system", operating_system);
+
+                // Get DOMAIN
+                string domain = Environment.UserDomainName;
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "domain", domain);
+
+                // Get Antivirus solution
+                string antivirus_solution = WMI.Search("root\\SecurityCenter2", "select * FROM AntivirusProduct", "displayName");
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "antivirus_solution", antivirus_solution);
+
+                // Get Firewall status
+                bool firewall_status = Windows_Defender_Firewall.Handler.Status();
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "firewall_status", firewall_status.ToString());
+
+                // Get Architecture
+                string architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "architecture", architecture);
+
+                // Get last boot
+                string last_boot = WMI.Search("root\\CIMV2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime");
+                DateTime last_boot_datetime = ManagementDateTimeConverter.ToDateTime(last_boot);
+                last_boot = last_boot_datetime.ToString("dd.MM.yyyy HH:mm:ss");
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "last_boot", last_boot);
+
+                // Get timezone
+                string timezone = Globalization.Local_Time_Zone();
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "timezone", timezone);
+
+                // Get CPU
+                string cpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_Processor", "Name");
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "cpu", cpu);
+
+                // Get Mainboard
+                string mainboard = WMI.Search("root\\CIMV2", "SELECT Product FROM Win32_BaseBoard", "Product");
+                string mainboard_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_BaseBoard", "Manufacturer");
+
+                mainboard = mainboard + " (" + mainboard_manufacturer + ")";
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "mainboard", mainboard);
+
+                // Get GPU
+                string gpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_VideoController", "Name");
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "gpu", gpu);
+
+                // Get RAM
+                string ram = WMI.Search("root\\CIMV2", "SELECT TotalPhysicalMemory FROM Win32_ComputerSystem", "TotalPhysicalMemory");
+                ram = Math.Round(Convert.ToDouble(ram) / 1024 / 1024 / 1024).ToString();
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "ram", ram);
+
+                // Get TPM
+                string tpm_IsEnabled_InitialValue = WMI.Search("root\\cimv2\\Security\\MicrosoftTpm", "SELECT IsEnabled_InitialValue FROM Win32_Tpm", "IsEnabled_InitialValue");
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "tpm_IsEnabled_InitialValue", tpm_IsEnabled_InitialValue);
+
+                //Create JSON
+                Device_Identity identity = new Device_Identity
+                {
+                    agent_version = Application_Settings.version,
+                    device_name = Service.device_name,
+                    location_name = Service.location_name,
+                    tenant_name = Service.tenant_name,
+                    access_key = Service.access_key,
+                    hwid = Service.hwid,
+                    ip_address_internal = ip_address_internal,
+                    operating_system = operating_system,
+                    domain = domain,
+                    antivirus_solution = antivirus_solution,
+                    firewall_status = firewall_status.ToString(),
+                    architecture = architecture,
+                    last_boot = last_boot,
+                    timezone = timezone,
+                    cpu = cpu,
+                    mainboard = mainboard,
+                    gpu = gpu,
+                    ram = ram,
+                    tpm = tpm_IsEnabled_InitialValue,
+                };
+
+                // Create the object that contains the device_identity object
+                var jsonObject = new { device_identity = identity };
+
+                // Serialize the object to a JSON string
+                string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
+                Logging.Handler.Debug("Online_Mode.Handler.Policy", "json", json);
+
+                // Create a HttpClient instance
+                using (var httpClient = new HttpClient())
+                {
+                    // Set the content type header
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    Logging.Handler.Debug("Online_Mode.Handler.Policy", "communication_server", Service.communication_server + "/Agent/Windows/Policy");
+
+                    // Send the JSON data to the server
+                    var response = await httpClient.PostAsync(Service.communication_server + "/Agent/Windows/Policy", new StringContent(json, Encoding.UTF8, "application/json"));
+
+                    // Check if the request was successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Request was successful, handle the response
+                        var result = await response.Content.ReadAsStringAsync();
+                        Logging.Handler.Debug("Online_Mode.Handler.Policy", "result", result);
+
+                        // Deserialization of the entire JSON string
+                        using (JsonDocument document = JsonDocument.Parse(result))
+                        {
+                            JsonElement policy_antivirus_settings_element= document.RootElement.GetProperty("antivirus_settings_json");
+                            Service.policy_antivirus_settings_json = policy_antivirus_settings_element.ToString();
+
+                            JsonElement policy_antivirus_exclusions_element = document.RootElement.GetProperty("antivirus_exclusions_json");
+                            Service.policy_antivirus_exclusions_json = policy_antivirus_exclusions_element.ToString();
+
+                            JsonElement policy_antivirus_scan_jobs_element = document.RootElement.GetProperty("antivirus_scan_jobs_json");
+                            Service.policy_antivirus_scan_jobs_json = policy_antivirus_scan_jobs_element.ToString();
+
+                            JsonElement policy_antivirus_controlled_folder_access_folders_element = document.RootElement.GetProperty("antivirus_controlled_folder_access_folders_json");
+                            Service.policy_antivirus_controlled_folder_access_folders_json = policy_antivirus_controlled_folder_access_folders_element.ToString();
+
+                            JsonElement policy_sensors_json_element = document.RootElement.GetProperty("policy_sensors_json");
+                            Service.policy_sensors_json = policy_sensors_json_element.ToString();
+
+                            JsonElement policy_jobs_json_element = document.RootElement.GetProperty("policy_jobs_json");
+                            Service.policy_jobs_json = policy_jobs_json_element.ToString();
+                        }
+
+                        // Insert into policy database
+                        Initialization.Database.NetLock_Data_Setup();
+
+                        Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Starting...");
+
+                        using (SQLiteConnection db_conn = new SQLiteConnection(Application_Settings.NetLock_Data_Database_String))
+                        {
+                            db_conn.Open();
+
+                            SQLiteCommand command = new SQLiteCommand("INSERT INTO policy (" +
+                            "'antivirus_settings_json', " +
+                            "'antivirus_exclusions_json', " +
+                            "'antivirus_scan_jobs_json', " +
+                            "'antivirus_controlled_folder_access_folders_json', " +
+                            "'sensors_json', " +
+                            "'jobs_json'" +
+                              
+                            ") VALUES (" +
+
+                            "'" + Service.policy_antivirus_settings_json + "', " + //policy_antivirus_settings_json
+                            "'" + Service.policy_antivirus_exclusions_json + "'," + //policy_antivirus_exclusions_json
+                            "'" + Service.policy_antivirus_scan_jobs_json + "'," + //policy_antivirus_scan_jobs_json
+                            "'" + Service.policy_antivirus_controlled_folder_access_folders_json + "'," + //policy_antivirus_controlled_folder_access_folders_json
+                            "'" + Service.policy_sensors_json + "'," + //policy_sensors_json
+                            "'" + Service.policy_jobs_json + "'" + //policy_jobs_json
+
+                            ")"
+                            , db_conn);
+
+                            command.ExecuteNonQuery();
+
+                            db_conn.Close();
+                            db_conn.Dispose();
+
+                            Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Done." + Environment.NewLine);
+                        }
+
+                        return "ok";
+                    }
+                    else
+                    {
+                        // Request failed, handle the error
+                        Logging.Handler.Debug("Online_Mode.Handler.Policy", "request", "Request failed: " + response.Content);
+                        return "invalid";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Online_Mode.Handler.Policy", "General error", ex.ToString());
                 return "invalid";
             }
         }
