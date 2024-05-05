@@ -62,6 +62,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string policy_antivirus_exclusions_json = String.Empty;
         public static string policy_antivirus_scan_jobs_json = String.Empty;
         public static string policy_antivirus_controlled_folder_access_folders_json = String.Empty;
+        public static string policy_antivirus_controlled_folder_access_ruleset_json = String.Empty;
         public static string policy_sensors_json = String.Empty;
         public static string policy_jobs_json = String.Empty;
 
@@ -180,7 +181,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
 
                 //If first run, skip module init (pre boot) and load client settings first
                 if (File.Exists(Application_Paths.just_installed) == false && forced == false && first_sync == true) //Enable the Preboot Modules to block shit on system boot
-                    //pre_boot();
+                    Pre_Boot();
                 if (File.Exists(Application_Paths.just_installed) && forced == false) //Force the sync & set the config because its the first run (justinstalled.txt)
                     forced = true;
                 else if (Helper.Registry.HKLM_Read_Value(Application_Paths.netlock_reg_path, "Synced") == "0" || Helper.Registry.HKLM_Read_Value(Application_Paths.netlock_reg_path, "Synced") == null)
@@ -228,14 +229,33 @@ namespace NetLock_RMM_Comm_Agent_Windows
             {
                 Offline_Mode.Handler.Policy();
             }
+
+            // Trigger module handler
+            Module_Handler();
         }
 
-        private void Synchronize(bool force)
+        private void Pre_Boot()
         {
-            Logging.Handler.Debug("Initialize", "Initialize", "Start");
+            if (authorized)
+            {
+                Logging.Handler.Debug("Service.Pre_Boot", "", "Authorized.");
+                //prepare_rulesets();
+                Offline_Mode.Handler.Policy();
+                Module_Handler();
+            }
+            else if (!authorized)
+            {
+                Logging.Handler.Debug("Service.Pre_Boot", "", "Not authorized.");
+            }
+        }
 
-            // Authenticate online
+        private void Module_Handler()
+        {
+            if (!authorized)
+                return;
 
+            // Antivirus
+            Microsoft_Defender_Antivirus.Handler.Initalization();
         }
 
         private async void Process_Events_Timer_Tick(object source, ElapsedEventArgs e)

@@ -61,7 +61,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                 Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "antivirus_solution", antivirus_solution);
 
                 // Get Firewall status
-                bool firewall_status = Windows_Defender_Firewall.Handler.Status();
+                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
                 Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "firewall_status", firewall_status.ToString());
 
                 // Get Architecture

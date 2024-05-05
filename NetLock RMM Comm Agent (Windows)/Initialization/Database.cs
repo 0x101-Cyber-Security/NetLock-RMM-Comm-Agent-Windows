@@ -76,6 +76,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                             "antivirus_exclusions_json TEXT NULL DEFAULT NULL," +
                             "antivirus_scan_jobs_json TEXT NULL DEFAULT NULL," +
                             "antivirus_controlled_folder_access_folders_json TEXT NULL DEFAULT NULL," +
+                            "antivirus_controlled_folder_access_ruleset_json TEXT NULL DEFAULT NULL," +
                             "sensors_json TEXT NULL DEFAULT NULL," +
                             "jobs_json TEXT NULL DEFAULT NULL" +
 

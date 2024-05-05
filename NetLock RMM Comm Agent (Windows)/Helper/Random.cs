@@ -35,5 +35,22 @@ namespace Randomizer
                 return String.Empty;
             }
         }
+
+        public static string Standard(int length)
+        {
+            try
+            {
+                Random random = new Random();
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                string random_id = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+
+                return random_id;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Randomizer.Handler.Standard", "", ex.ToString());
+                return "1234567890";
+            }
+        }
     }
 }

@@ -251,7 +251,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "antivirus_solution", antivirus_solution);
 
                 // Get Firewall status
-                bool firewall_status = Windows_Defender_Firewall.Handler.Status();
+                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
                 Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "firewall_status", firewall_status.ToString());
 
                 // Get Architecture
@@ -443,7 +443,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "antivirus_solution", antivirus_solution);
 
                 // Get Firewall status
-                bool firewall_status = Windows_Defender_Firewall.Handler.Status();
+                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
                 Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "firewall_status", firewall_status.ToString());
 
                 // Get Architecture
@@ -677,7 +677,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 Logging.Handler.Debug("Online_Mode.Handler.Policy", "antivirus_solution", antivirus_solution);
 
                 // Get Firewall status
-                bool firewall_status = Windows_Defender_Firewall.Handler.Status();
+                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
                 Logging.Handler.Debug("Online_Mode.Handler.Policy", "firewall_status", firewall_status.ToString());
 
                 // Get Architecture
@@ -782,6 +782,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                             JsonElement policy_antivirus_controlled_folder_access_folders_element = document.RootElement.GetProperty("antivirus_controlled_folder_access_folders_json");
                             Service.policy_antivirus_controlled_folder_access_folders_json = policy_antivirus_controlled_folder_access_folders_element.ToString();
 
+                            JsonElement policy_antivirus_controlled_folder_access_ruleset_element = document.RootElement.GetProperty("antivirus_controlled_folder_access_ruleset_json");
+                            Service.policy_antivirus_controlled_folder_access_ruleset_json = policy_antivirus_controlled_folder_access_ruleset_element.ToString();
+
                             JsonElement policy_sensors_json_element = document.RootElement.GetProperty("policy_sensors_json");
                             Service.policy_sensors_json = policy_sensors_json_element.ToString();
 
@@ -803,6 +806,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                             "'antivirus_exclusions_json', " +
                             "'antivirus_scan_jobs_json', " +
                             "'antivirus_controlled_folder_access_folders_json', " +
+                            "'antivirus_controlled_folder_access_ruleset_json', " +
                             "'sensors_json', " +
                             "'jobs_json'" +
                               
@@ -812,6 +816,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                             "'" + Service.policy_antivirus_exclusions_json + "'," + //policy_antivirus_exclusions_json
                             "'" + Service.policy_antivirus_scan_jobs_json + "'," + //policy_antivirus_scan_jobs_json
                             "'" + Service.policy_antivirus_controlled_folder_access_folders_json + "'," + //policy_antivirus_controlled_folder_access_folders_json
+                            "'" + Service.policy_antivirus_controlled_folder_access_ruleset_json + "'," + //policy_antivirus_controlled_folder_access_ruleset_json
                             "'" + Service.policy_sensors_json + "'," + //policy_sensors_json
                             "'" + Service.policy_jobs_json + "'" + //policy_jobs_json
 

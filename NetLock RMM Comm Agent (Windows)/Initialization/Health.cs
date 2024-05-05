@@ -69,11 +69,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
         // Check if the firewall rules are in place
         public static void Check_Firewall()
         {
-            Windows_Defender_Firewall.Handler.NetLock_RMM_Comm_Agent_Rule_Inbound();
-            Windows_Defender_Firewall.Handler.NetLock_RMM_Comm_Agent_Rule_Outbound();
-            Windows_Defender_Firewall.Handler.NetLock_RMM_Health_Service_Rule();
-            Windows_Defender_Firewall.Handler.NetLock_Installer_Rule();
-            Windows_Defender_Firewall.Handler.NetLock_Uninstaller_Rule();
+            Microsoft_Defender_Firewall.Handler.NetLock_RMM_Comm_Agent_Rule_Inbound();
+            Microsoft_Defender_Firewall.Handler.NetLock_RMM_Comm_Agent_Rule_Outbound();
+            Microsoft_Defender_Firewall.Handler.NetLock_RMM_Health_Service_Rule();
+            Microsoft_Defender_Firewall.Handler.NetLock_Installer_Rule();
+            Microsoft_Defender_Firewall.Handler.NetLock_Uninstaller_Rule();
         }
 
         public static void Clean_Service_Restart()

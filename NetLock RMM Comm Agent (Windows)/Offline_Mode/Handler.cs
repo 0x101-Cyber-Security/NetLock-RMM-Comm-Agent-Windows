@@ -38,10 +38,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Offline_Mode
                         catch (Exception ex)
                         {
                             error = true;
-                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (application_control_enabled). Because of the following error, online settings will be requested.", ex.Message);
+                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (antivirus_settings_json). Because of the following error, online settings will be requested.", ex.Message);
                         }
 
-                        //antivirus_exclusions_json
+                        //policy_antivirus_exclusions_json
                         try
                         {
                             Service.policy_antivirus_exclusions_json = reader["antivirus_exclusions_json"].ToString();
@@ -49,7 +49,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Offline_Mode
                         catch (Exception ex)
                         {
                             error = true;
-                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (application_control_enabled). Because of the following error, online settings will be requested.", ex.Message);
+                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (antivirus_exclusions_json). Because of the following error, online settings will be requested.", ex.Message);
                         }
 
                         //antivirus_scan_jobs_json
@@ -60,7 +60,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Offline_Mode
                         catch (Exception ex)
                         {
                             error = true;
-                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (application_control_enabled). Because of the following error, online settings will be requested.", ex.Message);
+                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (antivirus_scan_jobs_json). Because of the following error, online settings will be requested.", ex.Message);
                         }
 
                         //antivirus_controlled_folder_access_folders_json
@@ -71,7 +71,18 @@ namespace NetLock_RMM_Comm_Agent_Windows.Offline_Mode
                         catch (Exception ex)
                         {
                             error = true;
-                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (application_control_enabled). Because of the following error, online settings will be requested.", ex.Message);
+                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (antivirus_controlled_folder_access_folders_json). Because of the following error, online settings will be requested.", ex.Message);
+                        }
+
+                        //antivirus_controlled_folder_access_ruleset_json
+                        try
+                        {
+                            Service.policy_antivirus_controlled_folder_access_ruleset_json = reader["antivirus_controlled_folder_access_ruleset_json"].ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            error = true;
+                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (antivirus_controlled_folder_access_ruleset_json). Because of the following error, online settings will be requested.", ex.Message);
                         }
 
                         //sensors_json
@@ -82,7 +93,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Offline_Mode
                         catch (Exception ex)
                         {
                             error = true;
-                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (application_control_enabled). Because of the following error, online settings will be requested.", ex.Message);
+                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (sensors_json). Because of the following error, online settings will be requested.", ex.Message);
                         }
 
                         //jobs_json
@@ -93,7 +104,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Offline_Mode
                         catch (Exception ex)
                         {
                             error = true;
-                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (application_control_enabled). Because of the following error, online settings will be requested.", ex.Message);
+                            Logging.Handler.Error("Offline_Mode.Handler.Policy", "Read failed (jobs_json). Because of the following error, online settings will be requested.", ex.Message);
                         }
                     }
 

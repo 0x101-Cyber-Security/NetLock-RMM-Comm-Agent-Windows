@@ -135,6 +135,7 @@
     <Compile Include="Helper\Globalization.cs" />
     <Compile Include="Helper\Logging.cs" />
     <Compile Include="Helper\Network.cs" />
+    <Compile Include="Helper\PowerShell.cs" />
     <Compile Include="Helper\Process_User.cs" />
     <Compile Include="Helper\Random.cs" />
     <Compile Include="Helper\Registry.cs" />
@@ -148,6 +149,8 @@
     <Compile Include="Initialization\Health.cs" />
     <Compile Include="Initialization\Server_Config.cs" />
     <Compile Include="Initialization\Version.cs" />
+    <Compile Include="Microsoft_Defender_Antivirus\Check_Settings.cs" />
+    <Compile Include="Microsoft_Defender_Antivirus\Set_Settings.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Handler.cs" />
     <Compile Include="NetLock_RMM_Comm_Agent_Windows.cs">
       <SubType>Component</SubType>
