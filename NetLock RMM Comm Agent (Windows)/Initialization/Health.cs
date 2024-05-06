@@ -84,7 +84,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             cmd_process.StartInfo.UseShellExecute = true;
             cmd_process.StartInfo.CreateNoWindow = true;
             cmd_process.StartInfo.FileName = "cmd.exe";
-            cmd_process.StartInfo.Arguments = "/c powershell" + " Stop-Service 'NetLock_RMM_Comm_Agent_Windows'; Remove-Item 'C:\\ProgramData\\0x101 Cyber Security\\NetLock RMM\\Comm Agent\\policy.nlock'; Remove-Item 'C:\\ProgramData\\0x101 Cyber Security\\NetLock RMM\\Comm Agent\\reports.nlock'; Start-Service 'NetLock_RMM_Comm_Agent_Windows'";
+            cmd_process.StartInfo.Arguments = "/c powershell" + " Stop-Service 'NetLock_RMM_Comm_Agent_Windows'; Remove-Item 'C:\\ProgramData\\0x101 Cyber Security\\NetLock RMM\\Comm Agent\\policy.nlock'; Remove-Item 'C:\\ProgramData\\0x101 Cyber Security\\NetLock RMM\\Comm Agent\\events.nlock'; Start-Service 'NetLock_RMM_Comm_Agent_Windows'";
             cmd_process.Start();
             cmd_process.WaitForExit();
 

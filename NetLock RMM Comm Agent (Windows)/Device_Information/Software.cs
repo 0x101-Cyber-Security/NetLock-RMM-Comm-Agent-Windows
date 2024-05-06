@@ -41,6 +41,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                         RegistryKey subKey = key.OpenSubKey(subKeyName);
                         if (subKey != null)
                         {
+                            bool empty = true;
+
                             string DisplayName_32bit = null;
                             string DisplayVersion_32bit = null;
                             string InstallDate_32bit = null;
@@ -51,59 +53,63 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                             try
                             {
                                 DisplayName_32bit = subKey.GetValue("DisplayName").ToString();
+                                if (!string.IsNullOrEmpty(DisplayName_32bit))
+                                    empty = false;
                             }
                             catch { }
 
                             try
                             {
                                 DisplayVersion_32bit = subKey.GetValue("DisplayVersion_32bit").ToString();
+                                if (!string.IsNullOrEmpty(DisplayVersion_32bit))
+                                    empty = false;
                             }
                             catch { }
 
                             try
                             {
                                 InstallDate_32bit = subKey.GetValue("InstallDate").ToString();
+                                if (!string.IsNullOrEmpty(InstallDate_32bit))
+                                    empty = false;
                             }
                             catch { }
 
                             try
                             {
                                 InstallLocation_32bit = subKey.GetValue("InstallLocation").ToString();
+                                if (!string.IsNullOrEmpty(InstallLocation_32bit))
+                                    empty = false;
                             }
                             catch { }
 
                             try
                             {
                                 Publisher_32bit = subKey.GetValue("Publisher").ToString();
+                                if (!string.IsNullOrEmpty(Publisher_32bit))
+                                    empty = false;
                             }
                             catch { }
 
                             try
                             {
                                 UninstallString_32bit = subKey.GetValue("UninstallString").ToString();
+                                if (!string.IsNullOrEmpty(UninstallString_32bit))
+                                    empty = false;
                             }
                             catch { }
 
-                            // Überprüfen auf leere Zeichenfolgen und Zuweisung von "N/A" falls erforderlich
-                            DisplayName_32bit = string.IsNullOrEmpty(DisplayName_32bit) ? "N/A" : DisplayName_32bit;
-                            DisplayVersion_32bit = string.IsNullOrEmpty(DisplayVersion_32bit) ? "N/A" : DisplayVersion_32bit;
-                            InstallDate_32bit = string.IsNullOrEmpty(InstallDate_32bit) ? "N/A" : InstallDate_32bit;
-                            InstallLocation_32bit = string.IsNullOrEmpty(InstallLocation_32bit) ? "N/A" : InstallLocation_32bit;
-                            Publisher_32bit = string.IsNullOrEmpty(Publisher_32bit) ? "N/A" : Publisher_32bit;
-                            UninstallString_32bit = string.IsNullOrEmpty(UninstallString_32bit) ? "N/A" : UninstallString_32bit;
-
                             // Überprüfen, ob mindestens ein Wert gefunden wurde
-                            if (!string.IsNullOrEmpty(DisplayName_32bit))
+                            if (!empty)
                             {
                                 // Create installed software object
                                 Applications_Installed applicationInfo = new Applications_Installed
                                 {
-                                    name = DisplayName_32bit,
-                                    version = DisplayVersion_32bit,
-                                    installed_date = InstallDate_32bit,
-                                    installation_path = InstallLocation_32bit,
-                                    vendor = Publisher_32bit,
-                                    uninstallation_string = UninstallString_32bit
+                                    name = string.IsNullOrEmpty(DisplayName_32bit) ? "N/A" : DisplayName_32bit,
+                                    version = string.IsNullOrEmpty(DisplayVersion_32bit) ? "N/A" : DisplayVersion_32bit,
+                                    installed_date = string.IsNullOrEmpty(InstallDate_32bit) ? "N/A" : InstallDate_32bit,
+                                    installation_path = string.IsNullOrEmpty(InstallLocation_32bit) ? "N/A" : InstallLocation_32bit,
+                                    vendor = string.IsNullOrEmpty(Publisher_32bit) ? "N/A" : Publisher_32bit,
+                                    uninstallation_string = string.IsNullOrEmpty(UninstallString_32bit) ? "N/A" : UninstallString_32bit
                                 };
 
                                 // Serialize the process object into a JSON string and add it to the list

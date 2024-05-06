@@ -369,6 +369,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     fallback_trust_server = Service.fallback_trust_server,
                                     tenant_name = Service.tenant_name,
                                     location_name = Service.location_name,
+                                    language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "1",
                                 }, Formatting.Indented);
@@ -394,6 +395,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     fallback_trust_server = Service.fallback_trust_server,
                                     tenant_name = Service.tenant_name,
                                     location_name = Service.location_name,
+                                    language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "0",
                                 }, Formatting.Indented);
@@ -575,7 +577,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "communication_server", Service.communication_server + "/Agent/Windows/Verify_Device");
+                    Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "communication_server", Service.communication_server + "/Agent/Windows/Update_Device_Information");
 
                     // Send the JSON data to the server
                     var response = await httpClient.PostAsync(Service.communication_server + "/Agent/Windows/Update_Device_Information", new StringContent(json, Encoding.UTF8, "application/json"));
@@ -603,6 +605,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     fallback_trust_server = Service.fallback_trust_server,
                                     tenant_name = Service.tenant_name,
                                     location_name = Service.location_name,
+                                    language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "1",
                                 }, Formatting.Indented);
@@ -628,6 +631,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     fallback_trust_server = Service.fallback_trust_server,
                                     tenant_name = Service.tenant_name,
                                     location_name = Service.location_name,
+                                    language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "0",
                                 }, Formatting.Indented);
@@ -644,7 +648,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     else
                     {
                         // Request failed, handle the error
-                        Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "request", "Request failed: " + response.Content);
+                        Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "request", "Request failed: " + response.StatusCode + " " + response.Content.ToString());
                         return "invalid";
                     }
                 }

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Diagnostics;
+using System.Timers;
+using NetLock_Agent.Helper;
+using System.IO;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
 {
@@ -30,12 +33,12 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 if (enabled)
                 {
                     //Check if tray icon should be displayed
-                    if (security_center_tray == false)
+                    if (!security_center_tray)
                         Kill_Security_Center_Tray_Icon();
 
                     Set_Settings.Do();
                     //Scan_Job_Scheduler.Scan_Job_Scheduler.Check_Exececution();
-                    //Eventlog_Crawler.Eventlog_Crawler.Do();
+                    Eventlog_Crawler.Do();
                 }
                 else //If not, restore windows defender standard config
                 {
@@ -69,6 +72,86 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 {
                     Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Initalization", "Check security center tray icon presence", "Couldn't kill it: " + ex.Message);
                 }
+            }
+        }
+
+        public static async void Events_Tick(object source, ElapsedEventArgs e)
+        {
+            Eventlog_Crawler.EDR();
+
+            // NetLock legacy code. Will be worked in future
+
+            //Only do if sensor management ruleset is assigned
+            /*if (NetLock_Agent_Service.sensor_management_ruleset != "LQ==")
+            {
+                Logging.Logging.incident_response("Microsoft_Defender_AntiVirus.Handler.MSDAV_Events_Tick", "status", "ruleset assigned, execute");
+
+                //crawler runs already, return
+                if (NetLock_Agent_Service.microsoft_defender_antivirus_crawling)
+                {
+                    Logging.Logging.incident_response("Microsoft_Defender_AntiVirus.Handler.MSDAV_Events_Tick", "status", "already crawling, abort");
+                    return;
+                }
+
+                NetLock_Agent_Service.microsoft_defender_antivirus_crawling = true;
+
+                Eventlog_Crawler.Eventlog_Crawler.EDR();
+
+                NetLock_Agent_Service.microsoft_defender_antivirus_crawling = false;
+            }
+            else
+                Logging.Logging.incident_response("Microsoft_Defender_AntiVirus.Handler.MSDAV_Events_Tick", "status", "no ruleset assigned");
+            */
+        }
+
+        public static async void Check_Hourly_Sig_Updates_Tick(object source, ElapsedEventArgs e)
+        {
+            Check_Hourly_Sig_Updates();
+        }
+
+        public static void Check_Hourly_Sig_Updates()
+        {
+            try
+            {
+                bool check_hourly_signatures = false;
+
+                using (JsonDocument document = JsonDocument.Parse(Service.policy_antivirus_settings_json))
+                {
+                    JsonElement check_hourly_signatures_element = document.RootElement.GetProperty("check_hourly_signatures");
+                    check_hourly_signatures = Convert.ToBoolean(check_hourly_signatures_element.ToString());
+                }
+
+                if (check_hourly_signatures)
+                {
+                    Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_Antivirus.Check_Hourly_Sig_Updates", "Execute", "Before");
+                    PowerShell.Execute_Command("Microsoft_Defender_Antivirus.Check_Hourly_Sig_Updates", "Update-MpSignature", 60);
+                    Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_Antivirus.Check_Hourly_Sig_Updates", "Execute", "After");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Microsoft_Defender_AntiVirus.Handler.Microsoft_Defender_Check_Hourly_Sig_Updates", "General Error", ex.ToString());
+            }
+        }
+
+        public static void Backup_Eventlog()
+        {
+            try
+            {
+                string path = @"C:\Windows\System32\winevt\Logs\Microsoft-Windows-Windows Defender%4Operational.evtx";
+                string backup_path = Application_Paths.program_data_microsoft_defender_antivirus_eventlog_backup;
+
+                if (File.Exists(path))
+                {
+                    File.Delete(backup_path);
+                    File.Copy(path, backup_path);
+                }
+
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Backup_Eventlog", "Status", "Done.");
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Backup_Eventlog", "Couldnt backup it.", ex.Message);
             }
         }
     }

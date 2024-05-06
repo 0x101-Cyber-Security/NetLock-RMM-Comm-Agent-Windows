@@ -119,6 +119,18 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (location_name) - Parsing", ex.ToString());
                     }
 
+                    // Get language
+                    try
+                    {
+                        JsonElement element = document.RootElement.GetProperty("language");
+                        Service.language = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (language)", Service.language);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (language) - Parsing", ex.ToString());
+                    }
+
                     // Get the access key
                     try
                     {
@@ -162,6 +174,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                             fallback_trust_server = Service.fallback_trust_server,
                             tenant_name = Service.tenant_name,
                             location_name = Service.location_name,
+                            language = Service.language,
                             access_key = Service.access_key,
                             authorized = "0",
                         }, Formatting.Indented);

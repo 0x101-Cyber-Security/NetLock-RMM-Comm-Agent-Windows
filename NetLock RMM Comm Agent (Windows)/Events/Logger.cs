@@ -13,19 +13,22 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
 {
     internal class Logger
     {
-        public static void Insert_Event(string severity, string reported_by, string _event, string description, int type, int lang)
+        public static void Insert_Event(string severity, string reported_by, string _event, string description, int type, int language)
         {
             while (Service.events_processing == true)
+            {
+                Logging.Handler.Debug("Events.Logger.Insert_Event", "", "Events processing. Waiting...");
                 Thread.Sleep(1000);
+            }
 
             try
             {
-                Service.events_data_table.Rows.Add(severity, reported_by, _event, description, type, lang);
+                Service.events_data_table.Rows.Add(severity, reported_by, _event, description, type, language);
                 Logging.Handler.Debug("Events.Logger.Insert_Event", "", "Done");
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Events.Logger.Insert_Event", "Failed", ex.Message);
+                Logging.Handler.Error("Events.Logger.Insert_Event", "Failed", ex.ToString());
             }
         }
 
@@ -44,14 +47,14 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
 
                     foreach (DataRow row in Service.events_data_table.Rows)
                     {
-                        SQLiteCommand command = new SQLiteCommand("INSERT INTO events ('severity', 'reported_by', 'event', 'description', 'type', 'lang', 'mmc') VALUES (" +
+                        SQLiteCommand command = new SQLiteCommand("INSERT INTO events ('severity', 'reported_by', 'event', 'description', 'type', 'language', 'status') VALUES (" +
                             "'" + Encryption.String_Encryption.Encrypt(row["severity"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //_event
                             "'" + Encryption.String_Encryption.Encrypt(row["reported_by"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //_event
                             "'" + Encryption.String_Encryption.Encrypt(row["event"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //_event
                             "'" + Encryption.String_Encryption.Encrypt(row["description"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //description
-                            "'" + row["type"] + "', " + //type
-                            "'" + row["lang"] + "', " + //lang
-                            "'0'" + //mmc
+                            "'" + Encryption.String_Encryption.Encrypt(row["type"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //type
+                            "'" + Encryption.String_Encryption.Encrypt(row["language"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //language
+                            "'" + Encryption.String_Encryption.Encrypt("0", Application_Settings.NetLock_Local_Encryption_Key) + "'" + //status
                             ")"
                             , db_conn);
 
@@ -68,7 +71,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Events.Logger.Consume_Events", "Failed", ex.Message);
+                Logging.Handler.Error("Events.Logger.Consume_Events", "Failed", ex.ToString());
             }
         }
 
@@ -116,27 +119,27 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
 
                     while (reader.Read())
                     {
-                        Logging.Handler.Debug("Events.Logger.Process_Events", "Process Event", Environment.NewLine + "Reported by: " + reader["reported_by"].ToString() + Environment.NewLine + "Event: " + reader["event"].ToString() + Environment.NewLine + "Description: " + reader["description"].ToString() + Environment.NewLine + "Type: " + reader["type"].ToString() + Environment.NewLine + "Lang: " + reader["lang"].ToString());
+                        Logging.Handler.Debug("Events.Logger.Process_Events", "Process Event", Environment.NewLine + "Reported by: " + reader["reported_by"].ToString() + Environment.NewLine + "Event: " + reader["event"].ToString() + Environment.NewLine + "Description: " + reader["description"].ToString() + Environment.NewLine + "Type: " + reader["type"].ToString() + Environment.NewLine + "Language: " + reader["language"].ToString());
 
-                        //Send mmc if not send already 
-                        bool mmc_send = false;
+                        //Send status if not send already 
+                        bool status_send = false;
 
-                        if (connection_status && reader["mmc"].ToString() == "0")
-                            mmc_send = await Events.Sender.Send_Event(reader["severity"].ToString(), reader["reported_by"].ToString(), reader["event"].ToString(), reader["description"].ToString(), reader["type"].ToString(), reader["lang"].ToString());
+                        if (connection_status && Encryption.String_Encryption.Decrypt(reader["status"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) == "0")
+                            status_send = await Events.Sender.Send_Event(Encryption.String_Encryption.Decrypt(reader["severity"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["reported_by"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["event"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["description"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["type"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["language"].ToString(), Application_Settings.NetLock_Local_Encryption_Key));
 
-                        //If mmc send success, update its status in db
-                        if (mmc_send)
+                        //If status send success, update its status in db
+                        if (status_send)
                         {
-                            SQLiteCommand command = new SQLiteCommand("UPDATE events SET mmc = '1' WHERE id = '" + reader["id"].ToString() + "';", db_conn);
+                            SQLiteCommand command = new SQLiteCommand("UPDATE events SET status = '" + Encryption.String_Encryption.Encrypt("1", Application_Settings.NetLock_Local_Encryption_Key) + "' WHERE id = '" + reader["id"].ToString() + "';", db_conn);
                             command.ExecuteNonQuery();
                         }
 
-                        Logging.Handler.Debug("Events.Logger.Process_Events", "Process Event", "Send mmc: " + mmc_send);
+                        Logging.Handler.Debug("Events.Logger.Process_Events", "Process Event", "Send status: " + status_send);
 
                         //Delete event if everything done
                         bool log_delete = false;
 
-                        if (reader["mmc"].ToString() == "1")
+                        if (Encryption.String_Encryption.Decrypt(reader["status"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) == "1")
                             log_delete = true;
 
                         Logging.Handler.Debug("Events.Logger.Process_Events", "Process Event", "log_delete: " + log_delete);
@@ -158,7 +161,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
             }
             catch (Exception ex)
             {
-                Logging.Handler.Debug("Events.Logger.Process_Events", "Failed", ex.Message);
+                Logging.Handler.Debug("Events.Logger.Process_Events", "Failed", ex.ToString());
             }
         }
     }

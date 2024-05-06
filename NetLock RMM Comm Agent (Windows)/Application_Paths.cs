@@ -26,19 +26,20 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string program_data_server_config_json = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\server_config.json";
         public static string program_data_debug_txt = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\debug.txt";
         public static string program_data_scripts = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Scripts";
-
+        public static string program_data_microsoft_defender_antivirus_eventlog_backup = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Microsoft Defender Antivirus\Microsoft-Windows-Windows Defender Operational.bak";
+        
         public static string program_data_netlock_policy_database = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\policy.nlock";
         public static string program_data_netlock_events_database = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\events.nlock";
 
         // Reg Keys
         public static string netlock_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent";
-        public static string netlock_microsoft_defender_antivirus_reg_path = @"SOFTWARE\WOW6432Node\NetLock\Microsoft_Defender_Antivirus";
-        public static string netlock_yara_reg_path = @"SOFTWARE\WOW6432Node\NetLock\YARA";
-        public static string netlock_sensors_reg_path = @"SOFTWARE\WOW6432Node\NetLock\Sensors";
-        public static string netlock_sensor_management_reg_path = @"SOFTWARE\WOW6432Node\NetLock\Sensor_Management";
-        public static string netlock_log_connector_reg_path = @"SOFTWARE\WOW6432Node\NetLock\Log_Connector";
-        public static string netlock_rustdesk_reg_path = @"SOFTWARE\WOW6432Node\NetLock\RustDesk";
-        public static string netlock_support_mode_reg_path = @"SOFTWARE\WOW6432Node\NetLock\Support_Mode";
+        public static string netlock_microsoft_defender_antivirus_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent\Microsoft Defender Antivirus";
+        public static string netlock_yara_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent\YARA";
+        public static string netlock_sensors_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent\Sensors";
+        public static string netlock_sensor_management_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent\Sensor_Management";
+        public static string netlock_log_connector_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent\Log_Connector";
+        public static string netlock_rustdesk_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent\RustDesk";
+        public static string netlock_support_mode_reg_path = @"SOFTWARE\WOW6432Node\NetLock RMM\Comm Agent\Support_Mode";
         public static string hklm_run_directory_reg_path = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
 
         // Other

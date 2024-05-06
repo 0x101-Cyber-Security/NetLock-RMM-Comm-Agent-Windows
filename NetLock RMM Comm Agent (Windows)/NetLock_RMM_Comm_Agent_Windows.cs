@@ -29,13 +29,15 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string fallback_update_server = String.Empty;
         public static string main_trust_server = String.Empty;
         public static string fallback_trust_server = String.Empty;
-        public static string access_key = String.Empty;
-
         public static string tenant_name = String.Empty;
         public static string location_name = String.Empty;
+        public static string language = String.Empty;
+        public static string access_key = String.Empty;
+        public static bool authorized = false;
+
+        // Device identity
         public static string device_name = String.Empty;
         public static string hwid = String.Empty;
-        public static bool authorized = false;
 
         // Server communication
         public static string communication_server = String.Empty;
@@ -46,13 +48,18 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static System.Timers.Timer start_timer;
         public static System.Timers.Timer sync_timer;
         public static System.Timers.Timer events_timer;
+        public static System.Timers.Timer microsoft_defender_antivirus_events_timer;
+        public static System.Timers.Timer microsoft_defender_antivirus_check_hourly_sig_updates_timer;
 
         // Status
         public static bool connection_status = false;
         public static bool first_sync = true;
         public static bool sync_active = true;
-        public static bool events_processing = true; //Tells that the events are currently being processed and tells the Init to wait until its finished
-        public static bool process_events = false; //Indicates if events should be processed. Its being locked by the client settings loader
+        public static bool events_processing = false; //Tells that the events are currently being processed and tells the Init to wait until its finished
+        //public static bool process_events = false; //Indicates if events should be processed. Its being locked by the client settings loader
+        public static bool microsoft_defender_antivirus_events_crawling = false;
+        public static bool microsoft_defender_antivirus_events_timer_running = false;
+        public static bool microsoft_defender_antivirus_sig_updates_timer_running = false;
 
         //Lists
         //public static string processes_list = "[]";
@@ -130,7 +137,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Service.OnStart", "Start Event_Processor_Timer", ex.Message);
+                Logging.Handler.Error("Service.OnStart", "Start Event_Processor_Timer", ex.ToString());
             }
 
             //Start Init Timer. We are doing this to get the service instantly running on service manager. Afterwards we will dispose the timer in Synchronize function
@@ -251,31 +258,68 @@ namespace NetLock_RMM_Comm_Agent_Windows
 
         private void Module_Handler()
         {
+            Logging.Handler.Debug("Service.Module_Handler", "Start", "Module_Handler");
+
             if (!authorized)
                 return;
 
             // Antivirus
             Microsoft_Defender_Antivirus.Handler.Initalization();
+
+            //Start Windows Defender AntiVirus Event timer, trigger every ten seconds
+            /*try
+            {
+                if (!microsoft_defender_antivirus_events_timer_running)
+                {
+                    microsoft_defender_antivirus_events_timer = new System.Timers.Timer(10000); //Check every ten seconds
+                    microsoft_defender_antivirus_events_timer.Elapsed += new ElapsedEventHandler(Microsoft_Defender_Antivirus.Handler.Events_Tick);
+                    microsoft_defender_antivirus_events_timer.Enabled = true;
+                    microsoft_defender_antivirus_events_timer_running = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.Module_Handler", "Start microsoft_defender_antivirus_events_timer", ex.ToString());
+            }
+
+            //Start Windows Defender AntiVirus: Check hourly for sig updates timer
+            try
+            {
+                if (!microsoft_defender_antivirus_sig_updates_timer_running)
+                {
+                    microsoft_defender_antivirus_check_hourly_sig_updates_timer = new System.Timers.Timer(3600000); //Check every 60 minutes
+                    microsoft_defender_antivirus_check_hourly_sig_updates_timer.Elapsed += new ElapsedEventHandler(Microsoft_Defender_Antivirus.Handler.Check_Hourly_Sig_Updates_Tick);
+                    microsoft_defender_antivirus_check_hourly_sig_updates_timer.Enabled = true;
+                    microsoft_defender_antivirus_sig_updates_timer_running = true;
+
+                    // Trigger the first check
+                    //Microsoft_Defender_Antivirus.Handler.Check_Hourly_Sig_Updates();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("OnStart", "Start Windows_Defender_Check_Hourly_Sig_Updates_Timer", ex.Message);
+            }
+            */
+
+            Logging.Handler.Debug("Service.Module_Handler", "Stop", "Module_Handler");
         }
 
         private async void Process_Events_Timer_Tick(object source, ElapsedEventArgs e)
         {
-            Logging.Handler.Debug("Service.Process_Events_Tick", "Start status", process_events.ToString());
+            Logging.Handler.Debug("Service.Process_Events_Tick", "Start", "");
 
-            if (process_events == true) //Check if the events should be processed
+            if (events_processing == false)
             {
-                if (events_processing == false)
-                {
-                    events_processing = true;
+                events_processing = true;
 
-                    Logger.Consume_Events();
-                    await Logger.Process_Events();
-                    
-                    events_processing = false;
-                }
+                Logger.Consume_Events();
+                await Logger.Process_Events();
+
+                events_processing = false;
             }
 
-            Logging.Handler.Debug("Service.Process_Events_Tick", "Stop status", process_events.ToString());
+            Logging.Handler.Debug("Service.Process_Events_Tick", "Stop", "");
         }
     }
 }

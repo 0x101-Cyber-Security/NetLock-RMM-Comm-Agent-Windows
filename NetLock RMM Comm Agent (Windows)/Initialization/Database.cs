@@ -173,7 +173,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 if (File.Exists(report_db_path) == false)
                 {
                     SQLiteConnection.CreateFile(report_db_path);
-                    Logging.Handler.Debug("Database_Setup", "create_db (rep)", "DB created.");
+                    Logging.Handler.Debug("Database_Setup", "create_db (events)", "DB created.");
 
                     Thread.Sleep(2500);
 
@@ -184,11 +184,12 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         //Create Security Events Table
                         string events_table_sql = "CREATE TABLE events(" +
                             "id INTEGER PRIMARY KEY, " +
+                            "severity TEXT NULL DEFAULT NULL, " +
                             "reported_by TEXT NULL DEFAULT NULL, " +
                             "event TEXT NULL DEFAULT NULL, " +
                             "description TEXT NULL DEFAULT NULL, " +
                             "type TEXT NULL DEFAULT NULL, " +
-                            "lang TEXT NULL DEFAULT NULL," +
+                            "language TEXT NULL DEFAULT NULL," +
                             "status TEXT NULL DEFAULT NULL);";
 
                         SQLiteCommand command = new SQLiteCommand(events_table_sql, db_conn);
@@ -197,15 +198,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         db_conn.Close();
                         db_conn.Dispose();
 
-                        Logging.Handler.Debug("Initialization.Database.NetLock_Events_Setup", "check_db (rep)", "Filled rep DB info.");
+                        Logging.Handler.Debug("Initialization.Database.NetLock_Events_Setup", "check_db (events)", "Filled events DB info.");
                     }
                 }
                 else
-                    Logging.Handler.Debug("Initialization.Database.NetLock_Events_Setup", "create_db (rep)", "Rep DB still existing.");
+                    Logging.Handler.Debug("Initialization.Database.NetLock_Events_Setup", "create_db (events)", "Rep DB still existing.");
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Initialization.Database.NetLock_Events_Setup", "create_db general (rep)", ex.Message);
+                Logging.Handler.Error("Initialization.Database.NetLock_Events_Setup", "create_db general (events)", ex.Message);
             }
         }
     }

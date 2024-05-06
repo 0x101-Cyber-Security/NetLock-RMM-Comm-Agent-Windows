@@ -3,6 +3,7 @@ using NetLock_Agent.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -350,20 +351,16 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 {
                     Logging.Handler.Microsoft_Defender_Antivirus("foreach", "", exclusion.exclusion);
 
-                    if (!exclusion_temp_list.Contains(exclusion.exclusion))
+                    if (!exclusion_temp_list.Contains(exclusion.exclusion) && exclusion.type == "file" || exclusion.type == "directory")
                     {
-                        Logging.Handler.Microsoft_Defender_Antivirus("foreach", "contains false", exclusion.exclusion);
-
-                        PowerShell.Execute_Command("microsoft_defender_antivirus_sexc_file", "Add-MpPreference -ExclusionPath '" + exclusion.exclusion + "' -Force", 30);
-                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file", "Add: " + exclusion.exclusion);
+                        PowerShell.Execute_Command("microsoft_defender_antivirus_sexc_file", "Add-MpPreference -ExclusionPath '" + exclusion.exclusion.Replace(@"\\", @"\") + "' -Force", 30);
+                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file", "Add: " + exclusion.exclusion.Replace(@"\\", @"\"));
                     }
-                    else
-                        Logging.Handler.Microsoft_Defender_Antivirus("foreach", "contains true", exclusion.exclusion);
                 }
             }
             catch (Exception ex)
             {
-                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file", "General error" + ex.Message);
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file", "General error" + ex.ToString());
             }
 
             //Set Windows Defender File Extension Exclusions
@@ -396,16 +393,16 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 //And here we re-add current exclusions
                 foreach (var exclusion in exclusionItems)
                 {
-                    if (exclusion_temp_list.Contains(exclusion.exclusion) == false)
+                    if (!exclusion_temp_list.Contains(exclusion.exclusion) && exclusion.type == "extension")
                     {
-                        PowerShell.Execute_Command("microsoft_defender_antivirus_sexc_file_ext", "Add-MpPreference -ExclusionExtension  '" + exclusion.exclusion + "' -Force", 30);
-                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file_ext", "Add: " + exclusion.exclusion);
+                        PowerShell.Execute_Command("microsoft_defender_antivirus_sexc_file_ext", "Add-MpPreference -ExclusionExtension  '" + exclusion.exclusion.Replace(@"\\", @"\") + "' -Force", 30);
+                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file_ext", "Add: " + exclusion.exclusion.Replace(@"\\", @"\"));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file_ext", "General error" + ex.Message);
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_file_ext", "General error" + ex.ToString());
             }
 
             //Set Windows Defender Process Exclusions
@@ -438,16 +435,16 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 //And here we re-add current exclusions
                 foreach (var exclusion in exclusionItems)
                 {
-                    if (exclusion_temp_list.Contains(exclusion.exclusion) == false)
+                    if (!exclusion_temp_list.Contains(exclusion.exclusion) && exclusion.type == "process")
                     {
-                        PowerShell.Execute_Command("microsoft_defender_antivirus_sexc_process", "Add-MpPreference -ExclusionProcess  '" + exclusion.exclusion + "' -Force", 30);
-                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_process", "Add: " + exclusion.exclusion);
+                        PowerShell.Execute_Command("microsoft_defender_antivirus_sexc_process", "Add-MpPreference -ExclusionProcess  '" + exclusion.exclusion.Replace(@"\\", @"\") + "' -Force", 30);
+                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_process", "Add: " + exclusion.exclusion.Replace(@"\\", @"\"));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_process", "General error" + ex.Message);
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_sexc_process", "General error" + ex.ToString());
             }
 
             //microsoft_defender_antivirus_contr_folder_acc_enabled
@@ -468,7 +465,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 //List<string> exclusion_list = new List<string> { };
                 List<string> directory_temp_list = new List<string> { };
 
-                List<Directory_Item> directoryItems = JsonSerializer.Deserialize<List<Directory_Item>>(Service.policy_antivirus_exclusions_json);
+                List<Directory_Item> directoryItems = JsonSerializer.Deserialize<List<Directory_Item>>(Service.policy_antivirus_controlled_folder_access_folders_json);
 
                 // We first delete all existing exclusions that are not on the current exclusions list, to make sure there is no persistence
                 using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\Controlled Folder Access\ProtectedFolders"))
@@ -492,16 +489,16 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 //And here we re-add current exclusions
                 foreach (var exclusion in directoryItems)
                 {
-                    if (directory_temp_list.Contains(exclusion.folder) == false)
+                    if (!directory_temp_list.Contains(exclusion.folder))
                     {
-                        PowerShell.Execute_Command("microsoft_defender_antivirus_contr_folder_acc_dirs", "Add-MpPreference -ControlledFolderAccessProtectedFolders '" + exclusion.folder + "' -Force", 30);
-                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_dirs", "Add: " + exclusion.folder);
+                        PowerShell.Execute_Command("microsoft_defender_antivirus_contr_folder_acc_dirs", "Add-MpPreference -ControlledFolderAccessProtectedFolders '" + exclusion.folder.Replace(@"\\", @"\") + "' -Force", 30);
+                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_dirs", "Add: " + exclusion.folder.Replace(@"\\", @"\"));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_dirs", "General error" + ex.Message);
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_dirs", "General error" + ex.ToString());
             }
 
             //Set Windows Defender Controlled Folder Access Applications
@@ -540,14 +537,14 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 {
                     if (process_temp_list.Contains(process) == false)
                     {
-                        PowerShell.Execute_Command("microsoft_defender_antivirus_contr_folder_acc_apps", "Add-MpPreference -ControlledFolderAccessAllowedApplications '" + process + "' -Force", 30);
-                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_apps", "Add: " + process);
+                        PowerShell.Execute_Command("microsoft_defender_antivirus_contr_folder_acc_apps", "Add-MpPreference -ControlledFolderAccessAllowedApplications '" + process.Replace(@"\\", @"\") + "' -Force", 30);
+                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_apps", "Add: " + process.Replace(@"\\", @"\"));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_apps", "General error" + ex.Message);
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_contr_folder_acc_apps", "General error" + ex.ToString());
             }
         }
     }

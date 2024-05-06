@@ -52,15 +52,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Helper
                 else
                     localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
 
-                Logging.Handler.Debug("Helper.Registry_Handler.HKLM_Read_Value", "Request", "Path: " + path + " Value: " + value);
-                Logging.Handler.Debug("Helper.Registry_Handler.HKLM_Read_Value", "Result", localKey.OpenSubKey(path).GetValue(value).ToString());
+                Logging.Handler.Registry("Helper.Registry_Handler.HKLM_Read_Value", "Request", "Path: " + path + " Value: " + value);
+                Logging.Handler.Registry("Helper.Registry_Handler.HKLM_Read_Value", "Result", localKey.OpenSubKey(path).GetValue(value).ToString());
                 
                 return localKey.OpenSubKey(path).GetValue(value).ToString();
             }
             catch (Exception ex)
             {
                 Logging.Handler.Error("Helper.Registry_Handler.HKLM_Read_Value", "Path: " + path + " Value: " + value, "Failed: " + ex.Message);
-                return "";
+                return null;
             }
         }
 
@@ -74,7 +74,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Helper
                     regkey.Close();
                     regkey.Dispose();
 
-                    Logging.Handler.Debug("Helper.Registry_Handler.HKLM_Write_Value", "Path: " + path + " Value: " + value + " Content: " + content, "Done.");
+                    Logging.Handler.Registry("Helper.Registry_Handler.HKLM_Write_Value", "Path: " + path + " Value: " + value + " Content: " + content, "Done.");
                     return true;
                 }
             }
@@ -93,13 +93,13 @@ namespace NetLock_RMM_Comm_Agent_Windows.Helper
                 {
                     if (regkey == null)
                     {
-                        Logging.Handler.Debug("Helper.Registry_Handler.HKLM_Delete_Value", "Path: " + path + " Value: " + value, "Done.");
+                        Logging.Handler.Registry("Helper.Registry_Handler.HKLM_Delete_Value", "Path: " + path + " Value: " + value, "Done.");
                         return true;
                     }
                     else
                     {
                         regkey.DeleteValue(value);
-                        Logging.Handler.Debug("Helper.Registry_Handler.HKLM_Delete_Value", "Path: " + path + " Value: " + value, "Done.");
+                        Logging.Handler.Registry("Helper.Registry_Handler.HKLM_Delete_Value", "Path: " + path + " Value: " + value, "Done.");
                         return true;
                     }
                 }
