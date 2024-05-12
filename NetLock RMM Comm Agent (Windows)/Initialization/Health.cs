@@ -40,6 +40,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 // C Temp
                 if (!Directory.Exists(Application_Paths.c_temp))
                     Directory.CreateDirectory(Application_Paths.c_temp);
+
+                // Microsoft Defender Antivirus
+                if (!Directory.Exists(Application_Paths.program_data_microsoft_defender_antivirus_scan_jobs))
+                    Directory.CreateDirectory(Application_Paths.program_data_microsoft_defender_antivirus_scan_jobs);
             }
             catch (Exception ex)
             {

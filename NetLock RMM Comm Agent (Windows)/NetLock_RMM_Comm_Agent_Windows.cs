@@ -60,6 +60,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool microsoft_defender_antivirus_events_crawling = false;
         public static bool microsoft_defender_antivirus_events_timer_running = false;
         public static bool microsoft_defender_antivirus_sig_updates_timer_running = false;
+        public static string last_sync = String.Empty; //Last time the policy had been synced/updated
 
         //Lists
         //public static string processes_list = "[]";
@@ -267,7 +268,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
             Microsoft_Defender_Antivirus.Handler.Initalization();
 
             //Start Windows Defender AntiVirus Event timer, trigger every ten seconds
-            /*try
+            try
             {
                 if (!microsoft_defender_antivirus_events_timer_running)
                 {
@@ -293,14 +294,13 @@ namespace NetLock_RMM_Comm_Agent_Windows
                     microsoft_defender_antivirus_sig_updates_timer_running = true;
 
                     // Trigger the first check
-                    //Microsoft_Defender_Antivirus.Handler.Check_Hourly_Sig_Updates();
+                    Microsoft_Defender_Antivirus.Handler.Check_Hourly_Sig_Updates();
                 }
             }
             catch (Exception ex)
             {
                 Logging.Handler.Error("OnStart", "Start Windows_Defender_Check_Hourly_Sig_Updates_Timer", ex.Message);
             }
-            */
 
             Logging.Handler.Debug("Service.Module_Handler", "Stop", "Module_Handler");
         }

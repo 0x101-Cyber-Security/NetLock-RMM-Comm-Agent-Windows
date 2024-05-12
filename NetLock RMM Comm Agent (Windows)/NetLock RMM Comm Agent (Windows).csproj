@@ -151,6 +151,7 @@
     <Compile Include="Initialization\Version.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Check_Settings.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Eventlog_Crawler.cs" />
+    <Compile Include="Microsoft_Defender_Antivirus\Scan_Jobs_Scheduler.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Set_Settings.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Handler.cs" />
     <Compile Include="NetLock_RMM_Comm_Agent_Windows.cs">

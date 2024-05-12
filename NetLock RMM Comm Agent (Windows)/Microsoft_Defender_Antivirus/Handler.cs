@@ -39,6 +39,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                     Set_Settings.Do();
                     //Scan_Job_Scheduler.Scan_Job_Scheduler.Check_Exececution();
                     Eventlog_Crawler.Do();
+                    Scan_Jobs_Scheduler.Check_Execution();
                 }
                 else //If not, restore windows defender standard config
                 {
