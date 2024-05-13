@@ -486,9 +486,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_SCAN_COMPLETED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan job finished.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan job completed.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan Job fertiggestellt.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanauftrag fertiggestellt.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
                     }
                 }
 
