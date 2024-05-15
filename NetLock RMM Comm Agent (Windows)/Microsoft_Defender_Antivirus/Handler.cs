@@ -110,6 +110,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
             Check_Hourly_Sig_Updates();
         }
 
+        public static async void Scan_Job_Scheduler_Tick(object source, ElapsedEventArgs e)
+        {
+            Scan_Jobs_Scheduler.Check_Execution();
+        }
+
         public static void Check_Hourly_Sig_Updates()
         {
             try

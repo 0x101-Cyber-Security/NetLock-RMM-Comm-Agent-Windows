@@ -1,0 +1,19 @@
+﻿using NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
+
+namespace NetLock_RMM_Comm_Agent_Windows.Jobs
+{
+    internal class Handler
+    {
+        public static async void Jobs_Scheduler_Tick(object source, ElapsedEventArgs e)
+        {
+            Time_Scheduler.Check_Execution();
+        }
+
+    }
+}

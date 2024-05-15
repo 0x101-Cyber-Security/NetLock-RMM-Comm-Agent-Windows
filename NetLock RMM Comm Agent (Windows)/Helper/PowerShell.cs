@@ -11,7 +11,7 @@ namespace NetLock_Agent.Helper
 {
     internal class PowerShell
     {
-        public static string Execute_Command(string type, string command, int timeout)
+        public static string Execute_Command(string type, string command, int timeout) // -1 = no timeout
         {
 
             try

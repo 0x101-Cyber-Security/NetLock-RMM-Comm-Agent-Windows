@@ -50,6 +50,8 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static System.Timers.Timer events_timer;
         public static System.Timers.Timer microsoft_defender_antivirus_events_timer;
         public static System.Timers.Timer microsoft_defender_antivirus_check_hourly_sig_updates_timer;
+        public static System.Timers.Timer microsoft_defender_antivirus_scan_job_time_scheduler_timer;
+        public static System.Timers.Timer jobs_time_scheduler_timer;
 
         // Status
         public static bool connection_status = false;
@@ -60,6 +62,8 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool microsoft_defender_antivirus_events_crawling = false;
         public static bool microsoft_defender_antivirus_events_timer_running = false;
         public static bool microsoft_defender_antivirus_sig_updates_timer_running = false;
+        public static bool microsoft_defender_antivirus_scan_job_time_scheduler_timer_running = false;
+        public static bool jobs_time_scheduler_timer_running = false;
         public static string last_sync = String.Empty; //Last time the policy had been synced/updated
 
         //Lists
@@ -301,6 +305,40 @@ namespace NetLock_RMM_Comm_Agent_Windows
             {
                 Logging.Handler.Error("OnStart", "Start Windows_Defender_Check_Hourly_Sig_Updates_Timer", ex.Message);
             }
+
+            //Start Windows Defender AntiVirus Scan Job Timer, trigger every ten seconds
+            try
+            {
+                if (!microsoft_defender_antivirus_scan_job_time_scheduler_timer_running)
+                {
+                    microsoft_defender_antivirus_scan_job_time_scheduler_timer = new System.Timers.Timer(30000); //Check every thirty seconds
+                    microsoft_defender_antivirus_scan_job_time_scheduler_timer.Elapsed += new ElapsedEventHandler(Microsoft_Defender_Antivirus.Handler.Scan_Job_Scheduler_Tick);
+                    microsoft_defender_antivirus_scan_job_time_scheduler_timer.Enabled = true;
+                    microsoft_defender_antivirus_scan_job_time_scheduler_timer_running = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.Module_Handler", "Start microsoft_defender_antivirus_events_timer", ex.ToString());
+            }
+
+            //Start jobs timer, trigger every thirty seconds
+            try
+            {
+                if (!jobs_time_scheduler_timer_running)
+                {
+                    jobs_time_scheduler_timer = new System.Timers.Timer(30000); //Check every thirty seconds
+                    jobs_time_scheduler_timer.Elapsed += new ElapsedEventHandler(Jobs.Handler.Jobs_Scheduler_Tick);
+                    jobs_time_scheduler_timer.Enabled = true;
+                    jobs_time_scheduler_timer_running = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.Module_Handler", "Start jobs_time_scheduler_timer", ex.ToString());
+            }
+
+
 
             Logging.Handler.Debug("Service.Module_Handler", "Stop", "Module_Handler");
         }

@@ -149,6 +149,8 @@
     <Compile Include="Initialization\Health.cs" />
     <Compile Include="Initialization\Server_Config.cs" />
     <Compile Include="Initialization\Version.cs" />
+    <Compile Include="Jobs\Handler.cs" />
+    <Compile Include="Jobs\Time_Scheduler.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Check_Settings.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Eventlog_Crawler.cs" />
     <Compile Include="Microsoft_Defender_Antivirus\Scan_Jobs_Scheduler.cs" />

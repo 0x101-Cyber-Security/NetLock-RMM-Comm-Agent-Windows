@@ -44,6 +44,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 // Microsoft Defender Antivirus
                 if (!Directory.Exists(Application_Paths.program_data_microsoft_defender_antivirus_scan_jobs))
                     Directory.CreateDirectory(Application_Paths.program_data_microsoft_defender_antivirus_scan_jobs);
+
+                // Jobs
+                if (!Directory.Exists(Application_Paths.program_data_jobs))
+                    Directory.CreateDirectory(Application_Paths.program_data_jobs);
             }
             catch (Exception ex)
             {
