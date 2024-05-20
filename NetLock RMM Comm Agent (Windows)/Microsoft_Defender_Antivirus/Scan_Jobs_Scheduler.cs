@@ -9,6 +9,7 @@ using NetLock_Agent.Helper;
 using System.Globalization;
 using System.Runtime.Remoting;
 using NetLock_RMM_Comm_Agent_Windows.Events;
+using System.Management;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
 {
@@ -59,6 +60,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
 
             try
             {
+                DateTime os_up_time = ManagementDateTimeConverter.ToDateTime(Helper.WMI.Search("root\\cimv2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime")); // Environment.TickCount is not reliable, use WMI instead
+
                 List<Scan_Job> scan_jobItems = JsonSerializer.Deserialize<List<Scan_Job>>(Service.policy_antivirus_scan_jobs_json);
 
                 // Write each scan job to disk if not already exists
@@ -122,13 +125,17 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
 
                     if (job_item.time_scheduler_type == 0) // system boot
                     {
-                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Scan_Jobs.Check_Execution", "System boot", "name: " + job_item.name + " id: " + job_item.id + " last_run: " + DateTime.Parse(job_item.last_run ?? DateTime.Now.ToString()) + " Last boot: " + (DateTime.Now - TimeSpan.FromMilliseconds(Environment.TickCount)));
+                        Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Scan_Jobs.Check_Execution", "System boot", "name: " + job_item.name + " id: " + job_item.id + " last_run: " + DateTime.Parse(job_item.last_run ?? DateTime.Now.ToString()) + " Last boot: " + os_up_time.ToString());
 
                         // Check if last run is empty, if so set it to now
                         if (String.IsNullOrEmpty(job_item.last_run))
+                        {
                             job_item.last_run = DateTime.Now.ToString();
-                        
-                        if (DateTime.Parse(job_item.last_run) < DateTime.Now - TimeSpan.FromMilliseconds(Environment.TickCount))
+                            string updated_job_json = JsonSerializer.Serialize(job_item);
+                            File.WriteAllText(job, updated_job_json);
+                        }
+
+                        if (DateTime.Parse(job_item.last_run) < os_up_time)
                             execute = true;
                     }
                     else if (job_item.time_scheduler_type == 1) // date & time
@@ -451,9 +458,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Scan_Jobs.Check_Execution", "Scan job executed", "name: " + job_item.name + " id: " + job_item.id + " result: " + result);
 
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan job completed. NetLock report.", "Scan job: " + job_item.name + Environment.NewLine + Environment.NewLine + "Result: " + "Cannot be retrieved. We are currently not aware of any way to directly determine the result of a scan job executed with PowerShell. Do you have an idea? Feel free to contact us.", 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan job completed. NetLock report.", "Scan job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Result: " + "Cannot be retrieved. We are currently not aware of any way to directly determine the result of a scan job executed with PowerShell. Do you have an idea? Feel free to contact us.", 2, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanauftrag fertiggestellt. NetLock Bericht", "Scan job: " + job_item.name + Environment.NewLine + Environment.NewLine + "Ergebnis: " + "Kann nicht abgerufen werden. Aktuell ist uns kein Weg bekannt, um das Ergebnis eines mit PowerShell ausgeführten Scanauftrags direkt zu ermitteln. Hast du eine Idee? Kontaktiere uns gerne.", 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanauftrag fertiggestellt. NetLock Bericht", "Scan job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Ergebnis: " + "Kann nicht abgerufen werden. Aktuell ist uns kein Weg bekannt, um das Ergebnis eines mit PowerShell ausgeführten Scanauftrags direkt zu ermitteln. Hast du eine Idee? Kontaktiere uns gerne.", 2, 1);
 
                         // Update last run
                         job_item.last_run = DateTime.Now.ToString();

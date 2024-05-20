@@ -208,7 +208,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
                     string auth_result = await Online_Mode.Handler.Authenticate();
 
                     // Check authorization status
-                    //if (auth_result == "authorized" || auth_result == "not_synced" || auth_result == "synced")
+                    // if (auth_result == "authorized" || auth_result == "not_synced" || auth_result == "synced")
                     if (authorized)
                     {
                         // Update device information
@@ -216,7 +216,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
                     }
 
                     // Check sync status
-                    if (auth_result == "not_synced" || forced)
+                    if (authorized && auth_result == "not_synced" || authorized && forced)
                     {
                         // Set synced flag in registry to not synced
                         Helper.Registry.HKLM_Write_Value(Application_Paths.netlock_reg_path, "Synced", "0");
@@ -227,7 +227,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
                         // Sync done. Set synced flag in registry to prevent re-sync
                         Helper.Registry.HKLM_Write_Value(Application_Paths.netlock_reg_path, "Synced", "1");
                     }
-                    else if (auth_result == "synced")
+                    else if (authorized && auth_result == "synced")
                     {
                         // placeholder, nothing to do here right now
                     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 using NetLock_RMM_Comm_Agent_Windows;
+using NetLock_RMM_Comm_Agent_Windows.Initialization;
 
 namespace NetLock_Agent.Helper
 {
@@ -45,6 +46,8 @@ namespace NetLock_Agent.Helper
         {
             try
             {
+                Health.Check_Directories();
+
                 Logging.Handler.PowerShell("Helper.Powershell.Execute_Script", "Trying to execute command", type + "script:" + Environment.NewLine + script);
 
                 Random random = new Random();

@@ -3768,3 +3768,165 @@ Betroffene Parameter:
    logtoconsole = 
    assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
    logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird zurückgesetzt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Der vorherige Zustand des Ereignisprotokolls für die Quelle NetLock_RMM_Comm_Agent_Windows wird wiederhergestellt.
+Während der Rollbackphase des Installers System.Diagnostics.EventLogInstaller ist eine Ausnahme aufgetreten.
+System.Security.SecurityException: Die Quelle wurde nicht gefunden, aber einige oder alle Ereignisprotokolle konnten nicht durchsucht werden. Protokolle, auf die kein Zugriff möglich war: Security, State.
+Während der Rollbackphase der Installation ist eine Ausnahme aufgetreten. Diese Ausnahme wird ignoriert, und der Rollback wird fortgesetzt. Der ursprüngliche Zustand des Computers wird jedoch möglicherweise nicht vollständig wiederhergestellt, nachdem der Rollback beendet ist.
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird zurückgesetzt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Der vorherige Zustand des Ereignisprotokolls für die Quelle NetLock_RMM_Comm_Agent_Windows wird wiederhergestellt.
+Während der Rollbackphase des Installers System.Diagnostics.EventLogInstaller ist eine Ausnahme aufgetreten.
+System.Security.SecurityException: Die Quelle wurde nicht gefunden, aber einige oder alle Ereignisprotokolle konnten nicht durchsucht werden. Protokolle, auf die kein Zugriff möglich war: Security, State.
+Während der Rollbackphase der Installation ist eine Ausnahme aufgetreten. Diese Ausnahme wird ignoriert, und der Rollback wird fortgesetzt. Der ursprüngliche Zustand des Computers wird jedoch möglicherweise nicht vollständig wiederhergestellt, nachdem der Rollback beendet ist.
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird zurückgesetzt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Der vorherige Zustand des Ereignisprotokolls für die Quelle NetLock_RMM_Comm_Agent_Windows wird wiederhergestellt.
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird installiert.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog
+Dienst NetLock_RMM_Comm_Agent_Windows wird installiert...
+Dienst NetLock_RMM_Comm_Agent_Windows wurde installiert.
+Die EventLog-Quelle NetLock_RMM_Comm_Agent_Windows im Protokoll Application wird erstellt...
+Assembly C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe wird ausgeführt.
+Betroffene Parameter:
+   logtoconsole = 
+   assemblypath = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).exe
+   logfile = C:\Users\NicoMak\OneDrive - 0x101 Cyber Security\Projekte\NetLock Root\NetLock-RMM-Comm-Agent-Windows\NetLock RMM Comm Agent (Windows)\bin\x64\Debug\NetLock RMM Comm Agent (Windows).InstallLog

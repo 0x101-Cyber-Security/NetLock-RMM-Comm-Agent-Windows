@@ -48,6 +48,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 // Jobs
                 if (!Directory.Exists(Application_Paths.program_data_jobs))
                     Directory.CreateDirectory(Application_Paths.program_data_jobs);
+
+                // Scripts
+                if (!Directory.Exists(Application_Paths.program_data_scripts))
+                    Directory.CreateDirectory(Application_Paths.program_data_scripts);
             }
             catch (Exception ex)
             {

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Management;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Jobs
 {
@@ -47,6 +48,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Jobs
 
             try
             {
+                DateTime os_up_time = ManagementDateTimeConverter.ToDateTime(Helper.WMI.Search("root\\cimv2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime")); // Environment.TickCount is not reliable, use WMI instead
+
                 List<Job> scan_jobItems = JsonSerializer.Deserialize<List<Job>>(Service.policy_jobs_json);
 
                 // Write each job to disk if not already exists
@@ -96,7 +99,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Jobs
                     string job_json = File.ReadAllText(job);
                     Job job_item = JsonSerializer.Deserialize<Job>(job_json);
 
-                    //Logging.Handler.Jobs("Jobs.Time_Scheduler.Check_Execution", "Check job execution", "Job: " + job_item.name + " time_scheduler_type: " + job_item.time_scheduler_type + " enabled: " + job_item.enabled);
+                    Logging.Handler.Jobs("Jobs.Time_Scheduler.Check_Execution", "Check job execution", "Job: " + job_item.name + " time_scheduler_type: " + job_item.time_scheduler_type);
 
                     // Check enabled
                     /*if (!job_item.enabled)
@@ -110,13 +113,17 @@ namespace NetLock_RMM_Comm_Agent_Windows.Jobs
 
                     if (job_item.time_scheduler_type == 0) // system boot
                     {
-                        Logging.Handler.Jobs("Jobs.Time_Scheduler.Check_Execution", "System boot", "name: " + job_item.name + " id: " + job_item.id + " last_run: " + DateTime.Parse(job_item.last_run ?? DateTime.Now.ToString()) + " Last boot: " + (DateTime.Now - TimeSpan.FromMilliseconds(Environment.TickCount)));
+                        Logging.Handler.Jobs("Jobs.Time_Scheduler.Check_Execution", "System boot", "name: " + job_item.name + " id: " + job_item.id + " last_run: " + DateTime.Parse(job_item.last_run ?? DateTime.Now.ToString()) + " Last boot: " + os_up_time.ToString());
 
                         // Check if last run is empty, if so set it to now
                         if (String.IsNullOrEmpty(job_item.last_run))
+                        {
                             job_item.last_run = DateTime.Now.ToString();
+                            string updated_job_json = JsonSerializer.Serialize(job_item);
+                            File.WriteAllText(job, updated_job_json);
+                        }
 
-                        if (DateTime.Parse(job_item.last_run) < DateTime.Now - TimeSpan.FromMilliseconds(Environment.TickCount))
+                        if (DateTime.Parse(job_item.last_run) < os_up_time)
                             execute = true;
                     }
                     else if (job_item.time_scheduler_type == 1) // date & time
