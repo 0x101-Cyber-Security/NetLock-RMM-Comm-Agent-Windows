@@ -460,7 +460,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         if (Service.language == "en-US")
                             Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan job completed. NetLock report.", "Scan job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Result: " + "Cannot be retrieved. We are currently not aware of any way to directly determine the result of a scan job executed with PowerShell. Do you have an idea? Feel free to contact us.", 2, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanauftrag fertiggestellt. NetLock Bericht", "Scan job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Ergebnis: " + "Kann nicht abgerufen werden. Aktuell ist uns kein Weg bekannt, um das Ergebnis eines mit PowerShell ausgeführten Scanauftrags direkt zu ermitteln. Hast du eine Idee? Kontaktiere uns gerne.", 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanauftrag fertiggestellt. NetLock Bericht.", "Scan job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Ergebnis: " + "Kann nicht abgerufen werden. Aktuell ist uns kein Weg bekannt, um das Ergebnis eines mit PowerShell ausgeführten Scanauftrags direkt zu ermitteln. Hast du eine Idee? Kontaktiere uns gerne.", 2, 1);
 
                         // Update last run
                         job_item.last_run = DateTime.Now.ToString();

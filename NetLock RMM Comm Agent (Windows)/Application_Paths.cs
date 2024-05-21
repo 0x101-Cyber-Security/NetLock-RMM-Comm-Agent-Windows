@@ -26,6 +26,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string program_data_server_config_json = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\server_config.json";
         public static string program_data_debug_txt = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\debug.txt";
         public static string program_data_scripts = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Scripts";
+        public static string program_data_sensors = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Sensors";
         public static string program_data_microsoft_defender_antivirus_eventlog_backup = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Microsoft Defender Antivirus\Microsoft-Windows-Windows Defender Operational.bak";
         public static string program_data_microsoft_defender_antivirus_scan_jobs = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Microsoft Defender Antivirus\Scan Jobs";
         public static string program_data_jobs = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Jobs";

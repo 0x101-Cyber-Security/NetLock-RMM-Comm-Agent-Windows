@@ -52,6 +52,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static System.Timers.Timer microsoft_defender_antivirus_check_hourly_sig_updates_timer;
         public static System.Timers.Timer microsoft_defender_antivirus_scan_job_time_scheduler_timer;
         public static System.Timers.Timer jobs_time_scheduler_timer;
+        public static System.Timers.Timer sensors_time_scheduler_timer;
 
         // Status
         public static bool connection_status = false;
@@ -64,8 +65,9 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool microsoft_defender_antivirus_sig_updates_timer_running = false;
         public static bool microsoft_defender_antivirus_scan_job_time_scheduler_timer_running = false;
         public static bool jobs_time_scheduler_timer_running = false;
-        public static string last_sync = String.Empty; //Last time the policy had been synced/updated
-
+        public static bool sensors_time_scheduler_timer_running = false;
+        
+        
         //Lists
         //public static string processes_list = "[]";
 
@@ -328,7 +330,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
                 if (!jobs_time_scheduler_timer_running)
                 {
                     jobs_time_scheduler_timer = new System.Timers.Timer(30000); //Check every thirty seconds
-                    jobs_time_scheduler_timer.Elapsed += new ElapsedEventHandler(Jobs.Handler.Jobs_Scheduler_Tick);
+                    jobs_time_scheduler_timer.Elapsed += new ElapsedEventHandler(Jobs.Handler.Scheduler_Tick);
                     jobs_time_scheduler_timer.Enabled = true;
                     jobs_time_scheduler_timer_running = true;
                 }
@@ -338,7 +340,21 @@ namespace NetLock_RMM_Comm_Agent_Windows
                 Logging.Handler.Error("Service.Module_Handler", "Start jobs_time_scheduler_timer", ex.ToString());
             }
 
-
+            //Start sensors timer, trigger every thirty seconds
+            try
+            {
+                if (!sensors_time_scheduler_timer_running)
+                {
+                    sensors_time_scheduler_timer = new System.Timers.Timer(30000); //Check every thirty seconds
+                    sensors_time_scheduler_timer.Elapsed += new ElapsedEventHandler(Sensors.Handler.Scheduler_Tick);
+                    sensors_time_scheduler_timer.Enabled = true;
+                    sensors_time_scheduler_timer_running = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.Module_Handler", "Start jobs_time_scheduler_timer", ex.ToString());
+            }
 
             Logging.Handler.Debug("Service.Module_Handler", "Stop", "Module_Handler");
         }

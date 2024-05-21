@@ -173,6 +173,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Microsoft_Defender_Firewall\Handler.cs" />
+    <Compile Include="Sensors\Handler.cs" />
+    <Compile Include="Sensors\Time_Scheduler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

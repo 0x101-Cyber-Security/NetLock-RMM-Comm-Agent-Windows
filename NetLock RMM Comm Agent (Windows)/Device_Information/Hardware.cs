@@ -8,6 +8,7 @@ using System.Linq;
 using System.Management;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static NetLock_RMM_Comm_Agent_Windows.Online_Mode.Handler;
@@ -281,6 +282,38 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
             {
                 Logging.Handler.Error("Device_Information.Hardware.Disks", "General error.", ex.ToString());
                 return "[]";
+            }
+        }
+
+        public static int CPU_Utilization()
+        {
+            try
+            {
+                // Create a new PerformanceCounter instance
+                using (PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total"))
+                {
+                    // Give the counter some time to initialize
+                    Thread.Sleep(1000);
+
+                    // Get the current value of the CPU usage
+                    float cpuUsage = cpuCounter.NextValue();
+
+                    // Print the CPU usage to the console
+                    //Logging.Handler.Device_Information("Device_Information.Hardware.CPU_Utilization", "Current CPU Usage (%)", cpuUsage.ToString());
+
+                    // To get more accurate results, wait for a short period and take another reading
+                    Thread.Sleep(1000);
+                    cpuUsage = cpuCounter.NextValue();
+
+                    Logging.Handler.Device_Information("Device_Information.Hardware.CPU_Utilization", "Current CPU Usage (%)", cpuUsage.ToString());
+
+                    return Convert.ToInt32(Math.Round(cpuUsage));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.CPU_Utilization", "General error.", ex.ToString());
+                return 0;
             }
         }
     }

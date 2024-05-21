@@ -52,6 +52,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 // Scripts
                 if (!Directory.Exists(Application_Paths.program_data_scripts))
                     Directory.CreateDirectory(Application_Paths.program_data_scripts);
+
+                // Sensors
+                if (!Directory.Exists(Application_Paths.program_data_sensors))
+                    Directory.CreateDirectory(Application_Paths.program_data_sensors);
             }
             catch (Exception ex)
             {
