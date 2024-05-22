@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using NetLock_RMM_Comm_Agent_Windows.Helper;
+using Newtonsoft.Json;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -316,5 +317,84 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                 return 0;
             }
         }
+
+        public static int RAM_Utilization()
+        {
+            try
+            {
+                ulong totalVisibleMemorySize = ulong.Parse(WMI.Search("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem", "TotalVisibleMemorySize"));
+                ulong freePhysicalMemory = ulong.Parse(WMI.Search("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem", "FreePhysicalMemory"));
+
+                float usedMemory = totalVisibleMemorySize - freePhysicalMemory;
+                float usedMemoryPercentage = ((float)usedMemory / totalVisibleMemorySize) * 100;
+
+                int usedMemoryPercentageInt = Convert.ToInt32(Math.Round(usedMemoryPercentage));
+
+                Logging.Handler.Device_Information("Device_Information.Hardware.RAM_Utilization", "Current RAM Usage (%)", usedMemoryPercentageInt.ToString());           
+
+                return usedMemoryPercentageInt;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.RAM_Utilization", "General error.", ex.ToString());
+                return 0;
+            }
+        }
+
+        public static int Drive_Usage(int type, char drive_letter) // 0 = More than X GB occupied, 1 = Less than X GB free, 2 = More than X percent occupied, 3 = Less than X percent free
+        {
+            try
+            {
+                DriveInfo drive_info = new DriveInfo(drive_letter.ToString());
+
+                if (drive_info.IsReady)
+                {
+                    // Available and total memory sizes in bytes
+                    long availableFreeSpaceBytes = drive_info.AvailableFreeSpace;
+                    long totalFreeSpaceBytes = drive_info.TotalFreeSpace;
+                    long totalSizeBytes = drive_info.TotalSize;
+
+                    // Conversion from bytes to gigabytes
+                    double availableFreeSpaceGB = availableFreeSpaceBytes / (1024.0 * 1024.0 * 1024.0);
+                    double totalFreeSpaceGB = totalFreeSpaceBytes / (1024.0 * 1024.0 * 1024.0);
+                    double totalSizeGB = totalSizeBytes / (1024.0 * 1024.0 * 1024.0);
+
+                    // Conversion from bytes to gigabytes
+                    double usedSpaceGB = totalSizeGB - availableFreeSpaceGB;
+
+                    // Calculation of the memory space used as a percentage
+                    double usedSpacePercentage = 100 * (usedSpaceGB / totalSizeGB);
+                    usedSpacePercentage = Math.Round(usedSpacePercentage, 2);
+
+                    // Ausgabe der Ergebnisse
+                    Logging.Handler.Device_Information("Device_Information.Hardware.Drive_Usage", "Total memory GB", totalSizeGB.ToString());
+                    Logging.Handler.Device_Information("Device_Information.Hardware.Drive_Usage", "Free memory GB", availableFreeSpaceGB.ToString());
+                    Logging.Handler.Device_Information("Device_Information.Hardware.Drive_Usage", "Memory used GB", usedSpaceGB.ToString());
+                    Logging.Handler.Device_Information("Device_Information.Hardware.Drive_Usage", "Memory used %", usedSpacePercentage.ToString());
+
+                    if (type == 0) // More than X GB occupied
+                        return Convert.ToInt32(Math.Round(usedSpaceGB));
+                    else if (type == 1) // Less than X GB free
+                        return Convert.ToInt32(Math.Round(availableFreeSpaceGB));
+                    else if (type == 2) // More than X percent occupied
+                        return Convert.ToInt32(Math.Round(usedSpacePercentage));
+                    else if (type == 3) // Less than X percent free
+                        return Convert.ToInt32(Math.Round(100 - usedSpacePercentage));
+                    else
+                        return 0;
+                }
+                else
+                    Logging.Handler.Device_Information("Device_Information.Hardware.Drive_Usage", "The drive is not ready", drive_letter.ToString());
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.Drive_Usage", "General error.", ex.ToString());
+                return 0;
+            }
+        }
+
+
     }
 }

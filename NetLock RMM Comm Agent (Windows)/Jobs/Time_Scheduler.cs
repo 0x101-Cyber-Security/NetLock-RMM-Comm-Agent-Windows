@@ -404,9 +404,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Jobs
                         Logging.Handler.Jobs("Jobs.Time_Scheduler.Check_Execution", "Job executed", "name: " + job_item.name + " id: " + job_item.id + " result: " + result);
 
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Jobs", "Job completed.", "Job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Result: " + result, 2, 0);
+                            Events.Logger.Insert_Event("0", "Jobs", "Job completed.", "Job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Result: " + result, 1, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Jobs", "Job fertiggestellt.", "Job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Ergebnis: " + result, 2, 1);
+                            Events.Logger.Insert_Event("0", "Jobs", "Job fertiggestellt.", "Job: " + job_item.name + " (" + job_item.description + ") " + Environment.NewLine + Environment.NewLine + "Ergebnis: " + result, 1, 1);
 
                         // Update last run
                         job_item.last_run = DateTime.Now.ToString();

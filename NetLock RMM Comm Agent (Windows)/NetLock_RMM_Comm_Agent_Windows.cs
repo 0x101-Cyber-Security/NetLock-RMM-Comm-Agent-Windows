@@ -15,6 +15,7 @@ using NetLock_RMM_Comm_Agent_Windows.Online_Mode;
 using System.IO;
 using Microsoft.Win32;
 using NetLock_RMM_Comm_Agent_Windows.Events;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NetLock_RMM_Comm_Agent_Windows
 {
@@ -363,7 +364,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         {
             Logging.Handler.Debug("Service.Process_Events_Tick", "Start", "");
 
-            if (events_processing == false)
+            if (authorized && events_processing == false)
             {
                 events_processing = true;
 
