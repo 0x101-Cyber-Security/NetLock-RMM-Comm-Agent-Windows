@@ -395,6 +395,35 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
             }
         }
 
+        public static int Drive_Size(char drive_letter) // 0 = More than X GB occupied, 1 = Less than X GB free, 2 = More than X percent occupied, 3 = Less than X percent free
+        {
+            try
+            {
+                DriveInfo drive_info = new DriveInfo(drive_letter.ToString());
 
+                if (drive_info.IsReady)
+                {
+                    // Available and total memory sizes in bytes
+                    long totalSizeBytes = drive_info.TotalSize;
+
+                    // Conversion from bytes to gigabytes
+                    double totalSizeGB = totalSizeBytes / (1024.0 * 1024.0 * 1024.0);
+
+                    // Ausgabe der Ergebnisse
+                    Logging.Handler.Device_Information("Device_Information.Hardware.Drive_Usage", "Total memory GB", totalSizeGB.ToString());
+
+                    return Convert.ToInt32(Math.Round(totalSizeGB));
+                }
+                else
+                    Logging.Handler.Device_Information("Device_Information.Hardware.Drive_Usage", "The drive is not ready", drive_letter.ToString());
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.Drive_Usage", "General error.", ex.ToString());
+                return 0;
+            }
+        }
     }
 }

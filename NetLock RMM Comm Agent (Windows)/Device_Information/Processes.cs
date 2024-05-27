@@ -6,7 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
 {
@@ -124,6 +127,143 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                 Logging.Handler.Error("Device_Information.Process_List.Collect", "Failed.", ex.ToString());
                 return "[]";
             }   
+        }
+
+        public static int Get_CPU_Usage_By_ID(int process_id)
+        {
+            try
+            {
+                Logging.Handler.Device_Information("Device_Information.Processes.Get_CPU_Usage_By_ID", "process_id", process_id.ToString());
+
+                // Get process by id
+                Process process = Process.GetProcessById(process_id);
+
+                string instanceName = Get_Process_Instance_Name(process);
+                if (String.IsNullOrEmpty(instanceName))
+                    return 0;
+
+                PerformanceCounter cpuCounter = new PerformanceCounter("Process", "% Processor Time", instanceName, true);
+
+                // Da der erste Aufruf oft ungenaue Daten liefert, warten wir kurz und rufen den Wert erneut ab
+                cpuCounter.NextValue();
+                Thread.Sleep(1000);
+
+                // CPU-Auslastung ermitteln
+                float cpuUsage = cpuCounter.NextValue();
+                int processorCount = Environment.ProcessorCount;
+                float cpuUsageNormalized = cpuUsage / processorCount;
+
+                // Rundung und Umwandlung in int
+                int cpuUsageNormalizedRounded = (int)Math.Round(cpuUsageNormalized);
+
+                Logging.Handler.Device_Information("Device_Information.Processes.Get_CPU_Usage_By_ID", "cpu process usage (id): " + process.Id, cpuUsage + "(%)");
+                Logging.Handler.Device_Information("Device_Information.Processes.Get_CPU_Usage_By_ID", "cpu process usage normalized (id): " + process.Id, cpuUsageNormalizedRounded + "(%)");
+
+                return cpuUsageNormalizedRounded;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Processes.Get_CPU_Usage_By_Name", "Failed.", ex.ToString());
+
+                return 0;
+            }
+        }
+
+        public static int Get_RAM_Usage_By_ID(int process_id, bool percentage) // percentage = %, otherwise MB
+        {
+            try
+            {
+                Logging.Handler.Error("Device_Information.Processes.Get_RAM_Usage_By_ID", "process_id", process_id.ToString());
+
+                Process process = Process.GetProcessById(process_id);
+
+                // Determine RAM utilisation in bytes
+                long memoryUsageInBytes = process.WorkingSet64;
+
+                // Convert RAM usage to megabytes
+                double memoryUsageInMB = memoryUsageInBytes / (1024.0 * 1024.0);
+
+                if (!percentage) // MB
+                {
+                    Logging.Handler.Device_Information("Device_Information.Processes.Get_RAM_Usage_By_ID", "process ram usage (id): " + process.Id, memoryUsageInMB + "(MB)");
+
+                    return Convert.ToInt32(Math.Round(memoryUsageInMB));
+                }
+                else // percentage
+                {
+                    int totalMemory = Convert.ToInt32(Helper.WMI.Search("root\\cimv2", "SELECT * FROM Win32_OperatingSystem", "TotalVisibleMemorySize"));
+                    int availableMemory = Convert.ToInt32(Helper.WMI.Search("root\\cimv2", "SELECT * FROM Win32_OperatingSystem", "FreePhysicalMemory"));
+
+                    // Umrechnung in MB
+                    double totalMemoryInMB = totalMemory / 1024.0;
+                    double availableMemoryInMB = availableMemory / 1024.0;
+
+                    int ramUsagePercentage = Convert.ToInt32((memoryUsageInMB / totalMemoryInMB) * 100);
+
+                    Logging.Handler.Device_Information("Device_Information.Processes.Get_RAM_Usage_By_ID", "process ram usage (id): " + process.Id, ramUsagePercentage + "(%)");
+
+                    return ramUsagePercentage;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Processes.Get_RAM_Usage_By_ID", "Failed.", ex.ToString());
+
+                return 0;
+            }
+        }
+
+        private static string Get_Process_Instance_Name(Process process)
+        {
+            try
+            {
+                PerformanceCounterCategory category = new PerformanceCounterCategory("Process");
+                string[] instanceNames = category.GetInstanceNames().Where(name => name.StartsWith(process.ProcessName)).ToArray();
+
+                foreach (string instanceName in instanceNames)
+                {
+                    using (PerformanceCounter counter = new PerformanceCounter("Process", "ID Process", instanceName, true))
+                    {
+                        if ((int)counter.RawValue == process.Id)
+                            return instanceName;
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Processes.Get_Process_Instance_Name", "Failed.", ex.ToString());
+                return "";
+            }
+        }
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool OpenProcessToken(IntPtr ProcessHandle, uint DesiredAccess, out IntPtr TokenHandle);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool CloseHandle(IntPtr hObject);
+        public static string Process_Owner(Process process)
+        {
+            IntPtr processHandle = IntPtr.Zero;
+            try
+            {
+                OpenProcessToken(process.Handle, 8, out processHandle);
+                WindowsIdentity wi = new WindowsIdentity(processHandle);
+                string user = wi.Name;
+                return user.Contains(@"\") ? user.Substring(user.IndexOf(@"\") + 1) : user;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                if (processHandle != IntPtr.Zero)
+                {
+                    CloseHandle(processHandle);
+                }
+            }
         }
     }
 }

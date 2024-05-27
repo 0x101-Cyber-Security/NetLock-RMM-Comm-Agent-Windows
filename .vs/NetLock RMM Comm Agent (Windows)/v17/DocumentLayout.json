@@ -7,15 +7,31 @@
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\sensors\\time_scheduler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\helper\\globalization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\helper\\globalization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\processes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\processes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\network.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\network.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\hardware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\hardware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|c:\\users\\nicomak\\onedrive - 0x101 cyber security\\projekte\\netlock root\\netlock-rmm-comm-agent-windows\\netlock rmm comm agent (windows)\\sensors\\handler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\software.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\software.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\windows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\windows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\helper\\globalization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\helper\\globalization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\sensors\\handler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\sensors\\handler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -27,7 +43,7 @@
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\microsoft_defender_antivirus\\check_settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|c:\\users\\nicomak\\onedrive - 0x101 cyber security\\projekte\\netlock root\\netlock-rmm-comm-agent-windows\\netlock rmm comm agent (windows)\\jobs\\time_scheduler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\jobs\\time_scheduler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\jobs\\time_scheduler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -41,10 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\netlock_rmm_comm_agent_windows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\netlock_rmm_comm_agent_windows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\windows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\windows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\helper\\network.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -103,10 +115,6 @@
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\netlock_rmm_comm_agent_windows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\software.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\software.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\events\\logger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\events\\logger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -146,14 +154,6 @@
       "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|NetLock RMM Comm Agent (Windows)||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\network.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\network.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\device_information\\processes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\device_information\\processes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\netlock rmm comm agent (windows)\\helper\\process_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0CD43A16-DF0B-418E-A126-22EEA0166C31}|NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj|solutionrelative:netlock rmm comm agent (windows)\\helper\\process_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -165,24 +165,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Handler.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-22T14:28:48.935Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -192,40 +179,14 @@
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Sensors\\Time_Scheduler.cs",
               "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Sensors\\Time_Scheduler.cs",
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Sensors\\Time_Scheduler.cs",
-              "ViewState": "AQIAAFYCAAAAAAAAAAArwHsCAAAAAAAA",
+              "ViewState": "AQIAAFsEAAAAAAAAAAAAAHMEAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-22T10:14:29.059Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Handler.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAqwA4AAAAlAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-15T12:39:38.478Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "NetLock_RMM_Comm_Agent_Windows.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
-              "ViewState": "AQIAAPMAAAAAAAAAAAAnwAkBAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-23T17:52:12.644Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "Network.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Network.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Network.cs",
@@ -233,12 +194,11 @@
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Network.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T13:14:14.202Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-24T13:14:14.202Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
               "Title": "Windows.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Windows.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Windows.cs",
@@ -246,25 +206,23 @@
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Windows.cs",
               "ViewState": "AQIAAFcAAAAAAAAAAAAYwIQAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-27T14:32:37.526Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-27T14:32:37.526Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Hardware.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Hardware.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Hardware.cs",
               "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Hardware.cs",
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Hardware.cs",
-              "ViewState": "AQIAAFsBAAAAAAAAAAArwHQBAACTAAAA",
+              "ViewState": "AQIAADkAAAAAAAAAAAArwFAAAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-26T13:03:49.837Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-26T13:03:49.837Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "Sender.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Events\\Sender.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Events\\Sender.cs",
@@ -272,12 +230,11 @@
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Events\\Sender.cs",
               "ViewState": "AQIAAJEAAAAAAAAAAAAuwLgAAAAzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T19:03:16.023Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-02T19:03:16.023Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "Time_Scheduler.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Jobs\\Time_Scheduler.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Jobs\\Time_Scheduler.cs",
@@ -285,12 +242,11 @@
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Jobs\\Time_Scheduler.cs",
               "ViewState": "AQIAAH4BAAAAAAAAAAAAAJYBAADXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-15T12:39:47.487Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-15T12:39:47.487Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "Check_Settings.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Check_Settings.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Check_Settings.cs",
@@ -298,12 +254,11 @@
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Check_Settings.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-05T16:51:32.985Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-05T16:51:32.985Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "Globalization.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Globalization.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Globalization.cs",
@@ -311,229 +266,11 @@
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Globalization.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T14:04:33.61Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Handler.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T18:41:09.656Z"
+              "WhenOpened": "2024-04-24T14:04:33.61Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Scan_Jobs_Scheduler.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
-              "ViewState": "AQIAALQBAAAAAAAAAAAswM0BAAA9AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-12T16:06:45.416Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Server_Config.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
-              "ViewState": "AQIAAJcAAAAAAAAAAAAgwLAAAAA4AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-23T19:30:32.173Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Handler.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
-              "ViewState": "AQIAANMBAAAAAAAAAAAUwGkCAAAZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-23T19:38:58.93Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Health.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAQwDEAAABTAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T14:29:50.787Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "PowerShell.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
-              "ViewState": "AQIAACUAAAAAAAAAAAAgwBMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-05T17:06:51.699Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "Logging.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
-              "ViewState": "AQIAAMAAAAAAAAAAAAAuwPMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T20:28:32.597Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Application_Paths.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
-              "ViewState": "AQIAACgAAAAAAAAAAAASwCcAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-23T17:52:10.632Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Set_Settings.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
-              "ViewState": "AQIAAGwBAAAAAAAAAAAAAJ0BAAAbAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-05T16:50:48.703Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Program.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Program.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Program.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-23T17:52:08.492Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "Random.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAgwCYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-05T17:14:40.225Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "Application_Settings.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAABRAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T13:00:38.457Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "Database.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
-              "ViewState": "AQIAAKQAAAAAAAAAAAD4v78AAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T18:02:37.107Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Handler.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
-              "ViewState": "AQIAAGQAAAAAAAAAAAAwwHAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T21:24:27.282Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "NetLock_RMM_Comm_Agent_Windows.cs [Entwurf]",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs [Entwurf]",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs [Entwurf]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-05T21:58:50.237Z",
-              "EditorCaption": " [Entwurf]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "Eventlog_Crawler.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
-              "ViewState": "AQIAAM8BAAAAAAAAAAAlwOgBAABvAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-06T10:44:04.741Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "Logger.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
-              "ViewState": "AQIAAGgAAAAAAAAAAAAwwJcAAAAZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T19:03:02.753Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "Encryption.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-06T18:19:08.918Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
               "Title": "Software.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Software.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Software.cs",
@@ -545,7 +282,282 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Processes.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
+              "ViewState": "AQIAAHEAAAAAAAAAAAAnwIcAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-24T20:25:48.714Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Network.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAACUAAACtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-26T14:47:19.595Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "NetLock_RMM_Comm_Agent_Windows.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
+              "ViewState": "AQIAAPMAAAAAAAAAAAAnwAkBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T17:52:12.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Handler.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Jobs\\Handler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwA4AAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-15T12:39:38.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Handler.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Sensors\\Handler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-22T14:28:48.935Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Handler.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Offline_Mode\\Handler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T18:41:09.656Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Scan_Jobs_Scheduler.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Scan_Jobs_Scheduler.cs",
+              "ViewState": "AQIAALQBAAAAAAAAAAAswM0BAAA9AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T16:06:45.416Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Server_Config.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Initialization\\Server_Config.cs",
+              "ViewState": "AQIAAJcAAAAAAAAAAAAgwLAAAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T19:30:32.173Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Handler.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Online_Mode\\Handler.cs",
+              "ViewState": "AQIAANMBAAAAAAAAAAAUwGkCAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T19:38:58.93Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Health.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Initialization\\Health.cs",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAQwDEAAABTAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-24T14:29:50.787Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "PowerShell.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\PowerShell.cs",
+              "ViewState": "AQIAACUAAAAAAAAAAAAgwBMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T17:06:51.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Logging.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Logging.cs",
+              "ViewState": "AQIAAMAAAAAAAAAAAAAuwPMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-24T20:28:32.597Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Application_Paths.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Application_Paths.cs",
+              "ViewState": "AQIAACgAAAAAAAAAAAASwCcAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T17:52:10.632Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Set_Settings.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Set_Settings.cs",
+              "ViewState": "AQIAAGwBAAAAAAAAAAAAAJ0BAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T16:50:48.703Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Program.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Program.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Program.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T17:52:08.492Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Random.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Random.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAgwCYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T17:14:40.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Application_Settings.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Application_Settings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAABRAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-24T13:00:38.457Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 30,
+              "Title": "Database.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Initialization\\Database.cs",
+              "ViewState": "AQIAAKQAAAAAAAAAAAD4v78AAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T18:02:37.107Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Handler.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Handler.cs",
+              "ViewState": "AQIAAGQAAAAAAAAAAAAwwHAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T21:24:27.282Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "NetLock_RMM_Comm_Agent_Windows.cs [Entwurf]",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs [Entwurf]",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\NetLock_RMM_Comm_Agent_Windows.cs [Entwurf]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T21:58:50.237Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Eventlog_Crawler.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
+              "ViewState": "AQIAAM8BAAAAAAAAAAAlwOgBAABvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-06T10:44:04.741Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "Logger.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Events\\Logger.cs",
+              "ViewState": "AQIAAGgAAAAAAAAAAAAwwJcAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-02T19:03:02.753Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Encryption.cs",
+              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
+              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
+              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
+              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Helper\\Encryption.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-06T18:19:08.918Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
               "Title": "Registry.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\Registry.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\Registry.cs",
@@ -557,7 +569,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "Handler.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Firewall\\Handler.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Firewall\\Handler.cs",
@@ -569,7 +581,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 34,
               "Title": "Check_Connection.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Check_Connection.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Check_Connection.cs",
@@ -581,7 +593,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 35,
               "Title": "Version.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Initialization\\Version.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Initialization\\Version.cs",
@@ -593,7 +605,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 37,
               "Title": "NetLock RMM Comm Agent (Windows)",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\NetLock RMM Comm Agent (Windows).csproj",
@@ -604,7 +616,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 36,
               "Title": "WMI.cs",
               "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Helper\\WMI.cs",
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Helper\\WMI.cs",
@@ -613,30 +625,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-24T13:42:59.187Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "Processes.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Processes.cs",
-              "ViewState": "AQIAADIAAAAAAAAAAAApwE4AAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T20:25:48.714Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "Network.cs",
-              "DocumentMoniker": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
-              "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
-              "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
-              "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Device_Information\\Network.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAACUAAACtAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-26T14:47:19.595Z"
             },
             {
               "$type": "Document",
