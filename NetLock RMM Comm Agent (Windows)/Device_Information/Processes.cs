@@ -173,7 +173,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
         {
             try
             {
-                Logging.Handler.Error("Device_Information.Processes.Get_RAM_Usage_By_ID", "process_id", process_id.ToString());
+                Logging.Handler.Device_Information("Device_Information.Processes.Get_RAM_Usage_By_ID", "process_id", process_id.ToString());
 
                 Process process = Process.GetProcessById(process_id);
 
@@ -185,7 +185,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
 
                 if (!percentage) // MB
                 {
-                    Logging.Handler.Device_Information("Device_Information.Processes.Get_RAM_Usage_By_ID", "process ram usage (id): " + process.Id, memoryUsageInMB + "(MB)");
+                    Logging.Handler.Device_Information("Device_Information.Processes.Get_RAM_Usage_By_ID", "process ram usage in MB (id): " + process.Id, memoryUsageInMB + "(MB)");
 
                     return Convert.ToInt32(Math.Round(memoryUsageInMB));
                 }
@@ -200,7 +200,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
 
                     int ramUsagePercentage = Convert.ToInt32((memoryUsageInMB / totalMemoryInMB) * 100);
 
-                    Logging.Handler.Device_Information("Device_Information.Processes.Get_RAM_Usage_By_ID", "process ram usage (id): " + process.Id, ramUsagePercentage + "(%)");
+                    Logging.Handler.Device_Information("Device_Information.Processes.Get_RAM_Usage_By_ID", "process ram usage in % (id): " + process.Id, ramUsagePercentage + "(%)");
 
                     return ramUsagePercentage;
                 }
