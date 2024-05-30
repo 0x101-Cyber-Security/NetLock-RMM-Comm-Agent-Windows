@@ -16,7 +16,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Text.RegularExpressions;
-using System.Diagnostics.Eventing.Reader;
+using System.Xml;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Sensors
 {
@@ -99,6 +99,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
 
             Initialization.Health.Check_Directories();
 
+            string sensor_id = String.Empty; // needed for logging
+
             try
             {
                 DateTime os_up_time = ManagementDateTimeConverter.ToDateTime(Helper.WMI.Search("root\\cimv2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime")); // Environment.TickCount is not reliable, use WMI instead
@@ -151,6 +153,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                 {
                     string sensor_json = File.ReadAllText(sensor);
                     Sensor sensor_item = JsonSerializer.Deserialize<Sensor>(sensor_json);
+                    sensor_id = sensor_item.id; // needed for logging
 
                     Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Check sensor execution", "Sensor: " + sensor_item.name + " time_scheduler_type: " + sensor_item.time_scheduler_type);
 
@@ -464,7 +467,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                     if (execute)
                     {
                         bool triggered = false;
-                        
+                        var endTime = DateTime.Now;
+
                         string action_result = String.Empty;
 
                         if (sensor_item.action_treshold_max != 1)
@@ -474,7 +478,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                         string additional_details = String.Empty;
                         string notification_history = String.Empty;
                         string action_history = String.Empty;
-                        
+
                         List<Process_Information> process_information_list = new List<Process_Information>();
 
                         int resource_usage = 0;
@@ -513,30 +517,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                             sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                         }
 
-                                        // Create event
-                                        if (Service.language == "en-US")
-                                        {
-                                            details =
-                                                "Name: " + sensor_item.name + Environment.NewLine +
-                                                "Description: " + sensor_item.description + Environment.NewLine +
-                                                "Type: Processor" + Environment.NewLine +
-                                                "Selected limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
-                                                "In usage: " + resource_usage + " (%)" + Environment.NewLine +
-                                                "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                "Action history";
-                                        }
-                                        else if (Service.language == "de-DE")
-                                        {
-                                            details =
-                                               "Name: " + sensor_item.name + Environment.NewLine +
-                                               "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                               "Typ: Prozessor" + Environment.NewLine +
-                                               "Festgelegtes Limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
-                                               "In Verwendung: " + resource_usage + " (%)" + Environment.NewLine +
-                                               "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine +
-                                               "Historie der Aktionen";
-                                        }
-
                                         // Reset the counter
                                         sensor_item.action_treshold_count = 0;
                                         string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -547,6 +527,45 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                         sensor_item.action_treshold_count++;
                                         string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                         File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                    }
+
+                                    // Create event
+                                    if (Service.language == "en-US")
+                                    {
+                                        details =
+                                            "Name: " + sensor_item.name + Environment.NewLine +
+                                            "Description: " + sensor_item.description + Environment.NewLine +
+                                            "Type: Processor" + Environment.NewLine +
+                                            "Selected limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
+                                            "In usage: " + resource_usage + " (%)" + Environment.NewLine +
+                                            "Action result: " + Environment.NewLine + action_result;
+                                    }
+                                    else if (Service.language == "de-DE")
+                                    {
+                                        details =
+                                           "Name: " + sensor_item.name + Environment.NewLine +
+                                           "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                           "Typ: Prozessor" + Environment.NewLine +
+                                           "Festgelegtes Limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
+                                           "In Verwendung: " + resource_usage + " (%)" + Environment.NewLine +
+                                           "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                    }
+
+                                    // Create notification history if not exists
+                                    if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                    {
+                                        List<string> notification_history_list = new List<string>
+                                        {
+                                            details
+                                        };
+
+                                        sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                    }
+                                    else // if exists, add the result to the list
+                                    {
+                                        List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                        notification_history_list.Add(details);
+                                        sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                     }
                                 }
                                 else
@@ -582,30 +601,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                             sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                         }
 
-                                        // Create event
-                                        if (Service.language == "en-US")
-                                        {
-                                            details =
-                                                "Name: " + sensor_item.name + Environment.NewLine +
-                                                "Description: " + sensor_item.description + Environment.NewLine +
-                                                "Type: RAM" + Environment.NewLine +
-                                                "Selected limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
-                                                "In usage: " + ram_usage + " (%)" + Environment.NewLine +
-                                                "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                "Action history";
-                                        }
-                                        else if (Service.language == "de-DE")
-                                        {
-                                            details =
-                                               "Name: " + sensor_item.name + Environment.NewLine +
-                                               "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                               "Typ: Arbeitsspeicher" + Environment.NewLine +
-                                               "Festgelegtes Limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
-                                               "In Verwendung: " + ram_usage + " (%)" + Environment.NewLine +
-                                               "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine +
-                                               "Historie der Aktionen";
-                                        }
-
                                         // Reset the counter
                                         sensor_item.action_treshold_count = 0;
                                         string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -616,6 +611,45 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                         sensor_item.action_treshold_count++;
                                         string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                         File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                    }
+
+                                    // Create event
+                                    if (Service.language == "en-US")
+                                    {
+                                        details =
+                                            "Name: " + sensor_item.name + Environment.NewLine +
+                                            "Description: " + sensor_item.description + Environment.NewLine +
+                                            "Type: RAM" + Environment.NewLine +
+                                            "Selected limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
+                                            "In usage: " + ram_usage + " (%)" + Environment.NewLine +
+                                            "Action result: " + Environment.NewLine + action_result;
+                                    }
+                                    else if (Service.language == "de-DE")
+                                    {
+                                        details =
+                                           "Name: " + sensor_item.name + Environment.NewLine +
+                                           "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                           "Typ: Arbeitsspeicher" + Environment.NewLine +
+                                           "Festgelegtes Limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
+                                           "In Verwendung: " + ram_usage + " (%)" + Environment.NewLine +
+                                           "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                    }
+
+                                    // Create notification history if not exists
+                                    if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                    {
+                                        List<string> notification_history_list = new List<string>
+                                        {
+                                            details
+                                        };
+
+                                        sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                    }
+                                    else // if exists, add the result to the list
+                                    {
+                                        List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                        notification_history_list.Add(details);
+                                        sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                     }
                                 }
                                 else
@@ -688,34 +722,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                         sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                                     }
 
-                                                    // Create event
-                                                    if (Service.language == "en-US")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Description: " + sensor_item.description + Environment.NewLine +
-                                                            "Type: Drive (more than X GB occupied)" + Environment.NewLine +
-                                                            "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Action history";
-                                                    }
-                                                    else if (Service.language == "de-DE")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                            "Typ: Laufwerk (mehr als X GB belegt)" + Environment.NewLine +
-                                                            "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Freier Laufwerksspeicher: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Historie der Aktionen";
-                                                    }
-
                                                     // Reset the counter
                                                     sensor_item.action_treshold_count = 0;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -726,6 +732,50 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                     sensor_item.action_treshold_count++;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                                     File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                                }
+
+                                                // Create event
+                                                if (Service.language == "en-US")
+                                                {
+                                                    details =
+                                                        "Time: " + sensor_item.name + Environment.NewLine +
+                                                        "Description: " + sensor_item.description + Environment.NewLine +
+                                                        "Type: Drive (more than X GB occupied)" + Environment.NewLine +
+                                                        "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Action result: " + Environment.NewLine + action_result;
+                                                }
+                                                else if (Service.language == "de-DE")
+                                                {
+                                                    details =
+                                                        "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                                        "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                        "Typ: Laufwerk (mehr als X GB belegt)" + Environment.NewLine +
+                                                        "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Freier Laufwerksspeicher: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                                }
+
+                                                // Create notification history if not exists
+                                                if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                                {
+                                                    List<string> notification_history_list = new List<string>
+                                                    {
+                                                        details
+                                                    };
+
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                                }
+                                                else // if exists, add the result to the list
+                                                {
+                                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                                    notification_history_list.Add(details);
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                                 }
                                             }
                                         }
@@ -757,34 +807,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                         sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                                     }
 
-                                                    // Create event
-                                                    if (Service.language == "en-US")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Description: " + sensor_item.description + Environment.NewLine +
-                                                            "Type: Drive (less than X GB free)" + Environment.NewLine +
-                                                            "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Action history";
-                                                    }
-                                                    else if (Service.language == "de-DE")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                            "Typ: Laufwerk (weniger als X GB frei)" + Environment.NewLine +
-                                                            "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Freier Platz auf dem Laufwerk: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Historie der Aktionen";
-                                                    }
-
                                                     // Reset the counter
                                                     sensor_item.action_treshold_count = 0;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -795,6 +817,51 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                     sensor_item.action_treshold_count++;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                                     File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                                }
+
+                                                // Create event
+                                                if (Service.language == "en-US")
+                                                {
+                                                    details =
+                                                        "Time: " + DateTime.Now + Environment.NewLine +
+                                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                                        "Description: " + sensor_item.description + Environment.NewLine +
+                                                        "Type: Drive (less than X GB free)" + Environment.NewLine +
+                                                        "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Action result: " + Environment.NewLine + action_result;
+                                                }
+                                                else if (Service.language == "de-DE")
+                                                {
+                                                    details =
+                                                        "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                                        "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                        "Typ: Laufwerk (weniger als X GB frei)" + Environment.NewLine +
+                                                        "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Freier Platz auf dem Laufwerk: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                                }
+
+                                                // Create notification history if not exists
+                                                if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                                {
+                                                    List<string> notification_history_list = new List<string>
+                                                    {
+                                                        details
+                                                    };
+
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                                }
+                                                else // if exists, add the result to the list
+                                                {
+                                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                                    notification_history_list.Add(details);
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                                 }
                                             }
                                         }
@@ -826,34 +893,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                         sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                                     }
 
-                                                    // Create event
-                                                    if (Service.language == "en-US")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Description: " + sensor_item.description + Environment.NewLine +
-                                                            "Type: Drive (more than X percent occupied)" + Environment.NewLine +
-                                                            "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Action history";
-                                                    }
-                                                    else if (Service.language == "de-DE")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                            "Typ: Laufwerk (mehr als X Prozent belegt)" + Environment.NewLine +
-                                                            "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Freier Platz auf dem Laufwerk: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Historie der Aktionen";
-                                                    }
-
                                                     // Reset the counter
                                                     sensor_item.action_treshold_count = 0;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -864,6 +903,51 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                     sensor_item.action_treshold_count++;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                                     File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                                }
+
+                                                // Create event
+                                                if (Service.language == "en-US")
+                                                {
+                                                    details =
+                                                        "Time: " + DateTime.Now + Environment.NewLine +
+                                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                                        "Description: " + sensor_item.description + Environment.NewLine +
+                                                        "Type: Drive (more than X percent occupied)" + Environment.NewLine +
+                                                        "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Action result: " + Environment.NewLine + action_result;
+                                                }
+                                                else if (Service.language == "de-DE")
+                                                {
+                                                    details =
+                                                        "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                                        "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                        "Typ: Laufwerk (mehr als X Prozent belegt)" + Environment.NewLine +
+                                                        "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Freier Platz auf dem Laufwerk: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                                }
+
+                                                // Create notification history if not exists
+                                                if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                                {
+                                                    List<string> notification_history_list = new List<string>
+                                                    {
+                                                        details
+                                                    };
+
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                                }
+                                                else // if exists, add the result to the list
+                                                {
+                                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                                    notification_history_list.Add(details);
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                                 }
                                             }
                                         }
@@ -895,34 +979,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                         sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                                     }
 
-                                                    // Create event
-                                                    if (Service.language == "en-US")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Description: " + sensor_item.description + Environment.NewLine +
-                                                            "Type: Drive (less than X percent free)" + Environment.NewLine +
-                                                            "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Action history";
-                                                    }
-                                                    else if (Service.language == "de-DE")
-                                                    {
-                                                        details =
-                                                            "Name: " + sensor_item.name + Environment.NewLine +
-                                                            "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                            "Typ: Laufwerk (weniger als X Prozent frei)" + Environment.NewLine +
-                                                            "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Freier Platz auf dem Laufwerk: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
-                                                            "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
-                                                            "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
-                                                            "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                            "Historie der Aktionen";
-                                                    }
-
                                                     // Reset the counter
                                                     sensor_item.action_treshold_count = 0;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -933,6 +989,52 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                     sensor_item.action_treshold_count++;
                                                     string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                                     File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                                }
+
+
+                                                // Create event
+                                                if (Service.language == "en-US")
+                                                {
+                                                    details =
+                                                        "Time: " + DateTime.Now + Environment.NewLine +
+                                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                                        "Description: " + sensor_item.description + Environment.NewLine +
+                                                        "Type: Drive (less than X percent free)" + Environment.NewLine +
+                                                        "Drive size: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Drive free space: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Selected limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In usage: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Action result: " + Environment.NewLine + action_result;
+                                                }
+                                                else if (Service.language == "de-DE")
+                                                {
+                                                    details =
+                                                        "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                                        "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                        "Typ: Laufwerk (weniger als X Prozent frei)" + Environment.NewLine +
+                                                        "Laufwerksgröße: " + drive_total_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Freier Platz auf dem Laufwerk: " + drive_free_space_gb + " (GB)" + Environment.NewLine +
+                                                        "Festgelegtes Limit: " + sensor_item.disk_usage + $" {specification}" + Environment.NewLine +
+                                                        "In Verwendung: " + drive_usage + $" {specification}" + Environment.NewLine +
+                                                        "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                                }
+
+                                                // Create notification history if not exists
+                                                if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                                {
+                                                    List<string> notification_history_list = new List<string>
+                                                        {
+                                                            details
+                                                        };
+
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                                }
+                                                else // if exists, add the result to the list
+                                                {
+                                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                                    notification_history_list.Add(details);
+                                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                                 }
                                             }
                                         }
@@ -998,37 +1100,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                 sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                             }
 
-                                            // Create event
-                                            if (Service.language == "en-US")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Description: " + sensor_item.description + Environment.NewLine +
-                                                    "Type: Process CPU usage (%)" + Environment.NewLine +
-                                                    "Process name: " + sensor_item.process_name + " (" + process.Id + ")" + Environment.NewLine +
-                                                    "Selected limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
-                                                    "In usage: " + resource_usage + " (%)" + Environment.NewLine +
-                                                    "Ram usage: " + ram + " (MB)" + Environment.NewLine +
-                                                    "User: " + user + Environment.NewLine +
-                                                    "Commandline: " + cmd + Environment.NewLine +
-                                                    "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                    "Action history";
-                                            }
-                                            else if (Service.language == "de-DE")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                    "Typ: Prozess-CPU-Nutzung" + Environment.NewLine +
-                                                    "Prozess Name: " + sensor_item.process_name + " (%)" + Environment.NewLine +
-                                                    "Festgelegtes Limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
-                                                    "In Verwendung: " + resource_usage + " (%)" + Environment.NewLine +
-                                                    "Ram Nutzung: " + ram + " (MB)" + Environment.NewLine +
-                                                    "Benutzer: " + user + Environment.NewLine +
-                                                    "Commandline: " + cmd + Environment.NewLine +
-                                                    "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine;
-                                            }
-
                                             // Reset the counter
                                             sensor_item.action_treshold_count = 0;
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -1039,6 +1110,55 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                             sensor_item.action_treshold_count++;
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                             File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                        }
+
+                                        // Create event
+                                        if (Service.language == "en-US")
+                                        {
+                                            details =
+                                                "Time: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Description: " + sensor_item.description + Environment.NewLine +
+                                                "Type: Process CPU usage (%)" + Environment.NewLine +
+                                                "Process name: " + sensor_item.process_name + " (" + process.Id + ")" + Environment.NewLine +
+                                                "Selected limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
+                                                "In usage: " + resource_usage + " (%)" + Environment.NewLine +
+                                                "Ram usage: " + ram + " (MB)" + Environment.NewLine +
+                                                "User: " + user + Environment.NewLine +
+                                                "Commandline: " + cmd + Environment.NewLine +
+                                                "Action result: " + Environment.NewLine + action_result;
+                                        }
+                                        else if (Service.language == "de-DE")
+                                        {
+                                            details =
+                                                "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                "Typ: Prozess-CPU-Nutzung" + Environment.NewLine +
+                                                "Prozess Name: " + sensor_item.process_name + " (%)" + Environment.NewLine +
+                                                "Festgelegtes Limit: " + sensor_item.cpu_usage + " (%)" + Environment.NewLine +
+                                                "In Verwendung: " + resource_usage + " (%)" + Environment.NewLine +
+                                                "Ram Nutzung: " + ram + " (MB)" + Environment.NewLine +
+                                                "Benutzer: " + user + Environment.NewLine +
+                                                "Commandline: " + cmd + Environment.NewLine +
+                                                "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                        }
+
+                                        // Create notification history if not exists
+                                        if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                        {
+                                            List<string> notification_history_list = new List<string>
+                                            {
+                                                details
+                                            };
+
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                        }
+                                        else // if exists, add the result to the list
+                                        {
+                                            List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                            notification_history_list.Add(details);
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                         }
                                     }
                                 }
@@ -1102,37 +1222,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                 sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                             }
 
-                                            // Create event
-                                            if (Service.language == "en-US")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Description: " + sensor_item.description + Environment.NewLine +
-                                                    "Type: Process RAM usage (%)" + Environment.NewLine +
-                                                    "Process name: " + sensor_item.process_name + " (" + process.Id + ")" + Environment.NewLine +
-                                                    "Selected limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
-                                                    "In usage: " + resource_usage + " (%)" + Environment.NewLine +
-                                                    "Ram usage: " + ram + " (MB)" + Environment.NewLine +
-                                                    "User: " + user + Environment.NewLine +
-                                                    "Commandline: " + cmd + Environment.NewLine +
-                                                    "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                    "Action history";
-                                            }
-                                            else if (Service.language == "de-DE")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                    "Typ: Prozess-RAM-Nutzung (%)" + Environment.NewLine +
-                                                    "Prozess Name: " + sensor_item.process_name + " (%)" + Environment.NewLine +
-                                                    "Festgelegtes Limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
-                                                    "In Verwendung: " + resource_usage + " (%)" + Environment.NewLine +
-                                                    "Ram Nutzung: " + ram + " (MB)" + Environment.NewLine +
-                                                    "Benutzer: " + user + Environment.NewLine +
-                                                    "Commandline: " + cmd + Environment.NewLine +
-                                                    "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine;
-                                            }
-
                                             // Reset the counter
                                             sensor_item.action_treshold_count = 0;
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -1143,6 +1232,55 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                             sensor_item.action_treshold_count++;
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                             File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                        }
+
+                                        // Create event
+                                        if (Service.language == "en-US")
+                                        {
+                                            details =
+                                                "Time: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Description: " + sensor_item.description + Environment.NewLine +
+                                                "Type: Process RAM usage (%)" + Environment.NewLine +
+                                                "Process name: " + sensor_item.process_name + " (" + process.Id + ")" + Environment.NewLine +
+                                                "Selected limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
+                                                "In usage: " + resource_usage + " (%)" + Environment.NewLine +
+                                                "Ram usage: " + ram + " (MB)" + Environment.NewLine +
+                                                "User: " + user + Environment.NewLine +
+                                                "Commandline: " + cmd + Environment.NewLine +
+                                                "Action result: " + Environment.NewLine + action_result;
+                                        }
+                                        else if (Service.language == "de-DE")
+                                        {
+                                            details =
+                                                "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                "Typ: Prozess-RAM-Nutzung (%)" + Environment.NewLine +
+                                                "Prozess Name: " + sensor_item.process_name + " (%)" + Environment.NewLine +
+                                                "Festgelegtes Limit: " + sensor_item.ram_usage + " (%)" + Environment.NewLine +
+                                                "In Verwendung: " + resource_usage + " (%)" + Environment.NewLine +
+                                                "Ram Nutzung: " + ram + " (MB)" + Environment.NewLine +
+                                                "Benutzer: " + user + Environment.NewLine +
+                                                "Commandline: " + cmd + Environment.NewLine +
+                                                "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                        }
+
+                                        // Create notification history if not exists
+                                        if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                        {
+                                            List<string> notification_history_list = new List<string>
+                                            {
+                                                details
+                                            };
+
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                        }
+                                        else // if exists, add the result to the list
+                                        {
+                                            List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                            notification_history_list.Add(details);
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                         }
                                     }
                                 }
@@ -1206,35 +1344,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                 sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                             }
 
-                                            // Create event
-                                            if (Service.language == "en-US")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Description: " + sensor_item.description + Environment.NewLine +
-                                                    "Type: Process RAM usage (MB)" + Environment.NewLine +
-                                                    "Process name: " + sensor_item.process_name + " (" + process.Id + ")" + Environment.NewLine +
-                                                    "Selected limit: " + sensor_item.ram_usage + " (MB)" + Environment.NewLine +
-                                                    "In usage: " + resource_usage + " (MB)" + Environment.NewLine +
-                                                    "User: " + user + Environment.NewLine +
-                                                    "Commandline: " + cmd + Environment.NewLine +
-                                                    "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                    "Action history";
-                                            }
-                                            else if (Service.language == "de-DE")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                    "Typ: Prozess-RAM-Nutzung (MB)" + Environment.NewLine +
-                                                    "Prozess Name: " + sensor_item.process_name + " (%)" + Environment.NewLine +
-                                                    "Festgelegtes Limit: " + sensor_item.ram_usage + " (MB)" + Environment.NewLine +
-                                                    "In Verwendung: " + resource_usage + " (MB)" + Environment.NewLine +
-                                                    "Benutzer: " + user + Environment.NewLine +
-                                                    "Commandline: " + cmd + Environment.NewLine +
-                                                    "Ergebnis der Aktion: " + Environment.NewLine + action_result + Environment.NewLine;
-                                            }
-
                                             // Reset the counter
                                             sensor_item.action_treshold_count = 0;
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -1246,6 +1355,53 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                             File.WriteAllText(sensor, action_treshold_updated_sensor_json);
                                         }
+
+                                        // Create event
+                                        if (Service.language == "en-US")
+                                        {
+                                            details =
+                                                "Time: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Description: " + sensor_item.description + Environment.NewLine +
+                                                "Type: Process RAM usage (MB)" + Environment.NewLine +
+                                                "Process name: " + sensor_item.process_name + " (" + process.Id + ")" + Environment.NewLine +
+                                                "Selected limit: " + sensor_item.ram_usage + " (MB)" + Environment.NewLine +
+                                                "In usage: " + resource_usage + " (MB)" + Environment.NewLine +
+                                                "User: " + user + Environment.NewLine +
+                                                "Commandline: " + cmd + Environment.NewLine +
+                                                "Action result: " + Environment.NewLine + action_result;
+                                        }
+                                        else if (Service.language == "de-DE")
+                                        {
+                                            details =
+                                                "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                "Typ: Prozess-RAM-Nutzung (MB)" + Environment.NewLine +
+                                                "Prozess Name: " + sensor_item.process_name + " (%)" + Environment.NewLine +
+                                                "Festgelegtes Limit: " + sensor_item.ram_usage + " (MB)" + Environment.NewLine +
+                                                "In Verwendung: " + resource_usage + " (MB)" + Environment.NewLine +
+                                                "Benutzer: " + user + Environment.NewLine +
+                                                "Commandline: " + cmd + Environment.NewLine +
+                                                "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                        }
+
+                                        // Create notification history if not exists
+                                        if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                        {
+                                            List<string> notification_history_list = new List<string>
+                                            {
+                                                details
+                                            };
+
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                        }
+                                        else // if exists, add the result to the list
+                                        {
+                                            List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                            notification_history_list.Add(details);
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                        }
                                     }
                                 }
                             }
@@ -1253,7 +1409,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                         else if (sensor_item.category == 1) // Windows Eventlog
                         {
                             DateTime startTime = DateTime.Parse(sensor_item.last_run);
-                            var endTime = DateTime.Now;
+                            bool event_log_existing = false;
                             bool action_already_executed = false; // prevents the action from being executed multiple times
 
                             EventLogQuery query;
@@ -1267,22 +1423,43 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
 
                                 reader = new EventLogReader(query);
 
-                                Logging.Handler.Sensors("Sensor_Management.Event_Log.Do", "Check event log existence", "True");
+                                event_log_existing = true;
+
+                                Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Check event log existence (" + sensor_item.eventlog + ")", event_log_existing.ToString());
 
                                 // Read each event from event logs
                                 while ((eventRecord = reader.ReadEvent()) != null)
                                 {
+                                    //Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Found events", eventRecord.Id.ToString());
+
                                     if (DateTime.Parse(sensor_item.last_run) > eventRecord.TimeCreated)
                                     {
-                                        Logging.Handler.Sensors("Sensor_Management.Event_Log.Do", "Check event time", "Last scan is newer than last event log.");
+                                        Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Check event time (" + eventRecord.TimeCreated + ")", "Last scan is newer than last event log.");
                                     }
                                     else
                                     {
                                         // Print current scanning event log
-                                        Logging.Handler.Sensors("Sensor_Management.Event_Log.Scan", "Scan event", "EventID: " + eventRecord.Id.ToString() + "Timestamp: " + eventRecord.TimeCreated.Value.ToString() + "lastscan: " + sensor_item.last_run);
-
+                                        Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Scan event", "EventID: " + eventRecord.Id.ToString() + " Timestamp: " + eventRecord.TimeCreated.Value.ToString() + " lastscan: " + sensor_item.last_run);
+                                        
                                         string result = "-";
+                                        string content = eventRecord.FormatDescription();
                                         bool regex_match = false;
+
+                                        Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "event log content", content);
+
+                                        if (String.IsNullOrEmpty(content))
+                                        {
+                                            content = eventRecord.ToXml();
+
+                                            // code below is not reliable enough in current state. Maybe we can use it in the future.
+                                            //XmlDocument doc = new XmlDocument();
+                                            //doc.LoadXml(eventRecord.ToXml());
+
+                                            //XmlNode messageNode = doc.SelectSingleNode("//Event/EventData/Data[@Name='Message']");
+                                            //content = messageNode?.InnerText ?? "N/A";
+
+                                            Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "event log content xml extracted", content);
+                                        }
 
                                         if (String.IsNullOrEmpty(sensor_item.expected_result))
                                         {
@@ -1291,7 +1468,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
 
                                             triggered = true;
                                         }
-                                        else if (Regex.IsMatch(eventRecord.FormatDescription(), sensor_item.expected_result))
+                                        else if (Regex.IsMatch(content, sensor_item.expected_result))
                                         {
                                             // Increment notification counter for each hit
                                             sensor_item.notification_treshold_count++;
@@ -1305,6 +1482,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                             if (!action_already_executed)
                                             {
                                                 action_result += Environment.NewLine + Environment.NewLine + " [" + DateTime.Now.ToString() + "]" + Environment.NewLine + PowerShell.Execute_Script("Sensors.Time_Scheduler.Check_Execution (execute action) " + sensor_item.name, sensor_item.script_action);
+                                                action_already_executed = true;
                                             }
 
                                             // Create action history if not exists
@@ -1324,63 +1502,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                 sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
                                             }
 
-                                            // Create event
-                                            if (Service.language == "en-US")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Description: " + sensor_item.description + Environment.NewLine +
-                                                    "Type: Windows Eventlog" + Environment.NewLine +
-                                                    "Eventlog: " + sensor_item.eventlog + Environment.NewLine +
-                                                    "Event id: " + sensor_item.eventlog_event_id + Environment.NewLine +
-                                                    "Expected result: " + sensor_item.expected_result + Environment.NewLine +
-                                                    "Content: " + eventRecord.FormatDescription() + Environment.NewLine +
-                                                    "Keyword: " + eventRecord.Keywords.Value + Environment.NewLine +
-                                                    "Level: " + eventRecord.Level + Environment.NewLine +
-                                                    "Process id: " + eventRecord.ProcessId + Environment.NewLine +
-                                                    "Created: " + eventRecord.TimeCreated + Environment.NewLine +
-                                                    "User id: " + eventRecord.UserId + Environment.NewLine +
-                                                    "Version: " + eventRecord.Version + Environment.NewLine +
-                                                    "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                    "Action history";
-                                            }
-                                            else if (Service.language == "de-DE")
-                                            {
-                                                details =
-                                                    "Name: " + sensor_item.name + Environment.NewLine +
-                                                    "Beschreibung: " + sensor_item.description + Environment.NewLine +
-                                                    "Typ: Windows Eventlog" + Environment.NewLine +
-                                                    "Eventlog: " + sensor_item.eventlog + Environment.NewLine +
-                                                    "Event ID: " + sensor_item.eventlog_event_id + Environment.NewLine +
-                                                    "Erwartetes Ergebnis: " + sensor_item.expected_result + Environment.NewLine +
-                                                    "Inhalt: " + eventRecord.FormatDescription() + Environment.NewLine +
-                                                    "Schlüssel: " + eventRecord.Keywords.Value + Environment.NewLine +
-                                                    "Level: " + eventRecord.Level + Environment.NewLine +
-                                                    "Prozess ID: " + eventRecord.ProcessId + Environment.NewLine +
-                                                    "Erstellt: " + eventRecord.TimeCreated + Environment.NewLine +
-                                                    "Benutzer ID: " + eventRecord.UserId + Environment.NewLine +
-                                                    "Version: " + eventRecord.Version + Environment.NewLine +
-                                                    "Action result: " + Environment.NewLine + action_result + Environment.NewLine +
-                                                    "Action history";
-                                            }
-
-                                            // Create notification history if not exists
-                                            if (String.IsNullOrEmpty(sensor_item.notification_history))
-                                            {
-                                                List<string> notification_history_list = new List<string>
-                                                {
-                                                    details
-                                                };
-
-                                                sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
-                                            }
-                                            else // if exists, add the result to the list
-                                            {
-                                                List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
-                                                notification_history_list.Add(action_result);
-                                                sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
-                                            }
-
                                             // Reset the counter
                                             sensor_item.action_treshold_count = 0;
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
@@ -1391,6 +1512,61 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                             sensor_item.action_treshold_count++;
                                             string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                                             File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                        }
+
+                                        // Create event
+                                        if (Service.language == "en-US")
+                                        {
+                                            details =
+                                                "Time: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Description: " + sensor_item.description + Environment.NewLine +
+                                                "Type: Windows Eventlog" + Environment.NewLine +
+                                                "Eventlog: " + sensor_item.eventlog + Environment.NewLine +
+                                                "Event id: " + sensor_item.eventlog_event_id + Environment.NewLine +
+                                                "Expected result: " + sensor_item.expected_result + Environment.NewLine +
+                                                "Content: " + content + Environment.NewLine +
+                                                "Level: " + eventRecord.Level + Environment.NewLine +
+                                                "Process id: " + eventRecord.ProcessId + Environment.NewLine +
+                                                "Created: " + eventRecord.TimeCreated + Environment.NewLine +
+                                                "User id: " + eventRecord.UserId + Environment.NewLine +
+                                                "Version: " + eventRecord.Version + Environment.NewLine +
+                                                "Action result: " + Environment.NewLine + action_result;
+                                        }
+                                        else if (Service.language == "de-DE")
+                                        {
+                                            details =
+                                                "Uhrzeit: " + DateTime.Now + Environment.NewLine +
+                                                "Name: " + sensor_item.name + Environment.NewLine +
+                                                "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                                "Typ: Windows Eventlog" + Environment.NewLine +
+                                                "Eventlog: " + sensor_item.eventlog + Environment.NewLine +
+                                                "Event ID: " + sensor_item.eventlog_event_id + Environment.NewLine +
+                                                "Erwartetes Ergebnis: " + sensor_item.expected_result + Environment.NewLine +
+                                                "Inhalt: " + content + Environment.NewLine +
+                                                "Level: " + eventRecord.Level + Environment.NewLine +
+                                                "Prozess ID: " + eventRecord.ProcessId + Environment.NewLine +
+                                                "Erstellt: " + eventRecord.TimeCreated + Environment.NewLine +
+                                                "Benutzer ID: " + eventRecord.UserId + Environment.NewLine +
+                                                "Version: " + eventRecord.Version + Environment.NewLine +
+                                                "Action result: " + Environment.NewLine + action_result;
+                                        }
+
+                                        // Create notification history if not exists
+                                        if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                        {
+                                            List<string> notification_history_list = new List<string>
+                                            {
+                                                details
+                                            };
+
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                        }
+                                        else // if exists, add the result to the list
+                                        {
+                                            List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                            notification_history_list.Add(details);
+                                            sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
                                         }
 
                                         //Trigger incident response | NetLock legacy code
@@ -1404,11 +1580,13 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                             }
                             catch (Exception ex)
                             {
-                                Logging.Handler.Sensors("Sensor_Management.Event_Log.Do", "Check event existence", "False");
+                                Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Check event log existence (" + sensor_item.eventlog + ")", event_log_existing.ToString() + " error: " + ex.ToString());
                             }
                         }
 
-                        // Insert event
+                        // Execution finished, set last run time
+                        endTime = DateTime.Now; // set end time for the next scan
+
                         Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Sensor executed", "name: " + sensor_item.name + " id: " + sensor_item.id);
 
                         // Build additional details string
@@ -1420,10 +1598,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                 additional_details += Environment.NewLine + "Prozess ID: " + process.id + Environment.NewLine + "Prozess Name: " + process.name + Environment.NewLine + "Nutzung: " + process.cpu + " (%)" + Environment.NewLine + "RAM Nutzung: " + process.ram + " (MB)" + Environment.NewLine + "Benutzer: " + process.user + Environment.NewLine + "Erstellt: " + process.created + Environment.NewLine + "Pfad: " + process.path + Environment.NewLine + "Commandline: " + process.cmd + Environment.NewLine;
                         }
 
+                        // Insert event
                         if (triggered)
                         {
-                            Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Triggered", true.ToString());
-
+                            Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Triggered (id)", true.ToString() + " (" + sensor_item.id + ")");
+                            
                             // if notification treshold is reached, insert event and reset the counter
                             if (sensor_item.notification_treshold_count >= sensor_item.notification_treshold_max)
                             {
@@ -1435,6 +1614,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                     foreach (var action_history_item in action_history_list)
                                         action_history += Environment.NewLine + action_history_item + Environment.NewLine;
 
+                                    Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "action_history", action_history + " (" + sensor_item.id + ")");
+
                                     // Clear action history
                                     action_history_list.Clear();
                                     sensor_item.action_history = null;
@@ -1443,16 +1624,21 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                 }
 
                                 // Create notification history
-                                List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                if (!String.IsNullOrEmpty(sensor_item.notification_history))
+                                {
+                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
 
-                                foreach (var notification_history_item in notification_history_list)
-                                    notification_history += Environment.NewLine + notification_history_item + Environment.NewLine;
+                                    foreach (var notification_history_item in notification_history_list)
+                                        notification_history += Environment.NewLine + notification_history_item + Environment.NewLine;
 
-                                // Clear notification history
-                                notification_history_list.Clear();
-                                sensor_item.notification_history = null;
-                                string notification_history_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
-                                File.WriteAllText(sensor, notification_history_updated_sensor_json);
+                                    Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "notification_history", notification_history + " (" + sensor_item.id + ")");
+
+                                    // Clear notification history
+                                    notification_history_list.Clear();
+                                    sensor_item.notification_history = null;
+                                    string notification_history_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
+                                    File.WriteAllText(sensor, notification_history_updated_sensor_json);
+                                }
 
                                 // Create event based on category and sub category
                                 if (sensor_item.category == 0) //utilization
@@ -1461,52 +1647,52 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                     {
                                         // CPU usage
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name +  ")", details + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name +  ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name + ")", details + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 1) // RAM usage
                                     {
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", details + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", details + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 2) // Disks
                                     {
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Drive (" + sensor_item.name + ")", details + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Drive (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Laufwerk (" + sensor_item.name + ")", details + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Laufwerk (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 3) // CPU process usage
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process CPU usage (" + sensor_item.name + ")", details + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process CPU usage (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-CPU-Nutzung (" + sensor_item.name + ")", details + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-CPU-Nutzung (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                     else if (sensor_item.sub_category == 4) // RAM process usage in %
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (%) (" + sensor_item.name + ")", details + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (%) (" + sensor_item.name + ")", details + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                     else if (sensor_item.sub_category == 5) // RAM process usage in MB
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (MB) (" + sensor_item.name + ")", details + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (MB) (" + sensor_item.name + ")", details + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                 }
                                 else if (sensor_item.category == 1) // Windows Eventlog
                                 {
                                     if (Service.language == "en-US")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
                                     else if (Service.language == "de-DE")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                 }
 
                                 sensor_item.notification_treshold_count = 0;
@@ -1540,7 +1726,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                         }
 
                         // Update last run
-                        sensor_item.last_run = DateTime.Now.ToString();
+                        sensor_item.last_run = endTime.ToString();
                         string updated_sensor_json = JsonSerializer.Serialize(sensor_item);
                         File.WriteAllText(sensor, updated_sensor_json);
 
@@ -1554,7 +1740,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
             }
             catch (Exception ex)
             {
-                Logging.Handler.Error("Sensors.Time_Scheduler.Check_Execution", "General Error", ex.ToString());
+                Logging.Handler.Error("Sensors.Time_Scheduler.Check_Execution", "General Error (id)", ex.ToString() + "(" + sensor_id + ")");
             }
         }
     }
