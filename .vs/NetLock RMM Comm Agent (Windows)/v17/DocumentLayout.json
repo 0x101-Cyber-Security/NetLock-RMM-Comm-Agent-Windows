@@ -179,7 +179,7 @@
               "RelativeDocumentMoniker": "NetLock RMM Comm Agent (Windows)\\Sensors\\Time_Scheduler.cs",
               "ToolTip": "C:\\Users\\NicoMak\\OneDrive - 0x101 Cyber Security\\Projekte\\NetLock Root\\NetLock-RMM-Comm-Agent-Windows\\NetLock RMM Comm Agent (Windows)\\Sensors\\Time_Scheduler.cs",
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Sensors\\Time_Scheduler.cs",
-              "ViewState": "AQIAACsGAAAAAAAAAAAAAFQGAABGAAAA",
+              "ViewState": "AQIAAJ4GAAAAAAAAAAAAAJ0BAACZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-22T10:14:29.059Z",
               "EditorCaption": ""
@@ -362,8 +362,7 @@
               "RelativeToolTip": "NetLock RMM Comm Agent (Windows)\\Microsoft_Defender_Antivirus\\Eventlog_Crawler.cs",
               "ViewState": "AQIAAOcBAAAAAAAAAAAlwOgBAABvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-06T10:44:04.741Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-06T10:44:04.741Z"
             },
             {
               "$type": "Document",

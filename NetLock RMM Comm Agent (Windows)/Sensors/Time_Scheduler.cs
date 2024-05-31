@@ -17,6 +17,9 @@ using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Runtime.Remoting.Contexts;
+using System.ServiceProcess;
+using System.Net.NetworkInformation;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Sensors
 {
@@ -63,7 +66,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
             public int service_action { get; set; }
 
             //ping sensor
-            public string ping_hostname { get; set; }
+            public string ping_address { get; set; }
+            public int ping_timeout { get; set; }
+            public int ping_condition { get; set; }
 
             //time schedule
             public int time_scheduler_type { get; set; }
@@ -1549,7 +1554,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                                 "Erstellt: " + eventRecord.TimeCreated + Environment.NewLine +
                                                 "Benutzer ID: " + eventRecord.UserId + Environment.NewLine +
                                                 "Version: " + eventRecord.Version + Environment.NewLine +
-                                                "Action result: " + Environment.NewLine + action_result;
+                                                "Ergebnis der Aktion: " + Environment.NewLine + action_result;
                                         }
 
                                         // Create notification history if not exists
@@ -1583,6 +1588,337 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                 Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Check event log existence (" + sensor_item.eventlog + ")", event_log_existing.ToString() + " error: " + ex.ToString());
                             }
                         }
+                        else if (sensor_item.category == 2) // PowerShell
+                        {
+                            string result = PowerShell.Execute_Script("Sensors.Time_Scheduler.Check_Execution (execute action) " + sensor_item.name, sensor_item.script);
+
+                            if (Regex.IsMatch(result, sensor_item.expected_result))
+                            {
+                                triggered = true;
+
+                                // if action treshold is reached, execute the action and reset the counter
+                                if (sensor_item.action_treshold_count >= sensor_item.action_treshold_max)
+                                {
+                                    action_result += Environment.NewLine + Environment.NewLine + " [" + DateTime.Now.ToString() + "]" + Environment.NewLine + PowerShell.Execute_Script("Sensors.Time_Scheduler.Check_Execution (execute action) " + sensor_item.name, sensor_item.script_action);
+
+                                    // Create action history if not exists
+                                    if (String.IsNullOrEmpty(sensor_item.action_history))
+                                    {
+                                        List<string> action_history_list = new List<string>
+                                        {
+                                            action_result
+                                        };
+
+                                        sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
+                                    }
+                                    else // if exists, add the result to the list
+                                    {
+                                        List<string> action_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.action_history);
+                                        action_history_list.Add(action_result);
+                                        sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
+                                    }
+
+                                    // Reset the counter
+                                    sensor_item.action_treshold_count = 0;
+                                    string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
+                                    File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                }
+                                else // if not, increment the counter
+                                {
+                                    sensor_item.action_treshold_count++;
+                                    string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
+                                    File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                }
+
+                                // Create event
+                                if (Service.language == "en-US")
+                                {
+                                    details =
+                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                        "Description: " + sensor_item.description + Environment.NewLine +
+                                        "Type: PowerShell" + Environment.NewLine +
+                                        "Script: " + sensor_item.script + Environment.NewLine +
+                                        "Pattern: " + sensor_item.expected_result + Environment.NewLine +
+                                        "Result: " + result + Environment.NewLine +
+                                        "Action result: " + Environment.NewLine + action_result;
+                                }
+                                else if (Service.language == "de-DE")
+                                {
+                                    details =
+                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                        "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                        "Typ: PowerShell" + Environment.NewLine +
+                                        "Skript: " + sensor_item.script + Environment.NewLine +
+                                        "Pattern: " + sensor_item.expected_result + Environment.NewLine +
+                                        "Ergebnis: " + result + Environment.NewLine +
+                                        "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                }
+
+                                // Create notification history if not exists
+                                if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                {
+                                    List<string> notification_history_list = new List<string>
+                                    {
+                                        details
+                                    };
+
+                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                }
+                                else // if exists, add the result to the list
+                                {
+                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                    notification_history_list.Add(details);
+                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                }
+                            } 
+                        }
+                        else if (sensor_item.category == 3) // Service
+                        {
+                            bool service_start_failed = false;
+                            string service_error_message = String.Empty;
+                            string service_status = String.Empty;
+
+                            try
+                            {
+                                ServiceController sc = new ServiceController(sensor_item.service_name);
+                                service_status = sc.Status.Equals(ServiceControllerStatus.Paused).ToString();
+                                
+                                if (sensor_item.service_condition == 0 && sc.Status.Equals(ServiceControllerStatus.Running)) // if service is running and condition is 0 = running
+                                {
+                                    triggered = true;
+
+                                    if (sensor_item.service_action == 1) // stop the service if it's running and the action is 1 = stop
+                                        sc.Stop();
+                                }
+                                else if (sensor_item.service_condition == 1 && sc.Status.Equals(ServiceControllerStatus.Paused)) // if service is paused and condition is 1 = paused
+                                {
+                                    triggered = true;
+
+                                    if (sensor_item.service_action == 2) // restart the service if it's paused and the action is 2 = restart
+                                    {
+                                        sc.Stop();
+                                        sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                                        sc.Start();
+                                    }
+                                }
+                                else if (sensor_item.service_condition == 2 && sc.Status.Equals(ServiceControllerStatus.Stopped)) // if service is stopped and condition is 2 = stopped
+                                {
+                                    triggered = true;
+
+                                    if (sensor_item.service_action == 0) // start the service if it's stopped and the action is 0 = start
+                                        sc.Start();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                service_start_failed = true;
+                                service_error_message = ex.Message;
+                                Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Checking service state, or performing action failed", ex.ToString());
+                            }
+
+                            if (triggered)
+                            {
+                                // if action treshold is reached, execute the action and reset the counter
+                                if (sensor_item.action_treshold_count >= sensor_item.action_treshold_max)
+                                {
+                                    action_result += Environment.NewLine + Environment.NewLine + " [" + DateTime.Now.ToString() + "]" + Environment.NewLine + PowerShell.Execute_Script("Sensors.Time_Scheduler.Check_Execution (execute action) " + sensor_item.name, sensor_item.script_action);
+
+                                    // Create action history if not exists
+                                    if (String.IsNullOrEmpty(sensor_item.action_history))
+                                    {
+                                        List<string> action_history_list = new List<string>
+                                        {
+                                            action_result
+                                        };
+
+                                        sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
+                                    }
+                                    else // if exists, add the result to the list
+                                    {
+                                        List<string> action_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.action_history);
+                                        action_history_list.Add(action_result);
+                                        sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
+                                    }
+
+                                    // Reset the counter
+                                    sensor_item.action_treshold_count = 0;
+                                    string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
+                                    File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                }
+                                else // if not, increment the counter
+                                {
+                                    sensor_item.action_treshold_count++;
+                                    string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
+                                    File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                }
+
+                                // Create event
+                                if (Service.language == "en-US")
+                                {
+                                    if (service_start_failed)
+                                    {
+                                        details =
+                                            "Name: " + sensor_item.name + Environment.NewLine +
+                                            "Description: " + sensor_item.description + Environment.NewLine +
+                                            "Type: Service" + Environment.NewLine +
+                                            "Service: " + sensor_item.service_name + Environment.NewLine +
+                                            "Result: The requested service action could not be performed." + Environment.NewLine +
+                                            "Error: " + service_error_message + Environment.NewLine +
+                                            "Action result: " + Environment.NewLine + action_result;
+                                    }
+                                    else
+                                    {
+                                        details =
+                                            "Name: " + sensor_item.name + Environment.NewLine +
+                                            "Description: " + sensor_item.description + Environment.NewLine +
+                                            "Type: Service" + Environment.NewLine +
+                                            "Service: " + sensor_item.service_name + Environment.NewLine +
+                                            "Result: The requested service action was successfully executed." + Environment.NewLine +
+                                            "Action result: " + Environment.NewLine + action_result;
+                                    }
+                                }
+                                else if (Service.language == "de-DE")
+                                {
+                                    if (service_start_failed)
+                                    {
+                                        details =
+                                            "Name: " + sensor_item.name + Environment.NewLine +
+                                            "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                            "Typ: Dienst" + Environment.NewLine +
+                                            "Dienst: " + sensor_item.service_name + Environment.NewLine +
+                                            "Ergebnis: The requested service action could not be performed." + Environment.NewLine +
+                                            "Fehler: " + service_error_message + Environment.NewLine +
+                                            "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                    }
+                                    else
+                                    {
+                                        details =
+                                            "Name: " + sensor_item.name + Environment.NewLine +
+                                            "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                            "Typ: Dienst" + Environment.NewLine +
+                                            "Dienst: " + sensor_item.service_name + Environment.NewLine +
+                                            "Ergebnis: Die gewünschte Dienst Aktion wurde erfolgreich ausgeführt." + Environment.NewLine +
+                                            "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                    }
+                                }
+
+                                // Create notification history if not exists
+                                if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                {
+                                    List<string> notification_history_list = new List<string>
+                                    {
+                                        details
+                                    };
+
+                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                }
+                                else // if exists, add the result to the list
+                                {
+                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                    notification_history_list.Add(details);
+                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                }
+                            }
+                        }
+                        else if (sensor_item.category == 4) // Ping
+                        {
+                            bool ping_status = Device_Information.Network.Ping(sensor_item.ping_address, sensor_item.ping_timeout);
+
+                            if (ping_status && sensor_item.ping_condition == 0)
+                                triggered = true;
+                            else if (!ping_status && sensor_item.ping_condition == 1)
+                                triggered = true;
+
+                            if (triggered)
+                            {
+                                // if action treshold is reached, execute the action and reset the counter
+                                if (sensor_item.action_treshold_count >= sensor_item.action_treshold_max)
+                                {
+                                    action_result += Environment.NewLine + Environment.NewLine + " [" + DateTime.Now.ToString() + "]" + Environment.NewLine + PowerShell.Execute_Script("Sensors.Time_Scheduler.Check_Execution (execute action) " + sensor_item.name, sensor_item.script_action);
+
+                                    // Create action history if not exists
+                                    if (String.IsNullOrEmpty(sensor_item.action_history))
+                                    {
+                                        List<string> action_history_list = new List<string>
+                                        {
+                                            action_result
+                                        };
+
+                                        sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
+                                    }
+                                    else // if exists, add the result to the list
+                                    {
+                                        List<string> action_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.action_history);
+                                        action_history_list.Add(action_result);
+                                        sensor_item.action_history = JsonSerializer.Serialize(action_history_list);
+                                    }
+
+                                    // Reset the counter
+                                    sensor_item.action_treshold_count = 0;
+                                    string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
+                                    File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                }
+                                else // if not, increment the counter
+                                {
+                                    sensor_item.action_treshold_count++;
+                                    string action_treshold_updated_sensor_json = JsonSerializer.Serialize(sensor_item);
+                                    File.WriteAllText(sensor, action_treshold_updated_sensor_json);
+                                }
+
+                                // Create event
+                                string ping_result = String.Empty;
+
+                                if (Service.language == "en-US")
+                                {
+                                    if (sensor_item.ping_condition == 0)
+                                        ping_result = "Successful";
+                                    else if (sensor_item.ping_condition == 1)
+                                        ping_result = "Failed";
+
+                                    details =
+                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                        "Description: " + sensor_item.description + Environment.NewLine +
+                                        "Type: Ping" + Environment.NewLine +
+                                        "Address: " + sensor_item.ping_address + Environment.NewLine +
+                                        "Timeout: " + sensor_item.ping_timeout + Environment.NewLine +
+                                        "Result: " + ping_result + Environment.NewLine +
+                                        "Action result: " + Environment.NewLine + action_result;
+                                }
+                                else if (Service.language == "de-DE")
+                                {
+                                    if (sensor_item.ping_condition == 0)
+                                        ping_result = "Erfolgreich";
+                                    else if (sensor_item.ping_condition == 1)
+                                        ping_result = "Fehlgeschlagen";
+
+                                    details =
+                                        "Name: " + sensor_item.name + Environment.NewLine +
+                                        "Beschreibung: " + sensor_item.description + Environment.NewLine +
+                                        "Typ: Ping" + Environment.NewLine +
+                                        "Adresse: " + sensor_item.ping_address + Environment.NewLine +
+                                        "Timeout: " + sensor_item.ping_timeout + Environment.NewLine +
+                                        "Ergebnis: " + ping_result + Environment.NewLine +
+                                        "Ergebnis der Aktion: " + Environment.NewLine + action_result;
+                                }
+
+                                // Create notification history if not exists
+                                if (String.IsNullOrEmpty(sensor_item.notification_history))
+                                {
+                                    List<string> notification_history_list = new List<string>
+                                    {
+                                        details
+                                    };
+
+                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                }
+                                else // if exists, add the result to the list
+                                {
+                                    List<string> notification_history_list = JsonSerializer.Deserialize<List<string>>(sensor_item.notification_history);
+                                    notification_history_list.Add(details);
+                                    sensor_item.notification_history = JsonSerializer.Serialize(notification_history_list);
+                                }
+                            }
+                        }
 
                         // Execution finished, set last run time
                         endTime = DateTime.Now; // set end time for the next scan
@@ -1601,7 +1937,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                         // Insert event
                         if (triggered)
                         {
-                            Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Triggered (id)", true.ToString() + " (" + sensor_item.id + ")");
+                            Logging.Handler.Sensors("Sensors.Time_Scheduler.Check_Execution", "Triggered (id)", triggered.ToString() + " (" + sensor_item.id + ")");
                             
                             // if notification treshold is reached, insert event and reset the counter
                             if (sensor_item.notification_treshold_count >= sensor_item.notification_treshold_max)
@@ -1647,42 +1983,42 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                     {
                                         // CPU usage
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name +  ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name +  ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
                                             Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 1) // RAM usage
                                     {
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
                                             Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 2) // Disks
                                     {
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Drive (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Drive (" + sensor_item.name + ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
                                             Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Laufwerk (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 3) // CPU process usage
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process CPU usage (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process CPU usage (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
                                             Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-CPU-Nutzung (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                     else if (sensor_item.sub_category == 4) // RAM process usage in %
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
                                             Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                     else if (sensor_item.sub_category == 5) // RAM process usage in MB
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
                                             Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
@@ -1690,9 +2026,30 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                 else if (sensor_item.category == 1) // Windows Eventlog
                                 {
                                     if (Service.language == "en-US")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 0);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                     else if (Service.language == "de-DE")
                                         Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                }
+                                else if (sensor_item.category == 2) // PowerShell
+                                {
+                                    if (Service.language == "en-US")
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "PowerShell (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                    else if (Service.language == "de-DE")
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "PowerShell (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                }
+                                else if (sensor_item.category == 3) // Service
+                                {
+                                    if (Service.language == "en-US")
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Service (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                    else if (Service.language == "de-DE")
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Dienst (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                }
+                                else if (sensor_item.category == 4) // Ping
+                                {
+                                    if (Service.language == "en-US")
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Ping (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                    else if (Service.language == "de-DE")
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Ping (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                 }
 
                                 sensor_item.notification_treshold_count = 0;

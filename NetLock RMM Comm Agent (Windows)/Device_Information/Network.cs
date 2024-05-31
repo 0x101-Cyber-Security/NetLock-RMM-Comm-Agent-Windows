@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,6 +104,34 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                 Logging.Handler.Error("Device_Information.Network.Network_Adapter_Information", "Error", ex.ToString());
                 return "[]";
             }
+        }
+
+        public static bool Ping(string address, int timeout)
+        {
+            bool pingable = false;
+            Ping pinger = null;
+
+            try
+            {
+                pinger = new Ping();
+                PingReply reply = pinger.Send(address, timeout);
+                pingable = reply.Status == IPStatus.Success;
+            }
+            catch (PingException)
+            {
+                // Fehler beim Senden der Ping-Anfrage
+            }
+            finally
+            {
+                if (pinger != null)
+                {
+                    pinger.Dispose();
+                }
+            }
+
+            Logging.Handler.Device_Information("Device_Information.Network.Ping", "address pingable", address + " (" + pingable.ToString() + ")");
+
+            return pingable;
         }
     }
 }
