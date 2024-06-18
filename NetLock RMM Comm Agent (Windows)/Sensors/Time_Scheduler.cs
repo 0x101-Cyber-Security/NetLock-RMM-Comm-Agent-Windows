@@ -1983,73 +1983,73 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
                                     {
                                         // CPU usage
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name +  ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor CPU (" + sensor_item.name +  ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor CPU (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor CPU (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 1) // RAM usage
                                     {
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor RAM (" + sensor_item.name + ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor RAM (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor RAM (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 2) // Disks
                                     {
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Drive (" + sensor_item.name + ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Drive (" + sensor_item.name + ")", notification_history + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Laufwerk (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Laufwerk (" + sensor_item.name + ")", notification_history + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                     }
                                     else if (sensor_item.sub_category == 3) // CPU process usage
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process CPU usage (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Process CPU usage (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-CPU-Nutzung (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Prozess-CPU-Nutzung (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                     else if (sensor_item.sub_category == 4) // RAM process usage in %
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Process RAM usage (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Prozess-RAM-Nutzung (%) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                     else if (sensor_item.sub_category == 5) // RAM process usage in MB
                                     {                                         
                                         if (Service.language == "en-US")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Process RAM usage (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Process RAM usage (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Further information" + additional_details + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                         else if (Service.language == "de-DE")
-                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Sensor Prozess-RAM-Nutzung (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
+                                            Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Sensor Prozess-RAM-Nutzung (MB) (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Weitere Informationen" + additional_details + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);                       
                                     }
                                 }
                                 else if (sensor_item.category == 1) // Windows Eventlog
                                 {
                                     if (Service.language == "en-US")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                     else if (Service.language == "de-DE")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Windows Eventlog (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                 }
                                 else if (sensor_item.category == 2) // PowerShell
                                 {
                                     if (Service.language == "en-US")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "PowerShell (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "PowerShell (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                     else if (Service.language == "de-DE")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "PowerShell (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "PowerShell (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                 }
                                 else if (sensor_item.category == 3) // Service
                                 {
                                     if (Service.language == "en-US")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Service (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Service (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                     else if (Service.language == "de-DE")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Dienst (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Dienst (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                 }
                                 else if (sensor_item.category == 4) // Ping
                                 {
                                     if (Service.language == "en-US")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Ping (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Ping (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "History of actions" + Environment.NewLine + action_history, 2, 0);
                                     else if (Service.language == "de-DE")
-                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensors", "Ping (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
+                                        Events.Logger.Insert_Event(sensor_item.severity.ToString(), "Sensor", "Ping (" + sensor_item.name + ")", notification_history + Environment.NewLine + Environment.NewLine + "Historie der Aktionen" + Environment.NewLine + action_history, 2, 1);
                                 }
 
                                 sensor_item.notification_treshold_count = 0;

@@ -486,9 +486,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_SCAN_COMPLETED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan job completed.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scan job completed.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanauftrag fertiggestellt.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanauftrag fertiggestellt.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SCAN_COMPLETED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -519,9 +519,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_RTP_ENABLED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Real-time protection enabled.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Real-time protection enabled.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Echtzeitschutz aktiviert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Echtzeitschutz aktiviert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
 
                         //Trigger trayicon notification | NetLock legacy code. Will be worked on in the future.
                         /*if (NetLock_Agent_Service.tray_icon_notifications_antivirus)
@@ -604,9 +604,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_SIGNATURE_UPDATED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Signatures updated.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SIGNATURE_UPDATED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Signatures updated.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SIGNATURE_UPDATED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Signaturen aktualisiert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SIGNATURE_UPDATED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Signaturen aktualisiert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_SIGNATURE_UPDATED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                         
                         //Trigger trayicon notification | NetLock legacy code. Will be worked on in the future.
                         /*
@@ -977,9 +977,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_MALWARE_HISTORY_DELETE", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Deleted the history of malware.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_MALWARE_HISTORY_DELETE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Deleted the history of malware.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_MALWARE_HISTORY_DELETE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Der Verlauf von Malware wurde gelöscht.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_MALWARE_HISTORY_DELETE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Der Verlauf von Malware wurde gelöscht.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_MALWARE_HISTORY_DELETE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1273,9 +1273,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_PLATFORM_ALMOSTOUTOFDATE", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "The platform will soon be outdated.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_PLATFORM_ALMOSTOUTOFDATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "The platform will soon be outdated.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_PLATFORM_ALMOSTOUTOFDATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Die Plattform wird bald veraltet sein.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_PLATFORM_ALMOSTOUTOFDATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Die Plattform wird bald veraltet sein.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_PLATFORM_ALMOSTOUTOFDATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1306,9 +1306,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_OS_EXPIRING", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Antimalware support for this OS version will end soon.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_OS_EXPIRING" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Antimalware support for this OS version will end soon.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_OS_EXPIRING" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Der AntiVirus Support für diese Betriebssystemversion endet bald.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_OS_EXPIRING" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Der AntiVirus Support für diese Betriebssystemversion endet bald.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_OS_EXPIRING" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1444,9 +1444,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_RTP_FEATURE_RECOVERED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("1", "Microsoft Defender Antivirus", "Real-time protection recovered from failure.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_RECOVERED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("1", "Microsoft Defender Antivirus", "Real-time protection recovered from failure.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_RECOVERED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("1", "Microsoft Defender Antivirus", "Der Echtzeitschutz wurde nach einem Fehler wiederhergestellt.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_RECOVERED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("1", "Microsoft Defender Antivirus", "Der Echtzeitschutz wurde nach einem Fehler wiederhergestellt.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_RECOVERED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1477,9 +1477,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_RTP_FEATURE_CONFIGURED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "The real-time protection configuration has been changed.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_CONFIGURED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "The real-time protection configuration has been changed.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_CONFIGURED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Die Konfiguration des Echtzeitschutzes wurde geändert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_CONFIGURED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Die Konfiguration des Echtzeitschutzes wurde geändert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_RTP_FEATURE_CONFIGURED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1510,9 +1510,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_CONFIG_CHANGED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "The configuration of the antimalware platform has changed.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_CONFIG_CHANGED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "The configuration of the antimalware platform has changed.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_CONFIG_CHANGED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Die Konfiguration der Antimalware-Plattform hat sich geändert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_CONFIG_CHANGED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Die Konfiguration der Antimalware-Plattform hat sich geändert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_CONFIG_CHANGED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1578,9 +1578,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_ANTISPYWARE_ENABLED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanning for malware and other potentially unwanted software is enabled.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTISPYWARE_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Scanning for malware and other potentially unwanted software is enabled.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTISPYWARE_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Das Scannen nach Malware und anderer potenziell unerwünschter Software ist aktiviert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTISPYWARE_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Das Scannen nach Malware und anderer potenziell unerwünschter Software ist aktiviert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTISPYWARE_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1647,9 +1647,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_ANTIVIRUS_ENABLED", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Virus scanning is enabled.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTIVIRUS_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Virus scanning is enabled.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTIVIRUS_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Der Virenscan ist aktiviert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTIVIRUS_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);
+                            Events.Logger.Insert_Event("0", "Microsoft Defender Antivirus", "Der Virenscan ist aktiviert.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_ANTIVIRUS_ENABLED" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);
                     }
                 }
 
@@ -1750,9 +1750,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         Logging.Handler.Microsoft_Defender_Antivirus("Helper.Eventlog_Reader.Microsoft_Defender_AntiVirus.MALWAREPROTECTION_EXPIRATION_WARNING_STATE", "Event", eventRecord.TimeCreated + Environment.NewLine + eventRecord.FormatDescription());
                         
                         if (Service.language == "en-US")
-                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "The antimalware platform is about to expire.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_EXPIRATION_WARNING_STATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 0);
+                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "The antimalware platform is about to expire.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_EXPIRATION_WARNING_STATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 0);
                         else if (Service.language == "de-DE")
-                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Die Antimalware-Plattform läuft bald ab.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_EXPIRATION_WARNING_STATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 2, 1);    
+                            Events.Logger.Insert_Event("2", "Microsoft Defender Antivirus", "Die Antimalware-Plattform läuft bald ab.", "Timestamp: " + eventRecord.TimeCreated + Environment.NewLine + "Sensor: MALWAREPROTECTION_EXPIRATION_WARNING_STATE" + Environment.NewLine + Environment.NewLine + eventRecord.FormatDescription(), 0, 1);    
                     }
                 }
 

@@ -16,6 +16,9 @@ using System.IO;
 using Microsoft.Win32;
 using NetLock_RMM_Comm_Agent_Windows.Events;
 using System.Security.Cryptography.X509Certificates;
+using System.Net.Sockets;
+using System.Threading;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace NetLock_RMM_Comm_Agent_Windows
 {
@@ -124,11 +127,15 @@ namespace NetLock_RMM_Comm_Agent_Windows
             // Setup virtual datatables
             Initialization.Health.Setup_Events_Virtual_Datatable();
 
+            // Setup local server
+            _ = Task.Run(async () => await Local_Server_Start());
+
+
             // Setup synchronize timer
             try
             {
                 sync_timer = new System.Timers.Timer(600000); //sync 10 minutes
-                sync_timer.Elapsed += new ElapsedEventHandler(Initialize);
+                sync_timer.Elapsed += new ElapsedEventHandler(Initialize_Timer_Tick);
                 sync_timer.Enabled = true;
             }
             catch (Exception ex)
@@ -152,7 +159,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
             try
             {
                 start_timer = new System.Timers.Timer(2500);
-                start_timer.Elapsed += new ElapsedEventHandler(Initialize);
+                start_timer.Elapsed += new ElapsedEventHandler(Initialize_Timer_Tick);
                 start_timer.Enabled = true;
             }
             catch (Exception ex)
@@ -169,7 +176,12 @@ namespace NetLock_RMM_Comm_Agent_Windows
             Logging.Handler.Debug("Service", "Service stopped", "Service stopped");
         }
 
-        private async void Initialize(object sender, ElapsedEventArgs e)
+        private async void Initialize_Timer_Tick(object sender, ElapsedEventArgs e)
+        {
+            await Initialize(false);
+        }
+
+        private async Task Initialize(bool forced)
         {
             Logging.Handler.Debug("Service.Initialize", "Initialize", "Start");
 
@@ -184,8 +196,6 @@ namespace NetLock_RMM_Comm_Agent_Windows
             if (connection_status)
             {
                 Logging.Handler.Debug("Service.Initialize", "connection_status", "Online mode.");
-
-                bool forced = false;
 
                 //Force client sync if settings are missing
                 if (File.Exists(Application_Paths.program_data_netlock_policy_database) == false || File.Exists(Application_Paths.program_data_netlock_events_database) == false)
@@ -376,5 +386,99 @@ namespace NetLock_RMM_Comm_Agent_Windows
 
             Logging.Handler.Debug("Service.Process_Events_Tick", "Stop", "");
         }
+
+
+        #region Local Server
+
+        private const int Port = 5000;
+        private TcpClient _client;
+        private NetworkStream _stream;
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        private async Task Local_Server_Start()
+        {
+            try
+            {
+                Logging.Handler.Local_Server("Service.Local_Server_Start", "Start", "Starting server...");
+                TcpListener listener = new TcpListener(IPAddress.Parse("127.0.0.1"), Port);
+                listener.Start();
+                Logging.Handler.Local_Server("Service.Local_Server_Start", "Start", "Server started. Waiting for connection...");
+
+                while (!_cancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    var client = await listener.AcceptTcpClientAsync();
+                    if (client != null)
+                    {
+                        _ = Local_Server_Handle_Client(client, _cancellationTokenSource.Token);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.Local_Server_Start", "Start", ex.ToString());
+            }
+        }
+
+        private async Task Local_Server_Handle_Client(TcpClient client, CancellationToken cancellationToken)
+        {
+            Logging.Handler.Local_Server("Service.Local_Server_Handle_Client", "Start", "Handling client...");
+
+            _client = client;
+            _stream = _client.GetStream();
+
+            byte[] buffer = new byte[1024];
+
+            try
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    int bytesRead = await _stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
+                    if (bytesRead == 0) // Client disconnected
+                        break;
+
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    Logging.Handler.Local_Server("Service.Local_Server_Handle_Client", "Start", $"Received message: {message}");
+
+                    // Process the message and optionally send a response
+                    await Local_Server_Send_Message("Message received.");
+
+                    if (message == "sync")
+                    {
+                        await Initialize(true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.Local_Server_Handle_Client", "Error", ex.ToString());
+            }
+            finally
+            {
+                _stream.Close();
+                _client.Close();
+            }
+        }
+
+        public async Task Local_Server_Send_Message(string message)
+        {
+            try
+            {
+                if (_stream != null && _client.Connected)
+                {
+                    byte[] messageBytes = Encoding.UTF8.GetBytes(message);
+                    await _stream.WriteAsync(messageBytes, 0, messageBytes.Length);
+                    await _stream.FlushAsync();
+                    Logging.Handler.Local_Server("Service.Local_Server_Handle_Client", "Start", $"Sent message: {message}");
+                }
+                else
+                    Logging.Handler.Local_Server("Service.Local_Server_Handle_Client", "Start", "No client connected to send the message.");
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.Local_Server_Handle_Client", "Start", ex.ToString());
+            }
+        }       
+
+        #endregion
     }
 }
