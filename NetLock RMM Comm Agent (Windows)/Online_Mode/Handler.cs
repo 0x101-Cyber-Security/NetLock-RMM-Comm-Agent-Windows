@@ -326,7 +326,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     mainboard = mainboard,
                     gpu = gpu,
                     ram = ram,
-                    tpm = tpm_IsEnabled_InitialValue,                };
+                    tpm = tpm_IsEnabled_InitialValue,                
+                };
 
                 // Create the object that contains the device_identity object
                 var jsonObject = new { device_identity = identity };
@@ -334,6 +335,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 // Serialize the object to a JSON string
                 string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
                 Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "json", json);
+
+                // Declare public
+                Service.device_identity_json = json;
 
                 // Create a HttpClient instance
                 using (var httpClient = new HttpClient())

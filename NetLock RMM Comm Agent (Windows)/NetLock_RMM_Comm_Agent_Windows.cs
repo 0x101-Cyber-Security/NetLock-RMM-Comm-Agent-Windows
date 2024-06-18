@@ -42,6 +42,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         // Device identity
         public static string device_name = String.Empty;
         public static string hwid = String.Empty;
+        public static string device_identity_json = String.Empty;
 
         // Server communication
         public static string communication_server = String.Empty;
@@ -442,10 +443,19 @@ namespace NetLock_RMM_Comm_Agent_Windows
                     // Process the message and optionally send a response
                     await Local_Server_Send_Message("Message received.");
 
+                    if (message == "get_device_identity")
+                    {
+                        if (!String.IsNullOrEmpty(device_identity_json))
+                            await Local_Server_Send_Message("device_identity$" + device_identity_json);
+                    }
+
+                    // Force sync
                     if (message == "sync")
                     {
+                        Logging.Handler.Local_Server("Service.Local_Server_Handle_Client", "Sync requested.", "");
                         await Initialize(true);
                     }
+                    
                 }
             }
             catch (Exception ex)
