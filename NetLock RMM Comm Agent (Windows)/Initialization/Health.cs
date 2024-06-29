@@ -92,6 +92,18 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             Microsoft_Defender_Firewall.Handler.NetLock_Uninstaller_Rule();
         }
 
+        // Check if the databases are in place
+        public static void Check_Databases()
+        {
+            // Check if the databases are in place
+            if (!File.Exists(Application_Paths.program_data_netlock_policy_database))
+                Database.NetLock_Data_Setup();
+
+            // Check if the events database is in place
+            if (!File.Exists(Application_Paths.program_data_netlock_events_database))
+                Database.NetLock_Events_Setup();
+        }
+
         public static void Clean_Service_Restart()
         {
             Logging.Handler.Debug("Initialization.Health.Clean_Service_Restart", "Starting.", "");

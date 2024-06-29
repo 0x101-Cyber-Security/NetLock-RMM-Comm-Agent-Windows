@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Newtonsoft.Json;
 using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Reflection;
 using System.Net.NetworkInformation;
 using Microsoft.Win32;
@@ -333,7 +332,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 var jsonObject = new { device_identity = identity };
 
                 // Serialize the object to a JSON string
-                string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
+                string json = JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
                 Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "json", json);
 
                 // Declare public
@@ -363,7 +362,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                             if (!Service.authorized)
                             {
                                 // Write the new authorization status to the server config JSON
-                                string new_server_config_json = JsonConvert.SerializeObject(new
+                                var new_server_config = new
                                 {
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
@@ -376,7 +375,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "1",
-                                }, Formatting.Indented);
+                                };
+
+                                string new_server_config_json = JsonSerializer.Serialize(new_server_config, new JsonSerializerOptions { WriteIndented = true });
 
                                 // Write the new server config JSON to the file
                                 File.WriteAllText(Application_Paths.program_data_server_config_json, new_server_config_json);
@@ -389,7 +390,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                             if (Service.authorized)
                             {
                                 // Write the new authorization status to the server config JSON
-                                string new_server_config_json = JsonConvert.SerializeObject(new
+                                var new_server_config = new
                                 {
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
@@ -402,7 +403,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "0",
-                                }, Formatting.Indented);
+                                };
+
+                                string new_server_config_json = JsonSerializer.Serialize(new_server_config, new JsonSerializerOptions { WriteIndented = true });
 
                                 // Write the new server config JSON to the file
                                 File.WriteAllText(Application_Paths.program_data_server_config_json, new_server_config_json);
@@ -572,7 +575,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 };
 
                 // Konvertiere das Objekt in ein JSON-String
-                string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
+                string json = JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
                 Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "json", json);
 
                 // Create a HttpClient instance
@@ -599,7 +602,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                             if (!Service.authorized)
                             {
                                 // Write the new authorization status to the server config JSON
-                                string new_server_config_json = JsonConvert.SerializeObject(new
+                                var new_server_config = new
                                 {
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
@@ -612,7 +615,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "1",
-                                }, Formatting.Indented);
+                                };
+
+                                string new_server_config_json = JsonSerializer.Serialize(new_server_config, new JsonSerializerOptions { WriteIndented = true });
 
                                 // Write the new server config JSON to the file
                                 File.WriteAllText(Application_Paths.program_data_server_config_json, new_server_config_json);
@@ -625,7 +630,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                             if (Service.authorized)
                             {
                                 // Write the new authorization status to the server config JSON
-                                string new_server_config_json = JsonConvert.SerializeObject(new
+                                var new_server_config = new
                                 {
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
@@ -638,7 +643,9 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = "0",
-                                }, Formatting.Indented);
+                                };
+
+                                string new_server_config_json = JsonSerializer.Serialize(new_server_config, new JsonSerializerOptions { WriteIndented = true });
 
                                 // Write the new server config JSON to the file
                                 File.WriteAllText(Application_Paths.program_data_server_config_json, new_server_config_json);
@@ -754,7 +761,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 var jsonObject = new { device_identity = identity };
 
                 // Serialize the object to a JSON string
-                string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
+                string json = JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
                 Logging.Handler.Debug("Online_Mode.Handler.Policy", "json", json);
 
                 // Create a HttpClient instance

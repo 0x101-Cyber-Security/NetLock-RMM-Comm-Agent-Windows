@@ -103,6 +103,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
             Health.Check_Directories();
             Health.Check_Registry();
             Health.Check_Firewall();
+            Health.Check_Databases();
 
             /* Check OS version (legacy code for windows 7. Need to verify its still working & not causing security issues 
             string os_version = Environment.OSVersion.Version.ToString();
