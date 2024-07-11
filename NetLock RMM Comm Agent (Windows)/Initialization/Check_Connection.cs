@@ -8,21 +8,109 @@ using System.Net.Sockets;
 using System.Runtime;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Initialization
 {
     internal class Check_Connection
     {
-        public static async Task<bool> Communication_Server()
+        public static async Task Check_Servers()
         {
-            string communication_server_regex = @"(?<=://)(.*?)(?=:|$)";
+            try
+            {
+                // Check connection to main communication server
+                if (await Hostname_IP_Port(Service.main_communication_server, "main_communication_server"))
+                {
+                    Service.communication_server = Service.main_communication_server;
+                    Service.communication_server_status = true;
+                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Main communication server connection successful.", "");
+                }
+                else if (await Hostname_IP_Port(Service.fallback_communication_server, "fallback_communication_server")) // Check connection to fallback communication server
+                {
+                    Service.communication_server = Service.fallback_communication_server;
+                    Service.communication_server_status = true;
+                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Fallback communication server connection successful.", "");
+                }
+                else // If both connections fail, exit the program
+                {
+                    Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Main & fallback communication server connection failed.", "");
+                    Service.communication_server_status = false;
+                }
+
+                // Check connection to main update server
+                if (await Hostname_IP_Port(Service.main_update_server, "main_update_server"))
+                {
+                    Service.update_server = Service.main_update_server;
+                    Service.update_server_status = true;
+                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Main update server connection successful.", "");
+                }
+                else if (await Hostname_IP_Port(Service.fallback_update_server, "fallback_update_server")) // Check connection to fallback update server
+                {
+                    Service.update_server = Service.fallback_update_server;
+                    Service.update_server_status = true;
+                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Fallback update server connection successful.", "");
+                }
+                else // If both connections fail, exit the program
+                {
+                    Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Main & fallback update server connection failed.", "");
+                    Service.update_server_status = false;
+                }
+
+                // Check connection to main trust server
+                if (await Hostname_IP_Port(Service.main_trust_server, "main_trust_server"))
+                {
+                    Service.trust_server = Service.main_trust_server;
+                    Service.trust_server_status = true;
+                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Main trust server connection successful.", "");
+                }
+                else if (await Hostname_IP_Port(Service.fallback_trust_server, "fallback_trust_server")) // Check connection to fallback trust server
+                {
+                    Service.trust_server = Service.fallback_trust_server;
+                    Service.trust_server_status = true;
+                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Fallback trust server connection successful.", "");
+                }
+                else // If both connections fail, exit the program
+                {
+                    Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Main & fallback trust server connection failed.", "");
+                    Service.trust_server_status = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Failed", ex.ToString());
+            }
+        }
+
+        public static async Task<bool> Hostname_IP_Port(string server, string description)
+        {
+            Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Hostname_IP_Port", "Server: " + server + " Description: " + description);
+
+            string communication_server_regex = @"([a-zA-Z0-9\-\.]+):\d+";
             string communication_server_port_regex = @"(?<=:)(\d+)";
 
             // Extract server name
-            Match main_communication_server_match = Regex.Match(Service.main_communication_server, communication_server_regex);
-            Match main_communication_server_port_match = Regex.Match(Service.main_communication_server, communication_server_port_regex);
-            Match fallback_communication_server_match = Regex.Match(Service.fallback_communication_server, communication_server_regex);
-            Match fallback_communication_server_port_match = Regex.Match(Service.fallback_communication_server, communication_server_port_regex);
+            Match server_match = Regex.Match(server, communication_server_regex);
+            Match port_match = Regex.Match(server, communication_server_port_regex);
+
+            // Output server name
+            if (server_match.Success)
+            {
+                Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Server", server_match.Groups[0].Value);
+            }
+            else
+            {
+                Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Server", "Server could not be extracted.");
+            }
+
+            // Output port
+            if (port_match.Success)
+            {
+                Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Port", "" + port_match.Groups[0].Value);
+            }
+            else
+            {
+                Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Port", "Port could not be extracted.");
+            }
 
             // Check main communication server
             try
@@ -30,206 +118,26 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 using (var client = new TcpClient())
                 {
                     // Check if main communication server is set
-                    if (main_communication_server_match.Success && main_communication_server_port_match.Success)
+                    if (server_match.Success && port_match.Success)
                     {
-                        Logging.Handler.Debug("Check_Connection", "Communication_Server (main)", $"Server: {main_communication_server_match.Groups[0].Value} Port: {main_communication_server_port_match.Groups[0].Value}");
+                        Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Hostname_IP_Port", "Server: " + server_match.Groups[1].Value + " Port: " + port_match.Groups[1].Value);
 
                         // Connect to the main communication server
-                        await client.ConnectAsync(main_communication_server_match.Groups[0].Value, Convert.ToInt32(main_communication_server_port_match.Groups[0].Value));
-                        
-                        Service.communication_server = Service.main_communication_server;
+                        await client.ConnectAsync(server_match.Groups[1].Value, Convert.ToInt32(port_match.Groups[0].Value));
 
-                        Logging.Handler.Debug("Check_Connection", "Communication_Server (main)", "Connection to communication server successful");
+                        Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Hostname_IP_Port", "Connection to communication server successful");
 
                         return true;
                     }
                     else
                     {
-                        Logging.Handler.Debug("Check_Connection", "Communication_Server (main)", "Server or port empty.");
+                        Logging.Handler.Error("Initialization.Check_Connection.Hostname_IP_Port", "Hostname_IP_Port", "Server or port empty.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.Handler.Debug("Check_Connection", "Communication_Server (main)", ex.ToString());
-            }
-
-            // Check fallback communication server
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    // Check if fallback communication server is set
-                    if (fallback_communication_server_match.Success && fallback_communication_server_port_match.Success)
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Communication_Server (fallback)", $"Server: {fallback_communication_server_match.Groups[0].Value} Port: {fallback_communication_server_port_match.Groups[0].Value}");
-
-                        // Connect to the fallback communication server
-                        await client.ConnectAsync(fallback_communication_server_match.Groups[0].Value, Convert.ToInt32(fallback_communication_server_port_match.Groups[0].Value));
-
-                        Service.communication_server = Service.fallback_communication_server;
-
-                        Logging.Handler.Debug("Check_Connection", "Communication_Server (fallback)", "Connection to communication server successful");
-
-                        return true;
-                    }
-                    else
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Communication_Server (fallback)", "Server or port empty.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Handler.Debug("Check_Connection", "Communication_Server (fallback)", ex.ToString());
-            }
-
-            return false;
-        }
-
-        public static async Task<bool> Trust_Server()
-        {
-            string trust_server_regex = @"(?<=://)(.*?)(?=:|$)";
-            string trust_server_port_regex = @"(?<=:)(\d+)";
-
-            // Extract server name
-            Match main_trust_server_match = Regex.Match(Service.main_trust_server, trust_server_regex);
-            Match main_trust_server_port_match = Regex.Match(Service.main_trust_server, trust_server_port_regex);
-            Match fallback_trust_server_match = Regex.Match(Service.fallback_trust_server, trust_server_regex);
-            Match fallback_trust_server_port_match = Regex.Match(Service.fallback_trust_server, trust_server_port_regex);
-
-            // Check main trust server
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    // Check if main trust server is set
-                    if (main_trust_server_match.Success && main_trust_server_port_match.Success)
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Trust_Server (main)", $"Server: {main_trust_server_match.Groups[0].Value} Port: {main_trust_server_port_match.Groups[0].Value}");
-
-                        // Connect to the main trust server
-                        await client.ConnectAsync(main_trust_server_match.Groups[0].Value, Convert.ToInt32(main_trust_server_port_match.Groups[0].Value));
-
-                        Service.trust_server = Service.main_trust_server;
-
-                        Logging.Handler.Debug("Check_Connection", "Trust_Server (main)", "Connection to trust server successful");
-
-                        return true;
-                    }
-                    else
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Trust_Server (main)", "Server or port empty.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Handler.Debug("Check_Connection", "Trust_Server (main)", ex.ToString());
-            }
-
-            // Check fallback trust server
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    // Check if fallback trust server is set
-                    if (fallback_trust_server_match.Success && fallback_trust_server_port_match.Success)
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Trust_Server (fallback)", $"Server: {fallback_trust_server_match.Groups[0].Value} Port: {fallback_trust_server_port_match.Groups[0].Value}");
-
-                        // Connect to the fallback trust server
-                        await client.ConnectAsync(fallback_trust_server_match.Groups[0].Value, Convert.ToInt32(fallback_trust_server_port_match.Groups[0].Value));
-
-                        Service.trust_server = Service.fallback_trust_server;
-
-                        Logging.Handler.Debug("Check_Connection", "Trust_Server (fallback)", "Connection to trust server successful");
-
-                        return true;
-                    }
-                    else
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Trust_Server (fallback)", "Server or port empty.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Handler.Debug("Check_Connection", "Trust_Server (fallback)", ex.ToString());
-            }
-
-            return false;
-        }
-
-        public static async Task<bool> Update_Server()
-        {
-            string update_server_regex = @"(?<=://)(.*?)(?=:|$)";
-            string update_server_port_regex = @"(?<=:)(\d+)";
-
-            // Extract server name
-            Match main_update_server_match = Regex.Match(Service.main_update_server, update_server_regex);
-            Match main_update_server_port_match = Regex.Match(Service.main_update_server, update_server_port_regex);
-            Match fallback_update_server_match = Regex.Match(Service.fallback_update_server, update_server_regex);
-            Match fallback_update_server_port_match = Regex.Match(Service.fallback_update_server, update_server_port_regex);
-
-            // Check main update server
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    // Check if main update server is set
-                    if (main_update_server_match.Success && main_update_server_port_match.Success)
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Update_Server (main)", $"Server: {main_update_server_match.Groups[0].Value} Port: {main_update_server_port_match.Groups[0].Value}");
-
-                        // Connect to the main update server
-                        await client.ConnectAsync(main_update_server_match.Groups[0].Value, Convert.ToInt32(main_update_server_port_match.Groups[0].Value));
-
-                        Service.update_server = Service.main_update_server;
-
-                        Logging.Handler.Debug("Check_Connection", "Update_Server (main)", "Connection to update server successful");
-
-                        return true;
-                    }
-                    else
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Update_Server (main)", "Server or port empty.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Handler.Debug("Check_Connection", "Update_Server (main)", ex.ToString());
-            }
-
-            // Check fallback update server
-            try
-            {
-                using (var client = new TcpClient())
-                {
-                    // Check if fallback update server is set
-                    if (fallback_update_server_match.Success && fallback_update_server_port_match.Success)
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Update_Server (fallback)", $"Server: {fallback_update_server_match.Groups[0].Value} Port: {fallback_update_server_port_match.Groups[0].Value}");
-
-                        // Connect to the fallback update server
-                        await client.ConnectAsync(fallback_update_server_match.Groups[0].Value, Convert.ToInt32(fallback_update_server_port_match.Groups[0].Value));
-
-                        Service.update_server = Service.fallback_update_server;
-
-                        Logging.Handler.Debug("Check_Connection", "Update_Server (fallback)", "Connection to update server successful");
-
-                        return true;
-                    }
-                    else
-                    {
-                        Logging.Handler.Debug("Check_Connection", "Update_Server (fallback)", "Server or port empty.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Handler.Debug("Check_Connection", "Update_Server (fallback)", ex.ToString());
+                Logging.Handler.Error("Initialization.Check_Connection.Hostname_IP_Port", "Hostname_IP_Port", ex.ToString());
             }
 
             return false;

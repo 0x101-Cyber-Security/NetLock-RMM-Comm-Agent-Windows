@@ -48,6 +48,9 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string communication_server = String.Empty;
         public static string trust_server = String.Empty;
         public static string update_server = String.Empty;
+        public static bool communication_server_status = false;
+        public static bool trust_server_status = false;
+        public static bool update_server_status = false;
 
         // Timers
         public static System.Timers.Timer start_timer;
@@ -192,10 +195,10 @@ namespace NetLock_RMM_Comm_Agent_Windows
                 start_timer.Dispose();
 
             // Check if connection to communication server is available
-            connection_status = Check_Connection.Communication_Server().Result;
+            await Initialization.Check_Connection.Check_Servers();
 
             // Online mode
-            if (connection_status)
+            if (communication_server_status)
             {
                 Logging.Handler.Debug("Service.Initialize", "connection_status", "Online mode.");
 

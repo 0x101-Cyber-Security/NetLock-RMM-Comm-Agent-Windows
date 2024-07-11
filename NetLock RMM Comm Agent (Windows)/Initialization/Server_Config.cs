@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.IO;
+using System.Security.Principal;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Initialization
 {
@@ -164,7 +164,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Service.access_key = await Randomizer.Handler.Generate_Access_Key(32);
 
                         // Write the new access key to the server config file
-                        string new_server_config_json = JsonConvert.SerializeObject(new
+                        // Create the JSON object
+                        var jsonObject = new
                         {
                             main_communication_server = Service.main_communication_server,
                             fallback_communication_server = Service.fallback_communication_server,
@@ -177,10 +178,14 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                             language = Service.language,
                             access_key = Service.access_key,
                             authorized = "0",
-                        }, Formatting.Indented);
+                        };
+
+                        // Convert the object into a JSON string
+                        string json = JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
+                        Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "json", json);
 
                         // Write the new server config JSON to the file
-                        File.WriteAllText(Application_Paths.program_data_server_config_json, new_server_config_json);
+                        File.WriteAllText(Application_Paths.program_data_server_config_json, json);
                     }
                     else
                     {

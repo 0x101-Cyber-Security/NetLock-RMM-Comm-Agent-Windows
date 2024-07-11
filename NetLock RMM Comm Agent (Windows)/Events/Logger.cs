@@ -85,7 +85,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                 Logging.Handler.Debug("Events.Logger.Process_Events", "", "Started");
 
                 int count = 0;
-                bool connection_status = false;
 
                 using (SQLiteConnection db_conn = new SQLiteConnection(Application_Settings.NetLock_Events_Database_String))
                 {
@@ -99,17 +98,18 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                         count++;
 
                     //If events existing to report, do connection check
-                    if (count > 0)
-                        connection_status = await Initialization.Check_Connection.Communication_Server();
-                    else //No events
+                    if (count == 0)
                     {
                         Logging.Handler.Debug("Events.Logger.Process_Events", "Get Events", "No events. Canceling event processing...");
                         return;
                     }
 
                     //Connection result
-                    if (connection_status == false)
+                    if (!Service.communication_server_status)
+                    {
                         Logging.Handler.Debug("Events.Logger.Process_Events", "Connection Check", "Not online.");
+                        return;
+                    }
                     else
                         Logging.Handler.Debug("Events.Logger.Process_Events", "Connection Check", "Online.");
 
@@ -124,7 +124,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                         //Send status if not send already 
                         bool status_send = false;
 
-                        if (connection_status && Encryption.String_Encryption.Decrypt(reader["status"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) == "0")
+                        if (Encryption.String_Encryption.Decrypt(reader["status"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) == "0")
                             status_send = await Events.Sender.Send_Event(Encryption.String_Encryption.Decrypt(reader["severity"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["reported_by"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["event"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["description"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["type"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["language"].ToString(), Application_Settings.NetLock_Local_Encryption_Key));
 
                         //If status send success, update its status in db
