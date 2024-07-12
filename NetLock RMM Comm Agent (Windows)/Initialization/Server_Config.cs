@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
 using System.Security.Principal;
+using System.Data.SQLite;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Initialization
 {
@@ -21,6 +22,35 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 // Parse the JSON
                 using (JsonDocument document = JsonDocument.Parse(server_config_json))
                 {
+                    // Get ssl as boolean
+                    try
+                    {
+                        JsonElement element = document.RootElement.GetProperty("ssl");
+                        Service.ssl = element.GetBoolean();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (ssl)", Service.ssl.ToString());
+
+                        if (Service.ssl)
+                            Service.http_https = "https://";
+                        else
+                            Service.http_https = "http://";
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (ssl) - Parsing", ex.ToString());
+                    }
+
+                    // Get guid
+                    try
+                    {
+                        JsonElement element = document.RootElement.GetProperty("guid");
+                        Service.guid = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (guid)", Service.guid);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (guid) - Parsing", ex.ToString());
+                    }
+
                     // Get the main communication server
                     try
                     {
@@ -147,7 +177,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                     try
                     {
                         JsonElement element = document.RootElement.GetProperty("authorized");
-                        Service.authorized = element.ToString() == "1" ? true : false;
+                        Service.authorized = element.GetBoolean();
                         Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (authorized)", Service.authorized.ToString());
                     }
                     catch (Exception ex)
@@ -167,6 +197,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         // Create the JSON object
                         var jsonObject = new
                         {
+                            ssl = Service.ssl,
+                            guid = Service.guid,
                             main_communication_server = Service.main_communication_server,
                             fallback_communication_server = Service.fallback_communication_server,
                             main_update_server = Service.main_update_server,
@@ -177,7 +209,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                             location_name = Service.location_name,
                             language = Service.language,
                             access_key = Service.access_key,
-                            authorized = "0",
+                            authorized = false,
                         };
 
                         // Convert the object into a JSON string

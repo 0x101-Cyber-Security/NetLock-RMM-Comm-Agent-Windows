@@ -169,10 +169,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    Logging.Handler.Debug("Events.Sender.Send_Event", "communication_server", Service.communication_server + "/Agent/Windows/Events");
+                    Logging.Handler.Debug("Events.Sender.Send_Event", "communication_server", Service.http_https + Service.communication_server + "/Agent/Windows/Events");
 
                     // Send the JSON data to the server
-                    var response = await httpClient.PostAsync(Service.communication_server + "/Agent/Windows/Events", new StringContent(json, Encoding.UTF8, "application/json"));
+                    var response = await httpClient.PostAsync(Service.http_https + Service.communication_server + "/Agent/Windows/Events", new StringContent(json, Encoding.UTF8, "application/json"));
 
                     // Check if the request was successful
                     if (response.IsSuccessStatusCode)
@@ -189,6 +189,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                                 // Write the new authorization status to the server config JSON
                                 string new_server_config_json = JsonConvert.SerializeObject(new
                                 {
+                                    ssl = Service.ssl,
+                                    guid = Service.guid,
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
                                     main_update_server = Service.main_update_server,
@@ -198,7 +200,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                                     tenant_name = Service.tenant_name,
                                     location_name = Service.location_name,
                                     access_key = Service.access_key,
-                                    authorized = "0",
+                                    authorized = false,
                                 }, Formatting.Indented);
 
                                 // Write the new server config JSON to the file

@@ -58,7 +58,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                     Logging.Handler.Debug("Initialization.Version_Handler.Check_Version", "communication_server", Service.communication_server + "/Agent/Windows/Verify_Device");
 
                     // Send the JSON data to the server
-                    var response = await httpClient.PostAsync(Service.communication_server + "/Agent/Windows/Check_Version", new StringContent(json, Encoding.UTF8, "application/json"));
+                    var response = await httpClient.PostAsync(Service.http_https + Service.communication_server + "/Agent/Windows/Check_Version", new StringContent(json, Encoding.UTF8, "application/json"));
 
                     // Check if the request was successful
                     if (response.IsSuccessStatusCode)

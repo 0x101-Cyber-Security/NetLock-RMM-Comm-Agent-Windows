@@ -19,6 +19,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Sockets;
 using System.Threading;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.Policy;
 
 namespace NetLock_RMM_Comm_Agent_Windows
 {
@@ -27,6 +28,8 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool debug_mode = false; //enables/disables logging
 
         // Server config
+        public static bool ssl = false;
+        public static string guid = String.Empty;
         public static string main_communication_server = String.Empty;
         public static string fallback_communication_server = String.Empty;
         public static string main_update_server = String.Empty;
@@ -39,11 +42,6 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string access_key = String.Empty;
         public static bool authorized = false;
 
-        // Device identity
-        public static string device_name = String.Empty;
-        public static string hwid = String.Empty;
-        public static string device_identity_json = String.Empty;
-
         // Server communication
         public static string communication_server = String.Empty;
         public static string trust_server = String.Empty;
@@ -51,6 +49,12 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool communication_server_status = false;
         public static bool trust_server_status = false;
         public static bool update_server_status = false;
+        public static string http_https = String.Empty;
+
+        // Device identity
+        public static string device_name = String.Empty;
+        public static string hwid = String.Empty;
+        public static string device_identity_json = String.Empty;
 
         // Timers
         public static System.Timers.Timer start_timer;
