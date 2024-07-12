@@ -16,7 +16,6 @@ using System.Reflection.Emit;
 using NetFwTypeLib;
 using System.Diagnostics;
 using NetLock_RMM_Comm_Agent_Windows.Device_Information;
-using System.Text.Json;
 using System.Data.SQLite;
 using System.Runtime;
 
@@ -28,9 +27,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
         public class Device_Identity
         {
             public string agent_version { get; set; }
+            public string package_guid { get; set; }
             public string device_name { get; set; }
-            public string location_name { get; set; }
-            public string tenant_name { get; set; }
+            public string location_guid { get; set; }
+            public string tenant_guid { get; set; }
             public string access_key { get; set; }
             public string hwid { get; set; }
             public string ip_address_internal { get; set; }
@@ -308,9 +308,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 Device_Identity identity = new Device_Identity
                 {
                     agent_version = Application_Settings.version,
+                    package_guid = Service.package_guid,
                     device_name = Service.device_name,
-                    location_name = Service.location_name,
-                    tenant_name = Service.tenant_name,
+                    location_guid = Service.location_guid,
+                    tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
                     ip_address_internal = ip_address_internal,
@@ -343,7 +344,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 {
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                     
+                    httpClient.DefaultRequestHeaders.Add("Package_Guid", Service.package_guid);
+
                     Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "communication_server", Service.http_https + Service.communication_server + "/Agent/Windows/Verify_Device");
 
                     // Send the JSON data to the server
@@ -365,15 +367,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 var new_server_config = new
                                 {
                                     ssl = Service.ssl,
-                                    guid = Service.guid,
+                                    package_guid = Service.package_guid,
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
                                     main_update_server = Service.main_update_server,
                                     fallback_update_server = Service.fallback_update_server,
                                     main_trust_server = Service.main_trust_server,
                                     fallback_trust_server = Service.fallback_trust_server,
-                                    tenant_name = Service.tenant_name,
-                                    location_name = Service.location_name,
+                                    tenant_guid = Service.tenant_guid,
+                                    location_guid = Service.location_guid,
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = true,
@@ -395,15 +397,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 var new_server_config = new
                                 {
                                     ssl = Service.ssl,
-                                    guid = Service.guid,
+                                    package_guid = Service.package_guid,
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
                                     main_update_server = Service.main_update_server,
                                     fallback_update_server = Service.fallback_update_server,
                                     main_trust_server = Service.main_trust_server,
                                     fallback_trust_server = Service.fallback_trust_server,
-                                    tenant_name = Service.tenant_name,
-                                    location_name = Service.location_name,
+                                    tenant_guid = Service.tenant_guid,
+                                    location_guid = Service.location_guid,
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = false,
@@ -514,9 +516,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 Device_Identity identity = new Device_Identity
                 {
                     agent_version = Application_Settings.version,
+                    package_guid = Service.package_guid,
                     device_name = Service.device_name,
-                    location_name = Service.location_name,
-                    tenant_name = Service.tenant_name,
+                    location_guid = Service.location_guid,
+                    tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
                     ip_address_internal = ip_address_internal,
@@ -587,6 +590,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 {
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Add("Package_Guid", Service.package_guid);
 
                     Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "communication_server", Service.http_https + Service.communication_server + "/Agent/Windows/Update_Device_Information");
 
@@ -609,15 +613,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 var new_server_config = new
                                 {
                                     ssl = Service.ssl,
-                                    guid = Service.guid,
+                                    package_guid = Service.package_guid,
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
                                     main_update_server = Service.main_update_server,
                                     fallback_update_server = Service.fallback_update_server,
                                     main_trust_server = Service.main_trust_server,
                                     fallback_trust_server = Service.fallback_trust_server,
-                                    tenant_name = Service.tenant_name,
-                                    location_name = Service.location_name,
+                                    tenant_guid = Service.tenant_guid,
+                                    location_guid = Service.location_guid,
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = true,
@@ -639,15 +643,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 var new_server_config = new
                                 {
                                     ssl = Service.ssl,
-                                    guid = Service.guid,
+                                    package_guid = Service.package_guid,
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
                                     main_update_server = Service.main_update_server,
                                     fallback_update_server = Service.fallback_update_server,
                                     main_trust_server = Service.main_trust_server,
                                     fallback_trust_server = Service.fallback_trust_server,
-                                    tenant_name = Service.tenant_name,
-                                    location_name = Service.location_name,
+                                    tenant_guid = Service.tenant_guid,
+                                    location_guid = Service.location_guid,
                                     language = Service.language,
                                     access_key = Service.access_key,
                                     authorized = false,
@@ -745,9 +749,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 Device_Identity identity = new Device_Identity
                 {
                     agent_version = Application_Settings.version,
+                    package_guid = Service.package_guid,
                     device_name = Service.device_name,
-                    location_name = Service.location_name,
-                    tenant_name = Service.tenant_name,
+                    location_guid = Service.location_guid,
+                    tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
                     ip_address_internal = ip_address_internal,
@@ -777,6 +782,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 {
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Add("Package_Guid", Service.package_guid);
 
                     Logging.Handler.Debug("Online_Mode.Handler.Policy", "communication_server", Service.http_https + Service.communication_server + "/Agent/Windows/Policy");
 

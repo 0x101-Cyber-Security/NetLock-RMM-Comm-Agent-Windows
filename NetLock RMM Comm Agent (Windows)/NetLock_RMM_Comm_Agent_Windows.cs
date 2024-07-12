@@ -29,15 +29,15 @@ namespace NetLock_RMM_Comm_Agent_Windows
 
         // Server config
         public static bool ssl = false;
-        public static string guid = String.Empty;
+        public static string package_guid = String.Empty;
         public static string main_communication_server = String.Empty;
         public static string fallback_communication_server = String.Empty;
         public static string main_update_server = String.Empty;
         public static string fallback_update_server = String.Empty;
         public static string main_trust_server = String.Empty;
         public static string fallback_trust_server = String.Empty;
-        public static string tenant_name = String.Empty;
-        public static string location_name = String.Empty;
+        public static string tenant_guid = String.Empty;
+        public static string location_guid = String.Empty;
         public static string language = String.Empty;
         public static string access_key = String.Empty;
         public static bool authorized = false;

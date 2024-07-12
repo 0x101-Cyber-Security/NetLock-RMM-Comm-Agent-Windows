@@ -21,9 +21,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
         public class Device_Identity
         {
             public string agent_version { get; set; }
+            public string package_guid { get; set; }
             public string device_name { get; set; }
-            public string location_name { get; set; }
-            public string tenant_name { get; set; }
+            public string location_guid { get; set; }
+            public string tenant_guid { get; set; }
             public string access_key { get; set; }
             public string hwid { get; set; }
             public string ip_address_internal { get; set; }
@@ -121,9 +122,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                 Device_Identity identity_object = new Device_Identity
                 {
                     agent_version = Application_Settings.version,
+                    package_guid = Service.package_guid,
                     device_name = Service.device_name,
-                    location_name = Service.location_name,
-                    tenant_name = Service.tenant_name,
+                    location_guid = Service.location_guid,
+                    tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
                     ip_address_internal = ip_address_internal,
@@ -168,6 +170,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                 {
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Add("Package_Guid", Service.package_guid);
 
                     Logging.Handler.Debug("Events.Sender.Send_Event", "communication_server", Service.http_https + Service.communication_server + "/Agent/Windows/Events");
 
@@ -190,15 +193,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                                 string new_server_config_json = JsonConvert.SerializeObject(new
                                 {
                                     ssl = Service.ssl,
-                                    guid = Service.guid,
+                                    package_guid = Service.package_guid,
                                     main_communication_server = Service.main_communication_server,
                                     fallback_communication_server = Service.fallback_communication_server,
                                     main_update_server = Service.main_update_server,
                                     fallback_update_server = Service.fallback_update_server,
                                     main_trust_server = Service.main_trust_server,
                                     fallback_trust_server = Service.fallback_trust_server,
-                                    tenant_name = Service.tenant_name,
-                                    location_name = Service.location_name,
+                                    tenant_guid = Service.tenant_guid,
+                                    location_guid = Service.location_guid,
                                     access_key = Service.access_key,
                                     authorized = false,
                                 }, Formatting.Indented);

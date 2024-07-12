@@ -22,9 +22,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 Device_Identity identity = new Device_Identity
                 {
                     agent_version = Application_Settings.version,
+                    package_guid = Service.package_guid,
                     device_name = Service.device_name,
-                    location_name = Service.location_name,
-                    tenant_name = Service.tenant_name,
+                    location_guid = Service.location_guid,
+                    tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
                     ip_address_internal = string.Empty,
@@ -54,6 +55,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 {
                     // Set the content type header
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Add("Package_Guid", Service.package_guid);
 
                     Logging.Handler.Debug("Initialization.Version_Handler.Check_Version", "communication_server", Service.communication_server + "/Agent/Windows/Verify_Device");
 

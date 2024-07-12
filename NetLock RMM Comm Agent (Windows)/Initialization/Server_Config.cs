@@ -39,16 +39,16 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (ssl) - Parsing", ex.ToString());
                     }
 
-                    // Get guid
+                    // Get package_guid
                     try
                     {
-                        JsonElement element = document.RootElement.GetProperty("guid");
-                        Service.guid = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (guid)", Service.guid);
+                        JsonElement element = document.RootElement.GetProperty("package_guid");
+                        Service.package_guid = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (package_guid)", Service.package_guid);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (guid) - Parsing", ex.ToString());
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (package_guid) - Parsing", ex.ToString());
                     }
 
                     // Get the main communication server
@@ -125,28 +125,28 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (fallback_trust_server) - Parsing", ex.ToString());
                     }
 
-                    // Get the tenant name
+                    // Get the tenant guid
                     try
                     {
-                        JsonElement element = document.RootElement.GetProperty("tenant_name");
-                        Service.tenant_name = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (tenant_name)", Service.tenant_name);
+                        JsonElement element = document.RootElement.GetProperty("tenant_guid");
+                        Service.tenant_guid = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (tenant_guid)", Service.tenant_guid);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (tenant_name) - Parsing", ex.ToString());
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (tenant_guid) - Parsing", ex.ToString());
                     }
 
-                    // Get the location name
+                    // Get the location guid
                     try
                     {
-                        JsonElement element = document.RootElement.GetProperty("location_name");
-                        Service.location_name = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (location_name)", Service.location_name);
+                        JsonElement element = document.RootElement.GetProperty("location_guid");
+                        Service.location_guid = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (location_guid)", Service.location_guid);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (location_name) - Parsing", ex.ToString());
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (location_guid) - Parsing", ex.ToString());
                     }
 
                     // Get language
@@ -198,15 +198,15 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         var jsonObject = new
                         {
                             ssl = Service.ssl,
-                            guid = Service.guid,
+                            package_guid = Service.package_guid,
                             main_communication_server = Service.main_communication_server,
                             fallback_communication_server = Service.fallback_communication_server,
                             main_update_server = Service.main_update_server,
                             fallback_update_server = Service.fallback_update_server,
                             main_trust_server = Service.main_trust_server,
                             fallback_trust_server = Service.fallback_trust_server,
-                            tenant_name = Service.tenant_name,
-                            location_name = Service.location_name,
+                            tenant_guid = Service.tenant_guid,
+                            location_guid = Service.location_guid,
                             language = Service.language,
                             access_key = Service.access_key,
                             authorized = false,
