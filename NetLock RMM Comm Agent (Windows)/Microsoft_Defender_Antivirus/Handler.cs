@@ -18,32 +18,35 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
             //If enabled, apply managed settings
             try
             {
-                bool enabled = false;
-                bool security_center_tray = false;
-
-                using (JsonDocument document = JsonDocument.Parse(Service.policy_antivirus_settings_json))
+                if (!String.IsNullOrEmpty(Service.policy_antivirus_settings_json) && !String.IsNullOrEmpty(Service.policy_antivirus_scan_jobs_json) && !String.IsNullOrEmpty(Service.policy_antivirus_exclusions_json))
                 {
-                    JsonElement enabled_element = document.RootElement.GetProperty("enabled");
-                    enabled = Convert.ToBoolean(enabled_element.ToString());
+                    bool enabled = false;
+                    bool security_center_tray = false;
 
-                    JsonElement security_center_tray_element = document.RootElement.GetProperty("security_center_tray");
-                    security_center_tray = Convert.ToBoolean(security_center_tray_element.ToString());
-                }
+                    using (JsonDocument document = JsonDocument.Parse(Service.policy_antivirus_settings_json))
+                    {
+                        JsonElement enabled_element = document.RootElement.GetProperty("enabled");
+                        enabled = Convert.ToBoolean(enabled_element.ToString());
 
-                if (enabled)
-                {
-                    //Check if tray icon should be displayed
-                    if (!security_center_tray)
-                        Kill_Security_Center_Tray_Icon();
+                        JsonElement security_center_tray_element = document.RootElement.GetProperty("security_center_tray");
+                        security_center_tray = Convert.ToBoolean(security_center_tray_element.ToString());
+                    }
 
-                    Set_Settings.Do();
-                    //Scan_Job_Scheduler.Scan_Job_Scheduler.Check_Exececution();
-                    Eventlog_Crawler.Do();
-                    Scan_Jobs_Scheduler.Check_Execution();
-                }
-                else //If not, restore windows defender standard config
-                {
+                    if (enabled)
+                    {
+                        //Check if tray icon should be displayed
+                        if (!security_center_tray)
+                            Kill_Security_Center_Tray_Icon();
 
+                        Set_Settings.Do();
+                        //Scan_Job_Scheduler.Scan_Job_Scheduler.Check_Exececution();
+                        Eventlog_Crawler.Do();
+                        Scan_Jobs_Scheduler.Check_Execution();
+                    }
+                    else //If not, restore windows defender standard config
+                    {
+
+                    }
                 }
             }
             catch (Exception ex)

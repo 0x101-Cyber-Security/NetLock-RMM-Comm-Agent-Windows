@@ -22,7 +22,7 @@ namespace Logging
             try
             {
                 if (File.Exists(Application_Paths.program_data_debug_txt))
-                Service.debug_mode = true;
+                    Service.debug_mode = true;
                 else
                     Service.debug_mode = false;
             }
@@ -42,6 +42,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -68,6 +71,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -89,6 +95,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -115,6 +124,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -141,6 +153,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -167,6 +182,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -193,6 +211,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -219,6 +240,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -245,6 +269,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();
@@ -271,6 +298,9 @@ namespace Logging
         {
             try
             {
+                if (!Service.debug_mode)
+                    return;
+
                 Check_Dir();
 
                 Log_Data json_object = new Log_Data();

@@ -30,12 +30,10 @@ namespace NetLock_RMM_Comm_Agent_Windows
         // Server config
         public static bool ssl = false;
         public static string package_guid = String.Empty;
-        public static string main_communication_server = String.Empty;
-        public static string fallback_communication_server = String.Empty;
-        public static string main_update_server = String.Empty;
-        public static string fallback_update_server = String.Empty;
-        public static string main_trust_server = String.Empty;
-        public static string fallback_trust_server = String.Empty;
+        public static string communication_servers = String.Empty;
+        public static string remote_servers = String.Empty;
+        public static string update_servers = String.Empty;
+        public static string trust_servers = String.Empty;
         public static string tenant_guid = String.Empty;
         public static string location_guid = String.Empty;
         public static string language = String.Empty;
@@ -44,9 +42,11 @@ namespace NetLock_RMM_Comm_Agent_Windows
 
         // Server communication
         public static string communication_server = String.Empty;
+        public static string remote_server = String.Empty;
         public static string trust_server = String.Empty;
         public static string update_server = String.Empty;
         public static bool communication_server_status = false;
+        public static bool remote_server_status = false;
         public static bool trust_server_status = false;
         public static bool update_server_status = false;
         public static string http_https = String.Empty;
@@ -107,6 +107,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
             hwid = ENGINE.HW_UID;
             device_name = Environment.MachineName;
 
+            Logging.Handler.Check_Debug_Mode();
             Health.Check_Directories();
             Health.Check_Registry();
             Health.Check_Firewall();
@@ -399,7 +400,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
 
         #region Local Server
 
-        private const int Port = 5000;
+        private const int Port = 7337;
         private TcpClient _client;
         private NetworkStream _stream;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -454,7 +455,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
                     if (message == "get_device_identity")
                     {
                         if (!String.IsNullOrEmpty(device_identity_json))
-                            await Local_Server_Send_Message("device_identity$" + device_identity_json);
+                            await Local_Server_Send_Message($"device_identity${device_identity_json}${http_https}{remote_server}");
                     }
 
                     // Force sync

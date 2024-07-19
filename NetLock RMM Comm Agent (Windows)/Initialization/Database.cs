@@ -170,7 +170,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             //Create Reports DB
             try
             {
-                if (File.Exists(report_db_path) == false)
+                if (!File.Exists(report_db_path))
                 {
                     SQLiteConnection.CreateFile(report_db_path);
                     Logging.Handler.Debug("Database_Setup", "create_db (events)", "DB created.");
@@ -198,7 +198,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         db_conn.Close();
                         db_conn.Dispose();
 
-                        Logging.Handler.Debug("Initialization.Database.NetLock_Events_Setup", "check_db (events)", "Filled events DB info.");
+                        Logging.Handler.Debug("Initialization.Database.NetLock_Events_Setup", "check_db (events)", "Created events table.");
                     }
                 }
                 else

@@ -12,7 +12,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Sensors
     {
         public static async void Scheduler_Tick(object source, ElapsedEventArgs e)
         {
-            Time_Scheduler.Check_Execution();
+            if (!String.IsNullOrEmpty(Service.policy_sensors_json))
+                Time_Scheduler.Check_Execution();
         }
     }
 }

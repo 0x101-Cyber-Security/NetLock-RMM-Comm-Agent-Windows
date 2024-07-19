@@ -368,12 +368,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 {
                                     ssl = Service.ssl,
                                     package_guid = Service.package_guid,
-                                    main_communication_server = Service.main_communication_server,
-                                    fallback_communication_server = Service.fallback_communication_server,
-                                    main_update_server = Service.main_update_server,
-                                    fallback_update_server = Service.fallback_update_server,
-                                    main_trust_server = Service.main_trust_server,
-                                    fallback_trust_server = Service.fallback_trust_server,
+                                    communication_servers = Service.communication_servers,
+                                    remote_servers = Service.remote_servers,
+                                    update_servers = Service.update_servers,
+                                    trust_servers = Service.trust_servers,
                                     tenant_guid = Service.tenant_guid,
                                     location_guid = Service.location_guid,
                                     language = Service.language,
@@ -398,12 +396,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 {
                                     ssl = Service.ssl,
                                     package_guid = Service.package_guid,
-                                    main_communication_server = Service.main_communication_server,
-                                    fallback_communication_server = Service.fallback_communication_server,
-                                    main_update_server = Service.main_update_server,
-                                    fallback_update_server = Service.fallback_update_server,
-                                    main_trust_server = Service.main_trust_server,
-                                    fallback_trust_server = Service.fallback_trust_server,
+                                    communication_servers = Service.communication_servers,
+                                    remote_servers = Service.remote_servers,
+                                    update_servers = Service.update_servers,
+                                    trust_servers = Service.trust_servers,
                                     tenant_guid = Service.tenant_guid,
                                     location_guid = Service.location_guid,
                                     language = Service.language,
@@ -614,12 +610,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 {
                                     ssl = Service.ssl,
                                     package_guid = Service.package_guid,
-                                    main_communication_server = Service.main_communication_server,
-                                    fallback_communication_server = Service.fallback_communication_server,
-                                    main_update_server = Service.main_update_server,
-                                    fallback_update_server = Service.fallback_update_server,
-                                    main_trust_server = Service.main_trust_server,
-                                    fallback_trust_server = Service.fallback_trust_server,
+                                    communication_servers = Service.communication_servers,
+                                    remote_servers = Service.remote_servers,
+                                    update_servers = Service.update_servers,
+                                    trust_servers = Service.trust_servers,
                                     tenant_guid = Service.tenant_guid,
                                     location_guid = Service.location_guid,
                                     language = Service.language,
@@ -644,12 +638,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                                 {
                                     ssl = Service.ssl,
                                     package_guid = Service.package_guid,
-                                    main_communication_server = Service.main_communication_server,
-                                    fallback_communication_server = Service.fallback_communication_server,
-                                    main_update_server = Service.main_update_server,
-                                    fallback_update_server = Service.fallback_update_server,
-                                    main_trust_server = Service.main_trust_server,
-                                    fallback_trust_server = Service.fallback_trust_server,
+                                    communication_servers = Service.communication_servers,
+                                    remote_servers = Service.remote_servers,
+                                    update_servers = Service.update_servers,
+                                    trust_servers = Service.trust_servers,
                                     tenant_guid = Service.tenant_guid,
                                     location_guid = Service.location_guid,
                                     language = Service.language,
@@ -796,68 +788,119 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                         var result = await response.Content.ReadAsStringAsync();
                         Logging.Handler.Debug("Online_Mode.Handler.Policy", "result", result);
 
-                        // Deserialization of the entire JSON string
-                        using (JsonDocument document = JsonDocument.Parse(result))
+                        if (result == "unauthorized")
                         {
-                            JsonElement policy_antivirus_settings_element= document.RootElement.GetProperty("antivirus_settings_json");
-                            Service.policy_antivirus_settings_json = policy_antivirus_settings_element.ToString();
+                            if (Service.authorized)
+                            {
+                                // Write the new authorization status to the server config JSON
+                                var new_server_config = new
+                                {
+                                    ssl = Service.ssl,
+                                    package_guid = Service.package_guid,
+                                    communication_servers = Service.communication_servers,
+                                    remote_servers = Service.remote_servers,
+                                    update_servers = Service.update_servers,
+                                    trust_servers = Service.trust_servers,
+                                    tenant_guid = Service.tenant_guid,
+                                    location_guid = Service.location_guid,
+                                    language = Service.language,
+                                    access_key = Service.access_key,
+                                    authorized = false,
+                                };
 
-                            JsonElement policy_antivirus_exclusions_element = document.RootElement.GetProperty("antivirus_exclusions_json");
-                            Service.policy_antivirus_exclusions_json = policy_antivirus_exclusions_element.ToString();
+                                string new_server_config_json = JsonSerializer.Serialize(new_server_config, new JsonSerializerOptions { WriteIndented = true });
 
-                            JsonElement policy_antivirus_scan_jobs_element = document.RootElement.GetProperty("antivirus_scan_jobs_json");
-                            Service.policy_antivirus_scan_jobs_json = policy_antivirus_scan_jobs_element.ToString();
+                                // Write the new server config JSON to the file
+                                File.WriteAllText(Application_Paths.program_data_server_config_json, new_server_config_json);
 
-                            JsonElement policy_antivirus_controlled_folder_access_folders_element = document.RootElement.GetProperty("antivirus_controlled_folder_access_folders_json");
-                            Service.policy_antivirus_controlled_folder_access_folders_json = policy_antivirus_controlled_folder_access_folders_element.ToString();
-
-                            JsonElement policy_antivirus_controlled_folder_access_ruleset_element = document.RootElement.GetProperty("antivirus_controlled_folder_access_ruleset_json");
-                            Service.policy_antivirus_controlled_folder_access_ruleset_json = policy_antivirus_controlled_folder_access_ruleset_element.ToString();
-
-                            JsonElement policy_sensors_json_element = document.RootElement.GetProperty("policy_sensors_json");
-                            Service.policy_sensors_json = policy_sensors_json_element.ToString();
-
-                            JsonElement policy_jobs_json_element = document.RootElement.GetProperty("policy_jobs_json");
-                            Service.policy_jobs_json = policy_jobs_json_element.ToString();
+                                Service.authorized = false;
+                            }
                         }
-
-                        // Insert into policy database
-                        Initialization.Database.NetLock_Data_Setup();
-
-                        Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Starting...");
-
-                        using (SQLiteConnection db_conn = new SQLiteConnection(Application_Settings.NetLock_Data_Database_String))
+                        
+                        if (result != "no_assigned_policy_found")
                         {
-                            db_conn.Open();
+                            // Deserialization of the entire JSON string
+                            using (JsonDocument document = JsonDocument.Parse(result))
+                            {
+                                JsonElement policy_antivirus_settings_element = document.RootElement.GetProperty("antivirus_settings_json");
+                                Service.policy_antivirus_settings_json = policy_antivirus_settings_element.ToString();
 
-                            SQLiteCommand command = new SQLiteCommand("INSERT INTO policy (" +
-                            "'antivirus_settings_json', " +
-                            "'antivirus_exclusions_json', " +
-                            "'antivirus_scan_jobs_json', " +
-                            "'antivirus_controlled_folder_access_folders_json', " +
-                            "'antivirus_controlled_folder_access_ruleset_json', " +
-                            "'sensors_json', " +
-                            "'jobs_json'" +
-                              
-                            ") VALUES (" +
+                                JsonElement policy_antivirus_exclusions_element = document.RootElement.GetProperty("antivirus_exclusions_json");
+                                Service.policy_antivirus_exclusions_json = policy_antivirus_exclusions_element.ToString();
 
-                            "'" + Service.policy_antivirus_settings_json + "', " + //policy_antivirus_settings_json
-                            "'" + Service.policy_antivirus_exclusions_json + "'," + //policy_antivirus_exclusions_json
-                            "'" + Service.policy_antivirus_scan_jobs_json + "'," + //policy_antivirus_scan_jobs_json
-                            "'" + Service.policy_antivirus_controlled_folder_access_folders_json + "'," + //policy_antivirus_controlled_folder_access_folders_json
-                            "'" + Service.policy_antivirus_controlled_folder_access_ruleset_json + "'," + //policy_antivirus_controlled_folder_access_ruleset_json
-                            "'" + Service.policy_sensors_json + "'," + //policy_sensors_json
-                            "'" + Service.policy_jobs_json + "'" + //policy_jobs_json
+                                JsonElement policy_antivirus_scan_jobs_element = document.RootElement.GetProperty("antivirus_scan_jobs_json");
+                                Service.policy_antivirus_scan_jobs_json = policy_antivirus_scan_jobs_element.ToString();
 
-                            ")"
-                            , db_conn);
+                                JsonElement policy_antivirus_controlled_folder_access_folders_element = document.RootElement.GetProperty("antivirus_controlled_folder_access_folders_json");
+                                Service.policy_antivirus_controlled_folder_access_folders_json = policy_antivirus_controlled_folder_access_folders_element.ToString();
 
-                            command.ExecuteNonQuery();
+                                JsonElement policy_antivirus_controlled_folder_access_ruleset_element = document.RootElement.GetProperty("antivirus_controlled_folder_access_ruleset_json");
+                                Service.policy_antivirus_controlled_folder_access_ruleset_json = policy_antivirus_controlled_folder_access_ruleset_element.ToString();
 
-                            db_conn.Close();
-                            db_conn.Dispose();
+                                JsonElement policy_sensors_json_element = document.RootElement.GetProperty("policy_sensors_json");
+                                Service.policy_sensors_json = policy_sensors_json_element.ToString();
 
-                            Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Done." + Environment.NewLine);
+                                JsonElement policy_jobs_json_element = document.RootElement.GetProperty("policy_jobs_json");
+                                Service.policy_jobs_json = policy_jobs_json_element.ToString();
+                            }
+
+                            // Insert into policy database
+                            Initialization.Database.NetLock_Data_Setup();
+
+                            Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Starting...");
+
+                            using (SQLiteConnection db_conn = new SQLiteConnection(Application_Settings.NetLock_Data_Database_String)) // Remove old policy and insert new policy
+                            {
+                                db_conn.Open();
+
+                                SQLiteCommand command = new SQLiteCommand(@"DELETE FROM policy; " +
+                                "INSERT INTO policy (" +
+                                "'antivirus_settings_json', " +
+                                "'antivirus_exclusions_json', " +
+                                "'antivirus_scan_jobs_json', " +
+                                "'antivirus_controlled_folder_access_folders_json', " +
+                                "'antivirus_controlled_folder_access_ruleset_json', " +
+                                "'sensors_json', " +
+                                "'jobs_json'" +
+
+                                ") VALUES (" +
+
+                                "'" + Service.policy_antivirus_settings_json + "', " + //policy_antivirus_settings_json
+                                "'" + Service.policy_antivirus_exclusions_json + "'," + //policy_antivirus_exclusions_json
+                                "'" + Service.policy_antivirus_scan_jobs_json + "'," + //policy_antivirus_scan_jobs_json
+                                "'" + Service.policy_antivirus_controlled_folder_access_folders_json + "'," + //policy_antivirus_controlled_folder_access_folders_json
+                                "'" + Service.policy_antivirus_controlled_folder_access_ruleset_json + "'," + //policy_antivirus_controlled_folder_access_ruleset_json
+                                "'" + Service.policy_sensors_json + "'," + //policy_sensors_json
+                                "'" + Service.policy_jobs_json + "'" + //policy_jobs_json
+
+                                ");"
+                                , db_conn);
+
+                                command.ExecuteNonQuery();
+
+                                db_conn.Close();
+                                db_conn.Dispose();
+
+                                Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Done." + Environment.NewLine);
+                            }
+                        }
+                        else if (result == "no_assigned_policy_found" || result == "unauthorized") // Remove old policy
+                        {
+                            Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Starting...");
+
+                            using (SQLiteConnection db_conn = new SQLiteConnection(Application_Settings.NetLock_Data_Database_String))
+                            {
+                                db_conn.Open();
+
+                                SQLiteCommand command = new SQLiteCommand("DELETE FROM policy;", db_conn);
+
+                                command.ExecuteNonQuery();
+
+                                db_conn.Close();
+                                db_conn.Dispose();
+
+                                Logging.Handler.Debug("Online_Mode.Handler.Policy", "Insert into policy database", "Done." + Environment.NewLine);
+                            }
                         }
 
                         return "ok";

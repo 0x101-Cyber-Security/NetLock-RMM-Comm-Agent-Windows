@@ -18,61 +18,92 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
         {
             try
             {
-                // Check connection to main communication server
-                if (await Hostname_IP_Port(Service.main_communication_server, "main_communication_server"))
+                // Check connections communication server. Split communication_servers with "," and check each server
+                List<string> values = new List<string>(Service.communication_servers.Split(','));
+
+                foreach (var value in values)
                 {
-                    Service.communication_server = Service.main_communication_server;
-                    Service.communication_server_status = true;
-                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Main communication server connection successful.", "");
-                }
-                else if (await Hostname_IP_Port(Service.fallback_communication_server, "fallback_communication_server")) // Check connection to fallback communication server
-                {
-                    Service.communication_server = Service.fallback_communication_server;
-                    Service.communication_server_status = true;
-                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Fallback communication server connection successful.", "");
-                }
-                else // If both connections fail, exit the program
-                {
-                    Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Main & fallback communication server connection failed.", "");
-                    Service.communication_server_status = false;
+                    // Remove whitespace
+                    value.Trim();
+
+                    if (await Hostname_IP_Port(value, "communication_servers"))
+                    {
+                        Service.communication_server = value;
+                        Service.communication_server_status = true;
+                        Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Communication server connection successful.", "");
+                        break;
+                    }
+                    else
+                    {
+                        Service.communication_server_status = false;
+                        Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Communication server connection failed.", "");
+                    }
                 }
 
-                // Check connection to main update server
-                if (await Hostname_IP_Port(Service.main_update_server, "main_update_server"))
+                // Check connections to remote server. Split remote_servers with "," and check each server
+                values = new List<string>(Service.remote_servers.Split(','));
+
+                foreach (var value in values)
                 {
-                    Service.update_server = Service.main_update_server;
-                    Service.update_server_status = true;
-                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Main update server connection successful.", "");
-                }
-                else if (await Hostname_IP_Port(Service.fallback_update_server, "fallback_update_server")) // Check connection to fallback update server
-                {
-                    Service.update_server = Service.fallback_update_server;
-                    Service.update_server_status = true;
-                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Fallback update server connection successful.", "");
-                }
-                else // If both connections fail, exit the program
-                {
-                    Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Main & fallback update server connection failed.", "");
-                    Service.update_server_status = false;
+                    // Remove whitespace
+                    value.Trim();
+
+                    if (await Hostname_IP_Port(value, "remote_servers"))
+                    {
+                        Service.remote_server = value;
+                        Service.remote_server_status = true;
+                        Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Remote server connection successful.", "");
+                        break;
+                    }
+                    else
+                    {
+                        Service.remote_server_status = false;
+                        Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Remote server connection failed.", "");
+                    }
                 }
 
-                // Check connection to main trust server
-                if (await Hostname_IP_Port(Service.main_trust_server, "main_trust_server"))
+                // Check connections to update server. Split update_servers with "," and check each server
+                values = new List<string>(Service.update_servers.Split(','));
+
+                foreach (var value in values)
                 {
-                    Service.trust_server = Service.main_trust_server;
-                    Service.trust_server_status = true;
-                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Main trust server connection successful.", "");
+                    // Remove whitespace
+                    value.Trim();
+
+                    if (await Hostname_IP_Port(value, "update_servers"))
+                    {
+                        Service.update_server = value;
+                        Service.update_server_status = true;
+                        Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Update server connection successful.", "");
+                        break;
+                    }
+                    else
+                    {
+                        Service.update_server_status = false;
+                        Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Update server connection failed.", "");
+                    }
                 }
-                else if (await Hostname_IP_Port(Service.fallback_trust_server, "fallback_trust_server")) // Check connection to fallback trust server
+
+                // Check connections to trust server. Split trust_servers with "," and check each server
+                values = new List<string>(Service.trust_servers.Split(','));
+                
+                foreach (var value in values)
                 {
-                    Service.trust_server = Service.fallback_trust_server;
-                    Service.trust_server_status = true;
-                    Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Fallback trust server connection successful.", "");
-                }
-                else // If both connections fail, exit the program
-                {
-                    Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Main & fallback trust server connection failed.", "");
-                    Service.trust_server_status = false;
+                    // Remove whitespace
+                    value.Trim();
+
+                    if (await Hostname_IP_Port(value, "trust_servers"))
+                    {
+                        Service.trust_server = value;
+                        Service.trust_server_status = true;
+                        Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "Trust server connection successful.", "");
+                        break;
+                    }
+                    else
+                    {
+                        Service.trust_server_status = false;
+                        Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Trust server connection failed.", "");
+                    }
                 }
             }
             catch (Exception ex)
@@ -85,12 +116,12 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
         {
             Logging.Handler.Debug("Initialization.Check_Connection.Hostname_IP_Port", "Hostname_IP_Port", "Server: " + server + " Description: " + description);
 
-            string communication_server_regex = @"([a-zA-Z0-9\-\.]+):\d+";
-            string communication_server_port_regex = @"(?<=:)(\d+)";
+            string server_regex = @"([a-zA-Z0-9\-\.]+):\d+";
+            string server_port_regex = @"(?<=:)(\d+)";
 
             // Extract server name
-            Match server_match = Regex.Match(server, communication_server_regex);
-            Match port_match = Regex.Match(server, communication_server_port_regex);
+            Match server_match = Regex.Match(server, server_regex);
+            Match port_match = Regex.Match(server, server_port_regex);
 
             // Output server name
             if (server_match.Success)

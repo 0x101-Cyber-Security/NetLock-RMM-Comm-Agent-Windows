@@ -51,78 +51,52 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (package_guid) - Parsing", ex.ToString());
                     }
 
-                    // Get the main communication server
+                    // Get the communication servers
                     try
                     {
-                        JsonElement element = document.RootElement.GetProperty("main_communication_server");
-                        Service.main_communication_server = element.ToString();
-
-                        Service.communication_server = Service.main_communication_server;
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (main_communication_server)", Service.main_communication_server);
+                        JsonElement element = document.RootElement.GetProperty("communication_servers");
+                        Service.communication_servers = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (communication_servers)", Service.communication_servers);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (main_communication_server) - Parsing", ex.ToString());
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (communication_servers) - Parsing", ex.ToString());
                     }
                     
-                    // Get the fallback communication server
+                    // Get the remote servers
                     try
                     {
-                        JsonElement element = document.RootElement.GetProperty("fallback_communication_server");
-                        Service.fallback_communication_server = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (fallback_communication_server)", Service.fallback_communication_server);
+                        JsonElement element = document.RootElement.GetProperty("remote_servers");
+                        Service.remote_servers = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (remote_servers)", Service.remote_servers);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (fallback_communication_server) - Parsing", ex.ToString());
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (remote_servers) - Parsing", ex.ToString());
                     }
                     
-                    // Get the main update server
+                    // Get the update servers
                     try
                     {
-                        JsonElement element = document.RootElement.GetProperty("main_update_server");
-                        Service.main_update_server = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (main_update_server)", Service.main_update_server);
+                        JsonElement element = document.RootElement.GetProperty("update_servers");
+                        Service.update_servers = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (update_servers)", Service.update_servers);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (main_update_server) - Parsing", ex.ToString());
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (update_servers) - Parsing", ex.ToString());
                     }
 
-                    // Get the fallback update server
+                    // Get the main trust servers
                     try
                     {
-                        JsonElement element = document.RootElement.GetProperty("fallback_update_server");
-                        Service.fallback_update_server = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (fallback_update_server)", Service.fallback_update_server);
+                        JsonElement element = document.RootElement.GetProperty("trust_servers");
+                        Service.trust_servers = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (trust_servers)", Service.trust_servers);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (fallback_update_server) - Parsing", ex.ToString());
-                    }
-
-                    // Get the main trust server
-                    try
-                    {
-                        JsonElement element = document.RootElement.GetProperty("main_trust_server");
-                        Service.main_trust_server = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (main_trust_server)", Service.main_trust_server);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (main_trust_server) - Parsing", ex.ToString());
-                    }
-
-                    // Get the fallback trust server
-                    try
-                    {
-                        JsonElement element = document.RootElement.GetProperty("fallback_trust_server");
-                        Service.fallback_trust_server = element.ToString();
-                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (fallback_trust_server)", Service.fallback_trust_server);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (fallback_trust_server) - Parsing", ex.ToString());
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (trust_servers) - Parsing", ex.ToString());
                     }
 
                     // Get the tenant guid
@@ -199,12 +173,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         {
                             ssl = Service.ssl,
                             package_guid = Service.package_guid,
-                            main_communication_server = Service.main_communication_server,
-                            fallback_communication_server = Service.fallback_communication_server,
-                            main_update_server = Service.main_update_server,
-                            fallback_update_server = Service.fallback_update_server,
-                            main_trust_server = Service.main_trust_server,
-                            fallback_trust_server = Service.fallback_trust_server,
+                            communication_servers = Service.communication_servers,
+                            remote_servers = Service.remote_servers,
+                            update_servers = Service.update_servers,
+                            trust_servers = Service.trust_servers,
                             tenant_guid = Service.tenant_guid,
                             location_guid = Service.location_guid,
                             language = Service.language,
