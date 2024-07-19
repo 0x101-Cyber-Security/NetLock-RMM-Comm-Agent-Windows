@@ -39,7 +39,6 @@
             // 
             // ServiceInstaller
             // 
-            this.ServiceInstaller.Description = "Communicates with server backend.";
             this.ServiceInstaller.DisplayName = "NetLock RMM Comm Agent Windows";
             this.ServiceInstaller.ServiceName = "NetLock_RMM_Comm_Agent_Windows";
             this.ServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;

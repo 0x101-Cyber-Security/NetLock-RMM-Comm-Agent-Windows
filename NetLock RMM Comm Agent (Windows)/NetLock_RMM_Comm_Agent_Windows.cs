@@ -43,8 +43,8 @@ namespace NetLock_RMM_Comm_Agent_Windows
         // Server communication
         public static string communication_server = String.Empty;
         public static string remote_server = String.Empty;
-        public static string trust_server = String.Empty;
         public static string update_server = String.Empty;
+        public static string trust_server = String.Empty;
         public static bool communication_server_status = false;
         public static bool remote_server_status = false;
         public static bool trust_server_status = false;

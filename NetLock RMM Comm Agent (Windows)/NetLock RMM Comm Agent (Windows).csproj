@@ -148,6 +148,7 @@
     <Compile Include="Helper\Base64.cs" />
     <Compile Include="Helper\Encryption.cs" />
     <Compile Include="Helper\Globalization.cs" />
+    <Compile Include="Helper\Http.cs" />
     <Compile Include="Helper\Logging.cs" />
     <Compile Include="Helper\Network.cs" />
     <Compile Include="Helper\PowerShell.cs" />
