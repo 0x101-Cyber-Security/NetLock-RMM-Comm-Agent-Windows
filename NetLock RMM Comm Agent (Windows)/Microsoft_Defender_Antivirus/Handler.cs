@@ -38,8 +38,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                         if (!security_center_tray)
                             Kill_Security_Center_Tray_Icon();
 
+
+                        Service.microsoft_defender_antivirus_notifications_json = Get_Notifications_Json();
+
                         Set_Settings.Do();
-                        //Scan_Job_Scheduler.Scan_Job_Scheduler.Check_Exececution();
                         Eventlog_Crawler.Do();
                         Scan_Jobs_Scheduler.Check_Execution();
                     }
@@ -74,7 +76,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 }
                 catch (Exception ex)
                 {
-                    Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Initalization", "Check security center tray icon presence", "Couldn't kill it: " + ex.Message);
+                    Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Initalization", "Check security center tray icon presence", "Couldn't kill it: " + ex.ToString());
                 }
             }
         }
@@ -160,7 +162,45 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
             }
             catch (Exception ex)
             {
-                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Backup_Eventlog", "Couldnt backup it.", ex.Message);
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Backup_Eventlog", "Couldnt backup it.", ex.ToString());
+            }
+        }
+
+        public static string Get_Notifications_Json()
+        {
+            try
+            {
+                bool notifications_netlock_mail = false;
+                bool notifications_netlock_microsoft_teams = false;
+                bool notifications_netlock_telegram = false;
+                bool notifications_netlock_ntfy_sh = false;
+
+                using (JsonDocument document = JsonDocument.Parse(Service.policy_antivirus_settings_json))
+                {
+                    JsonElement notifications_netlock_mail_element = document.RootElement.GetProperty("notifications_netlock_mail");
+                    notifications_netlock_mail = notifications_netlock_mail_element.GetBoolean();
+
+                    JsonElement notifications_netlock_microsoft_teams_element = document.RootElement.GetProperty("notifications_netlock_microsoft_teams");
+                    notifications_netlock_microsoft_teams = notifications_netlock_microsoft_teams_element.GetBoolean();
+
+                    JsonElement notifications_netlock_telegram_element = document.RootElement.GetProperty("notifications_netlock_telegram");
+                    notifications_netlock_telegram = notifications_netlock_telegram_element.GetBoolean();
+
+                    JsonElement notifications_netlock_ntfy_sh_element = document.RootElement.GetProperty("notifications_netlock_ntfy_sh");
+                    notifications_netlock_ntfy_sh = notifications_netlock_ntfy_sh_element.GetBoolean();
+                }
+
+                // Create notifications_json
+                string notifications_json = "{\"notifications_netlock_mail\":" + notifications_netlock_mail + ",\"notifications_netlock_microsoft_teams\":" + notifications_netlock_microsoft_teams + ",\"notifications_netlock_telegram\":" + notifications_netlock_telegram + ",\"notifications_netlock_ntfy_sh\":" + notifications_netlock_ntfy_sh + "}";
+
+                Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Handler.Get_Notifications_Json", "Notifications Json", notifications_json);
+
+                return notifications_json;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Microsoft_Defender_AntiVirus.Handler.Get_Notifications_Json", "General Error", ex.ToString());
+                return String.Empty;
             }
         }
     }

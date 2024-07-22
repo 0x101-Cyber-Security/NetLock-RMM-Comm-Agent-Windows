@@ -91,6 +91,9 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string policy_antivirus_controlled_folder_access_ruleset_json = String.Empty;
         public static string policy_sensors_json = String.Empty;
         public static string policy_jobs_json = String.Empty;
+        
+        // Microsoft Defender Antivirus
+        public static string microsoft_defender_antivirus_notifications_json = String.Empty;
 
         //Datatables
         public static DataTable events_data_table = new DataTable();

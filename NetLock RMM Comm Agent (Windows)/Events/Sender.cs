@@ -48,11 +48,12 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
             public string reported_by { get; set; }
             public string _event { get; set; }
             public string description { get; set; }
+            public string notification_json { get; set;}
             public string type { get; set; }
             public string language { get; set; }
         }
 
-        public static async Task <bool> Send_Event(string severity, string reported_by, string _event, string description, string type, string language)
+        public static async Task <bool> Send_Event(string severity, string reported_by, string _event, string description, string notification_json, string type, string language)
         {
             try
             {
@@ -150,6 +151,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                     reported_by = reported_by,
                     _event = _event,
                     description = description,
+                    notification_json = notification_json,
                     type = type,
                     language = language,
                 };

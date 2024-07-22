@@ -188,6 +188,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                             "reported_by TEXT NULL DEFAULT NULL, " +
                             "event TEXT NULL DEFAULT NULL, " +
                             "description TEXT NULL DEFAULT NULL, " +
+                            "notification_json TEXT NULL DEFAULT NULL," +
                             "type TEXT NULL DEFAULT NULL, " +
                             "language TEXT NULL DEFAULT NULL," +
                             "status TEXT NULL DEFAULT NULL);";

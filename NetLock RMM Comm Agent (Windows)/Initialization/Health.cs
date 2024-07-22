@@ -130,6 +130,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                 Service.events_data_table.Columns.Add("description");
                 Service.events_data_table.Columns.Add("type");
                 Service.events_data_table.Columns.Add("language");
+                Service.events_data_table.Columns.Add("notification_json");
 
                 Logging.Handler.Debug("Initialization.Health.Setup_Events_Virtual_Datatable", "Create datatable", "Done.");
             }

@@ -13,7 +13,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
 {
     internal class Logger
     {
-        public static void Insert_Event(string severity, string reported_by, string _event, string description, int type, int language)
+        public static void Insert_Event(string severity, string reported_by, string _event, string description, string notification_json, int type, int language)
         {
             while (Service.events_processing == true)
             {
@@ -23,7 +23,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
 
             try
             {
-                Service.events_data_table.Rows.Add(severity, reported_by, _event, description, type, language);
+                Service.events_data_table.Rows.Add(severity, reported_by, _event, description, type, language, notification_json);
                 Logging.Handler.Debug("Events.Logger.Insert_Event", "", "Done");
             }
             catch (Exception ex)
@@ -47,11 +47,12 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
 
                     foreach (DataRow row in Service.events_data_table.Rows)
                     {
-                        SQLiteCommand command = new SQLiteCommand("INSERT INTO events ('severity', 'reported_by', 'event', 'description', 'type', 'language', 'status') VALUES (" +
+                        SQLiteCommand command = new SQLiteCommand("INSERT INTO events ('severity', 'reported_by', 'event', 'description', 'notification_json', 'type', 'language', 'status') VALUES (" +
                             "'" + Encryption.String_Encryption.Encrypt(row["severity"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //_event
                             "'" + Encryption.String_Encryption.Encrypt(row["reported_by"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //_event
                             "'" + Encryption.String_Encryption.Encrypt(row["event"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //_event
                             "'" + Encryption.String_Encryption.Encrypt(row["description"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //description
+                            "'" + Encryption.String_Encryption.Encrypt(row["notification_json"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //notification_json
                             "'" + Encryption.String_Encryption.Encrypt(row["type"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //type
                             "'" + Encryption.String_Encryption.Encrypt(row["language"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) + "', " + //language
                             "'" + Encryption.String_Encryption.Encrypt("0", Application_Settings.NetLock_Local_Encryption_Key) + "'" + //status
@@ -125,7 +126,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                         bool status_send = false;
 
                         if (Encryption.String_Encryption.Decrypt(reader["status"].ToString(), Application_Settings.NetLock_Local_Encryption_Key) == "0")
-                            status_send = await Events.Sender.Send_Event(Encryption.String_Encryption.Decrypt(reader["severity"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["reported_by"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["event"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["description"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["type"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["language"].ToString(), Application_Settings.NetLock_Local_Encryption_Key));
+                            status_send = await Events.Sender.Send_Event(Encryption.String_Encryption.Decrypt(reader["severity"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["reported_by"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["event"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["description"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["notification_json"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["type"].ToString(), Application_Settings.NetLock_Local_Encryption_Key), Encryption.String_Encryption.Decrypt(reader["language"].ToString(), Application_Settings.NetLock_Local_Encryption_Key));
 
                         //If status send success, update its status in db
                         if (status_send)
