@@ -9,6 +9,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using static NetLock_RMM_Comm_Agent_Windows.Online_Mode.Handler;
+using Helper;
+using System.IO;
+using System.IO.Compression;
+using System.Diagnostics;
 
 namespace NetLock_RMM_Comm_Agent_Windows.Initialization
 {
@@ -98,6 +102,48 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
             {
                 Logging.Handler.Error("Initialization.Version_Handler.Check_Version", "General error", ex.ToString());
                 return true;
+            }
+        }
+
+        public static async Task Update()
+        {
+            try
+            {
+                if (!Directory.Exists(Application_Paths.c_temp_netlock_dir))
+                    Directory.CreateDirectory(Application_Paths.c_temp_netlock_dir);
+
+                // Download the new version
+                Logging.Handler.Debug("Initialization.Version_Handler.Update", "Downloading new version", "true");
+                await Http.DownloadFileAsync(true, Service.update_server + Application_Paths.installer_package_url, Application_Paths.c_temp_netlock_dir + Application_Paths.installer_package_path, Service.package_guid);
+
+                // Get the hash of the new version
+                Logging.Handler.Debug("Initialization.Version_Handler.Update", "Getting hash of new version", "true");
+                string hash = await Http.GetHashAsync(true, Service.update_server + Application_Paths.installer_package_url + ".sha512", Service.package_guid);
+
+                // Get the hash of the downloaded file
+                Logging.Handler.Debug("Initialization.Version_Handler.Update", "Getting hash of downloaded file", "true");
+                string downloaded_hash = IO.Get_SHA512(Application_Paths.c_temp_netlock_dir + Application_Paths.installer_package_path);
+
+                // Compare the hashes
+                if (hash != downloaded_hash)
+                {
+                    Logging.Handler.Debug("Initialization.Version_Handler.Update", "Hash check", "Bad. Canceling update.");
+                    return;
+                }
+                else
+                    Logging.Handler.Debug("Initialization.Version_Handler.Update", "Hash check", "Good");
+
+                // Extract the new version
+                Logging.Handler.Debug("Initialization.Version_Handler.Update", "Extracting new version", "true");
+                ZipFile.ExtractToDirectory(Application_Paths.c_temp_netlock_dir + Application_Paths.installer_package_path, Application_Paths.c_temp_installer_dir);
+
+                // Start the installer
+                Logging.Handler.Debug("Initialization.Version_Handler.Update", "Starting installer", "true");
+                Process.Start(Application_Paths.c_temp_installer_path, $"fix \"{Application_Paths.program_data_server_config_json}\"");
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Initialization.Version_Handler.Update", "General error", ex.ToString());
             }
         }
     }

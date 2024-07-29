@@ -20,6 +20,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Policy;
+using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace NetLock_RMM_Comm_Agent_Windows
 {
@@ -79,10 +80,6 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static bool jobs_time_scheduler_timer_running = false;
         public static bool sensors_time_scheduler_timer_running = false;
         
-        
-        //Lists
-        //public static string processes_list = "[]";
-
         //Policy
         public static string policy_antivirus_settings_json = String.Empty;
         public static string policy_antivirus_exclusions_json = String.Empty;
@@ -97,6 +94,21 @@ namespace NetLock_RMM_Comm_Agent_Windows
 
         //Datatables
         public static DataTable events_data_table = new DataTable();
+
+        // Device information
+        public static string ip_address_internal = String.Empty;
+        public static string operating_system = String.Empty;
+        public static string domain = String.Empty;
+        public static string antivirus_solution = String.Empty;
+        public static bool firewall_status = false;
+        public static string architecture = String.Empty;
+        public static string last_boot = String.Empty;
+        public static string timezone = String.Empty;
+        public static string cpu = String.Empty;
+        public static string mainboard = String.Empty;
+        public static string gpu = String.Empty;
+        public static string ram = String.Empty;
+        public static string tpm = String.Empty;
 
         public void ServiceAsync()
         {
@@ -116,19 +128,28 @@ namespace NetLock_RMM_Comm_Agent_Windows
             Health.Check_Firewall();
             Health.Check_Databases();
 
-            /* Check OS version (legacy code for windows 7. Need to verify its still working & not causing security issues 
-            string os_version = Environment.OSVersion.Version.ToString();
-            char os_version_char = os_version[0];
+            // Check OS version (legacy code for Windows 7. Need to verify it's still working and not causing security issues)
+            string osVersion = Environment.OSVersion.Version.ToString();
 
-            if (os_version_char == '6')
+            if (!string.IsNullOrEmpty(osVersion))
             {
-                Logging.Handler.Debug("OnStart", "OS_Version", $"OS ({os_version_char}) is old. Switch to compatibility mode.");
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                char osVersionChar = osVersion[0];
+
+                if (osVersionChar == '6')
+                {
+                    Logging.Handler.Debug("OnStart", "OS_Version", $"OS ({osVersionChar}) is old. Switching to compatibility mode.");
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                }
+                else
+                {
+                    Logging.Handler.Debug("OnStart", "OS_Version", $"OS ({osVersionChar}) is new.");
+                }
             }
             else
-                Logging.Handler.Debug("OnStart", "OS_Version", $"OS ({os_version_char}) is new.");
-            */
+            {
+                Logging.Handler.Debug("OnStart", "OS_Version", "OS version could not be determined.");
+            }
 
             // Load server config
             if (!await Server_Config.Load()) // 
@@ -156,18 +177,6 @@ namespace NetLock_RMM_Comm_Agent_Windows
                 Logging.Handler.Error("Service.OnStart", "Start sync_timer", ex.ToString());
             }
 
-            //Start events timer
-            try
-            {
-                events_timer = new System.Timers.Timer(10000);
-                events_timer.Elapsed += new ElapsedEventHandler(Process_Events_Timer_Tick);
-                events_timer.Enabled = true;
-            }
-            catch (Exception ex)
-            {
-                Logging.Handler.Error("Service.OnStart", "Start Event_Processor_Timer", ex.ToString());
-            }
-
             //Start Init Timer. We are doing this to get the service instantly running on service manager. Afterwards we will dispose the timer in Synchronize function
             try
             {
@@ -180,8 +189,17 @@ namespace NetLock_RMM_Comm_Agent_Windows
                 Logging.Handler.Debug("Service.OnStart", "Start start_timer", ex.ToString());
             }
 
-            // Authenticate online
-            //await Online_Mode.Authenticate.Authenticate_Online();
+            //Start events timer (testing it to run at the end, to prevent a locked service)
+            try
+            {
+                events_timer = new System.Timers.Timer(10000);
+                events_timer.Elapsed += new ElapsedEventHandler(Process_Events_Timer_Tick);
+                events_timer.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Service.OnStart", "Start Event_Processor_Timer", ex.ToString());
+            }
         }
 
         protected override void OnStop()
@@ -260,7 +278,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
                 }
                 else // Outdated. Trigger update
                 {
-
+                    await Initialization.Version.Update();
                 }
             }
             else // Offline mode
@@ -502,5 +520,5 @@ namespace NetLock_RMM_Comm_Agent_Windows
         }       
 
         #endregion
-    }
+}
 }

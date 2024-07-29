@@ -57,68 +57,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
         {
             try
             {
-                // Get ip_address_internal
-                string ip_address_internal = Helper.Network.Get_Local_IP_Address();
-                Logging.Handler.Debug("Events.Sender.Send_Event", "ip_address_internal", ip_address_internal);
-
-                // Get Windows version
-                string operating_system = Windows.Windows_Version();
-                Logging.Handler.Debug("Events.Sender.Send_Event", "operating_system", operating_system);
-
-                // Get DOMAIN
-                string domain = Environment.UserDomainName;
-                Logging.Handler.Debug("Events.Sender.Send_Event", "domain", domain);
-
-                // Get Antivirus solution
-                string antivirus_solution = WMI.Search("root\\SecurityCenter2", "select * FROM AntivirusProduct", "displayName");
-                Logging.Handler.Debug("Events.Sender.Send_Event", "antivirus_solution", antivirus_solution);
-
-                // Get Firewall status
-                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
-                Logging.Handler.Debug("Events.Sender.Send_Event", "firewall_status", firewall_status.ToString());
-
-                // Get Architecture
-                string architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-                Logging.Handler.Debug("Events.Sender.Send_Event", "architecture", architecture);
-
-                // Get last boot
-                string last_boot = WMI.Search("root\\CIMV2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime");
-                DateTime last_boot_datetime = ManagementDateTimeConverter.ToDateTime(last_boot);
-                last_boot = last_boot_datetime.ToString("dd.MM.yyyy HH:mm:ss");
-                Logging.Handler.Debug("Events.Sender.Send_Event", "last_boot", last_boot);
-
-                // Get timezone
-                string timezone = Globalization.Local_Time_Zone();
-                Logging.Handler.Debug("Events.Sender.Send_Event", "timezone", timezone);
-
-                // Get CPU
-                string cpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_Processor", "Name");
-                Logging.Handler.Debug("Events.Sender.Send_Event", "cpu", cpu);
-
-                // Get Mainboard
-                string mainboard = WMI.Search("root\\CIMV2", "SELECT Product FROM Win32_BaseBoard", "Product");
-                string mainboard_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_BaseBoard", "Manufacturer");
-
-                mainboard = mainboard + " (" + mainboard_manufacturer + ")";
-                Logging.Handler.Debug("Events.Sender.Send_Event", "mainboard", mainboard);
-
-                // Get GPU
-                string gpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_VideoController", "Name");
-                Logging.Handler.Debug("Events.Sender.Send_Event", "gpu", gpu);
-
-                // Get RAM
-                string ram = WMI.Search("root\\CIMV2", "SELECT TotalPhysicalMemory FROM Win32_ComputerSystem", "TotalPhysicalMemory");
-                ram = Math.Round(Convert.ToDouble(ram) / 1024 / 1024 / 1024).ToString();
-                Logging.Handler.Debug("Events.Sender.Send_Event", "ram", ram);
-
-                // Get TPM
-                string tpm = string.Empty;
-                //string tpm_IsActivated_InitialValue = WMI.Search("root\\CIMV2", "SELECT IsActivated_InitialValue FROM Win32_Tpm", "IsActivated_InitialValue");
-                string tpm_IsEnabled_InitialValue = WMI.Search("root\\cimv2\\Security\\MicrosoftTpm", "SELECT IsEnabled_InitialValue FROM Win32_Tpm", "IsEnabled_InitialValue");
-                Logging.Handler.Debug("Events.Sender.Send_Event", "tpm_IsEnabled_InitialValue", tpm_IsEnabled_InitialValue);
-
-                //tpm data to much for a one liner. Needs own table in web console and therefore a own json object
-
                 // Create the identity_object
                 Device_Identity identity_object = new Device_Identity
                 {
@@ -129,19 +67,19 @@ namespace NetLock_RMM_Comm_Agent_Windows.Events
                     tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
-                    ip_address_internal = ip_address_internal,
-                    operating_system = operating_system,
-                    domain = domain,
-                    antivirus_solution = antivirus_solution,
-                    firewall_status = firewall_status.ToString(),
-                    architecture = architecture,
-                    last_boot = last_boot,
-                    timezone = timezone,
-                    cpu = cpu,
-                    mainboard = mainboard,
-                    gpu = gpu,
-                    ram = ram,
-                    tpm = tpm_IsEnabled_InitialValue,
+                    ip_address_internal = Service.ip_address_internal,
+                    operating_system = Service.operating_system,
+                    domain = Service.domain,
+                    antivirus_solution = Service.antivirus_solution,
+                    firewall_status = Service.firewall_status.ToString(),
+                    architecture = Service.architecture,
+                    last_boot = Service.last_boot,
+                    timezone = Service.timezone,
+                    cpu = Service.cpu,
+                    mainboard = Service.mainboard,
+                    gpu = Service.gpu,
+                    ram = Service.ram,
+                    tpm = Service.tpm,
                 };
 
                 // Create the event_object

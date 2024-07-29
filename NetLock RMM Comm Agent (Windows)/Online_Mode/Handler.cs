@@ -234,64 +234,63 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
             try
             {
                 // Get ip_address_internal
-                string ip_address_internal = Helper.Network.Get_Local_IP_Address();
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "ip_address_internal", ip_address_internal); 
+                Service.ip_address_internal = Helper.Network.Get_Local_IP_Address();
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "ip_address_internal", Service.ip_address_internal);
 
                 // Get Windows version
-                string operating_system = Windows.Windows_Version();
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "operating_system", operating_system);
+                Service.operating_system = Windows.Windows_Version();
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "operating_system", Service.operating_system);
 
                 // Get DOMAIN
-                string domain = Environment.UserDomainName;
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "domain", domain);
+                Service.domain = Environment.UserDomainName;
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "domain", Service.domain);
 
                 // Get Antivirus solution
-                string antivirus_solution = WMI.Search("root\\SecurityCenter2", "select * FROM AntivirusProduct", "displayName");
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "antivirus_solution", antivirus_solution);
+                Service.antivirus_solution = WMI.Search("root\\SecurityCenter2", "select * FROM AntivirusProduct", "displayName");
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "antivirus_solution", Service.antivirus_solution);
 
                 // Get Firewall status
-                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "firewall_status", firewall_status.ToString());
+                Service.firewall_status = Microsoft_Defender_Firewall.Handler.Status();
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "firewall_status", Service.firewall_status.ToString());
 
                 // Get Architecture
-                string architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "architecture", architecture);
+                Service.architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "architecture", Service.architecture);
 
                 // Get last boot
-                string last_boot = WMI.Search("root\\CIMV2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime");
-                DateTime last_boot_datetime = ManagementDateTimeConverter.ToDateTime(last_boot);
-                last_boot = last_boot_datetime.ToString("dd.MM.yyyy HH:mm:ss");
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "last_boot", last_boot);
+                string _last_boot = WMI.Search("root\\CIMV2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime");
+                DateTime last_boot_datetime = ManagementDateTimeConverter.ToDateTime(_last_boot);
+                Service.last_boot = last_boot_datetime.ToString("dd.MM.yyyy HH:mm:ss");
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "last_boot", Service.last_boot);
 
                 // Get timezone
-                string timezone = Globalization.Local_Time_Zone();
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "timezone", timezone);
+                Service.timezone = Globalization.Local_Time_Zone();
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "timezone", Service.timezone);
 
                 // Get CPU
-                string cpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_Processor", "Name");
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "cpu", cpu);
+                Service.cpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_Processor", "Name");
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "cpu", Service.cpu);
 
                 // Get Mainboard
-                string mainboard = WMI.Search("root\\CIMV2", "SELECT Product FROM Win32_BaseBoard", "Product");
+                string _mainboard = WMI.Search("root\\CIMV2", "SELECT Product FROM Win32_BaseBoard", "Product");
                 string mainboard_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_BaseBoard", "Manufacturer");
 
-                mainboard = mainboard + " (" + mainboard_manufacturer + ")";
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "mainboard", mainboard);
+                Service.mainboard = _mainboard + " (" + mainboard_manufacturer + ")";
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "mainboard", Service.mainboard);
 
                 // Get GPU
-                string gpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_VideoController", "Name");
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "gpu", gpu);
+                Service.gpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_VideoController", "Name");
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "gpu", Service.gpu);
 
                 // Get RAM
-                string ram = WMI.Search("root\\CIMV2", "SELECT TotalPhysicalMemory FROM Win32_ComputerSystem", "TotalPhysicalMemory");
-                ram = Math.Round(Convert.ToDouble(ram) / 1024 / 1024 / 1024).ToString();
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "ram", ram);
+                string _ram = WMI.Search("root\\CIMV2", "SELECT TotalPhysicalMemory FROM Win32_ComputerSystem", "TotalPhysicalMemory");
+                Service.ram = Math.Round(Convert.ToDouble(_ram) / 1024 / 1024 / 1024).ToString();
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "ram", Service.ram);
 
                 // Get TPM
-                string tpm = string.Empty;
                 //string tpm_IsActivated_InitialValue = WMI.Search("root\\CIMV2", "SELECT IsActivated_InitialValue FROM Win32_Tpm", "IsActivated_InitialValue");
-                string tpm_IsEnabled_InitialValue = WMI.Search("root\\cimv2\\Security\\MicrosoftTpm", "SELECT IsEnabled_InitialValue FROM Win32_Tpm", "IsEnabled_InitialValue");
-                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "tpm_IsEnabled_InitialValue", tpm_IsEnabled_InitialValue);
+                Service.tpm = WMI.Search("root\\cimv2\\Security\\MicrosoftTpm", "SELECT IsEnabled_InitialValue FROM Win32_Tpm", "IsEnabled_InitialValue");
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "tpm_IsEnabled_InitialValue", Service.tpm);
                 //string tpm_IsOwned_InitialValue = WMI.Search("root\\CIMV2", "SELECT IsOwned_InitialValue FROM Win32_Tpm", "IsOwned_InitialValue");
                 //string tpm_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_Tpm", "Manufacturer");
                 //string tpm_ManufacturerId = WMI.Search("root\\CIMV2", "SELECT ManufacturerId FROM Win32_Tpm", "ManufacturerId");
@@ -314,19 +313,19 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
-                    ip_address_internal = ip_address_internal,
-                    operating_system = operating_system,
-                    domain = domain,
-                    antivirus_solution = antivirus_solution,
-                    firewall_status = firewall_status.ToString(),
-                    architecture = architecture,
-                    last_boot = last_boot,
-                    timezone = timezone,
-                    cpu = cpu,
-                    mainboard = mainboard,
-                    gpu = gpu,
-                    ram = ram,
-                    tpm = tpm_IsEnabled_InitialValue,                
+                    ip_address_internal = Service.ip_address_internal,
+                    operating_system = Service.operating_system,
+                    domain = Service.domain,
+                    antivirus_solution = Service.antivirus_solution,
+                    firewall_status = Service.firewall_status.ToString(),
+                    architecture = Service.architecture,
+                    last_boot = Service.last_boot,
+                    timezone = Service.timezone,
+                    cpu = Service.cpu,
+                    mainboard = Service.mainboard,
+                    gpu = Service.gpu,
+                    ram = Service.ram,
+                    tpm = Service.tpm,                
                 };
 
                 // Create the object that contains the device_identity object
@@ -437,77 +436,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
         {
             try
             {
-                // Get ip_address_internal
-                string ip_address_internal = Helper.Network.Get_Local_IP_Address();
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "ip_address_internal", ip_address_internal);
-
-                // Get Windows version
-                string operating_system = Windows.Windows_Version();
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "operating_system", operating_system);
-
-                // Get DOMAIN
-                string domain = Environment.UserDomainName;
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "domain", domain);
-
-                // Get Antivirus solution
-                string antivirus_solution = WMI.Search("root\\SecurityCenter2", "select * FROM AntivirusProduct", "displayName");
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "antivirus_solution", antivirus_solution);
-
-                // Get Firewall status
-                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "firewall_status", firewall_status.ToString());
-
-                // Get Architecture
-                string architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "architecture", architecture);
-
-                // Get last boot
-                string last_boot = WMI.Search("root\\CIMV2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime");
-                DateTime last_boot_datetime = ManagementDateTimeConverter.ToDateTime(last_boot);
-                last_boot = last_boot_datetime.ToString("dd.MM.yyyy HH:mm:ss");
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "last_boot", last_boot);
-
-                // Get timezone
-                string timezone = Globalization.Local_Time_Zone();
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "timezone", timezone);
-
-                // Get CPU
-                string cpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_Processor", "Name");
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "cpu", cpu);
-
-                // Get Mainboard
-                string mainboard = WMI.Search("root\\CIMV2", "SELECT Product FROM Win32_BaseBoard", "Product");
-                string mainboard_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_BaseBoard", "Manufacturer");
-
-                mainboard = mainboard + " (" + mainboard_manufacturer + ")";
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "mainboard", mainboard);
-
-                // Get GPU
-                string gpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_VideoController", "Name");
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "gpu", gpu);
-
-                // Get RAM
-                string ram = WMI.Search("root\\CIMV2", "SELECT TotalPhysicalMemory FROM Win32_ComputerSystem", "TotalPhysicalMemory");
-                ram = Math.Round(Convert.ToDouble(ram) / 1024 / 1024 / 1024).ToString();
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "ram", ram);
-
-                // Get TPM
-                string tpm = string.Empty;
-                //string tpm_IsActivated_InitialValue = WMI.Search("root\\CIMV2", "SELECT IsActivated_InitialValue FROM Win32_Tpm", "IsActivated_InitialValue");
-                string tpm_IsEnabled_InitialValue = WMI.Search("root\\cimv2\\Security\\MicrosoftTpm", "SELECT IsEnabled_InitialValue FROM Win32_Tpm", "IsEnabled_InitialValue");
-                Logging.Handler.Debug("Online_Mode.Handler.Update_Device_Information", "tpm_IsEnabled_InitialValue", tpm_IsEnabled_InitialValue);
-                //string tpm_IsOwned_InitialValue = WMI.Search("root\\CIMV2", "SELECT IsOwned_InitialValue FROM Win32_Tpm", "IsOwned_InitialValue");
-                //string tpm_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_Tpm", "Manufacturer");
-                //string tpm_ManufacturerId = WMI.Search("root\\CIMV2", "SELECT ManufacturerId FROM Win32_Tpm", "ManufacturerId");
-                //string tpm_ManufacturerIdTxt = WMI.Search("root\\CIMV2", "SELECT ManufacturerIdTxt FROM Win32_Tpm", "ManufacturerIdTxt");
-                //string tpm_ManufacturerVersion = WMI.Search("root\\CIMV2", "SELECT ManufacturerVersion FROM Win32_Tpm", "ManufacturerVersion");
-                //string tpm_ManufacturerVersionFull20 = WMI.Search("root\\CIMV2", "SELECT ManufacturerVersionFull20 FROM Win32_Tpm", "ManufacturerVersionFull20");
-                //string tpm_ManufacturerVersionInfo = WMI.Search("root\\CIMV2", "SELECT ManufacturerVersionInfo FROM Win32_Tpm", "ManufacturerVersionInfo");
-                //string tpm_PhysicalPresenceVersionInfo = WMI.Search("root\\CIMV2", "SELECT PhysicalPresenceVersionInfo FROM Win32_Tpm", "PhysicalPresenceVersionInfo");
-                //string tpm_SpecVersion = WMI.Search("root\\CIMV2", "SELECT SpecVersion FROM Win32_Tpm", "SpecVersion");
-
-                //tpm data to much for a one liner. Needs own table in web console and therefore a own json object
-
                 // Create the device_identity object
                 Device_Identity identity = new Device_Identity
                 {
@@ -518,19 +446,19 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
-                    ip_address_internal = ip_address_internal,
-                    operating_system = operating_system,
-                    domain = domain,
-                    antivirus_solution = antivirus_solution,
-                    firewall_status = firewall_status.ToString(),
-                    architecture = architecture,
-                    last_boot = last_boot,
-                    timezone = timezone,
-                    cpu = cpu,
-                    mainboard = mainboard,
-                    gpu = gpu,
-                    ram = ram,
-                    tpm = tpm_IsEnabled_InitialValue,
+                    ip_address_internal = Service.ip_address_internal,
+                    operating_system = Service.operating_system,
+                    domain = Service.domain,
+                    antivirus_solution = Service.antivirus_solution,
+                    firewall_status = Service.firewall_status.ToString(),
+                    architecture = Service.architecture,
+                    last_boot = Service.last_boot,
+                    timezone = Service.timezone,
+                    cpu = Service.cpu,
+                    mainboard = Service.mainboard,
+                    gpu = Service.gpu,
+                    ram = Service.ram,
+                    tpm = Service.tpm,
                 };
 
                 // Get the processes list
@@ -679,64 +607,6 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
         {
             try
             {
-                // Get ip_address_internal
-                string ip_address_internal = Helper.Network.Get_Local_IP_Address();
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "ip_address_internal", ip_address_internal);
-
-                // Get Windows version
-                string operating_system = Windows.Windows_Version();
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "operating_system", operating_system);
-
-                // Get DOMAIN
-                string domain = Environment.UserDomainName;
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "domain", domain);
-
-                // Get Antivirus solution
-                string antivirus_solution = WMI.Search("root\\SecurityCenter2", "select * FROM AntivirusProduct", "displayName");
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "antivirus_solution", antivirus_solution);
-
-                // Get Firewall status
-                bool firewall_status = Microsoft_Defender_Firewall.Handler.Status();
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "firewall_status", firewall_status.ToString());
-
-                // Get Architecture
-                string architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "architecture", architecture);
-
-                // Get last boot
-                string last_boot = WMI.Search("root\\CIMV2", "SELECT LastBootUpTime FROM Win32_OperatingSystem", "LastBootUpTime");
-                DateTime last_boot_datetime = ManagementDateTimeConverter.ToDateTime(last_boot);
-                last_boot = last_boot_datetime.ToString("dd.MM.yyyy HH:mm:ss");
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "last_boot", last_boot);
-
-                // Get timezone
-                string timezone = Globalization.Local_Time_Zone();
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "timezone", timezone);
-
-                // Get CPU
-                string cpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_Processor", "Name");
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "cpu", cpu);
-
-                // Get Mainboard
-                string mainboard = WMI.Search("root\\CIMV2", "SELECT Product FROM Win32_BaseBoard", "Product");
-                string mainboard_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_BaseBoard", "Manufacturer");
-
-                mainboard = mainboard + " (" + mainboard_manufacturer + ")";
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "mainboard", mainboard);
-
-                // Get GPU
-                string gpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_VideoController", "Name");
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "gpu", gpu);
-
-                // Get RAM
-                string ram = WMI.Search("root\\CIMV2", "SELECT TotalPhysicalMemory FROM Win32_ComputerSystem", "TotalPhysicalMemory");
-                ram = Math.Round(Convert.ToDouble(ram) / 1024 / 1024 / 1024).ToString();
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "ram", ram);
-
-                // Get TPM
-                string tpm_IsEnabled_InitialValue = WMI.Search("root\\cimv2\\Security\\MicrosoftTpm", "SELECT IsEnabled_InitialValue FROM Win32_Tpm", "IsEnabled_InitialValue");
-                Logging.Handler.Debug("Online_Mode.Handler.Policy", "tpm_IsEnabled_InitialValue", tpm_IsEnabled_InitialValue);
-
                 //Create JSON
                 Device_Identity identity = new Device_Identity
                 {
@@ -747,19 +617,19 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     tenant_guid = Service.tenant_guid,
                     access_key = Service.access_key,
                     hwid = Service.hwid,
-                    ip_address_internal = ip_address_internal,
-                    operating_system = operating_system,
-                    domain = domain,
-                    antivirus_solution = antivirus_solution,
-                    firewall_status = firewall_status.ToString(),
-                    architecture = architecture,
-                    last_boot = last_boot,
-                    timezone = timezone,
-                    cpu = cpu,
-                    mainboard = mainboard,
-                    gpu = gpu,
-                    ram = ram,
-                    tpm = tpm_IsEnabled_InitialValue,
+                    ip_address_internal = Service.ip_address_internal,
+                    operating_system = Service.operating_system,
+                    domain = Service.domain,
+                    antivirus_solution = Service.antivirus_solution,
+                    firewall_status = Service.firewall_status.ToString(),
+                    architecture = Service.architecture,
+                    last_boot = Service.last_boot,
+                    timezone = Service.timezone,
+                    cpu = Service.cpu,
+                    mainboard = Service.mainboard,
+                    gpu = Service.gpu,
+                    ram = Service.ram,
+                    tpm = Service.tpm,
                 };
 
                 // Create the object that contains the device_identity object
