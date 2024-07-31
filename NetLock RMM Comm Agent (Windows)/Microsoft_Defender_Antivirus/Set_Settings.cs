@@ -198,7 +198,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_s_fs_file_hash_computation", "False");
             }
 
-            //windows_defender_antivirus_s_fs_block_at_first_seen
+            //windows_defender_antivirus_s_fs_block_at_first_seen // tempoary disabled due to possiuble fp
+            /*
             if (block_at_first_seen && Check_Settings.Microsoft_Defender_Antivirus_S_Fs_Block_At_First_Seen() == true)
             {
                 PowerShell.Execute_Command("microsoft_defender_antivirus_s_fs_block_at_first_seen", "Set-MpPreference -DisableBlockAtFirstSeen $false", 30);
@@ -209,6 +210,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Microsoft_Defender_Antivirus
                 PowerShell.Execute_Command("microsoft_defender_antivirus_s_fs_block_at_first_seen", "Set-MpPreference -DisableBlockAtFirstSeen $true", 30);
                 Logging.Handler.Microsoft_Defender_Antivirus("Microsoft_Defender_AntiVirus.Set_Settings.Do", "microsoft_defender_antivirus_s_fs_block_at_first_seen", "True");
             }
+            */
 
             //windows_defender_antivirus_s_fs_scan_mails
             if (scan_mails && Check_Settings.Microsoft_Defender_Antivirus_S_Fs_Scan_Mails() == true)

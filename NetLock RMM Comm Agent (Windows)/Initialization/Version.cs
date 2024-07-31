@@ -109,16 +109,21 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
         {
             try
             {
+                // Delete the temp directory
+                if (Directory.Exists(Application_Paths.c_temp_netlock_dir))
+                    Directory.Delete(Application_Paths.c_temp_netlock_dir, true);
+
+                // Create the temp directory
                 if (!Directory.Exists(Application_Paths.c_temp_netlock_dir))
                     Directory.CreateDirectory(Application_Paths.c_temp_netlock_dir);
 
                 // Download the new version
                 Logging.Handler.Debug("Initialization.Version_Handler.Update", "Downloading new version", "true");
-                await Http.DownloadFileAsync(true, Service.update_server + Application_Paths.installer_package_url, Application_Paths.c_temp_netlock_dir + Application_Paths.installer_package_path, Service.package_guid);
+                await Http.DownloadFileAsync(Service.ssl, Service.update_server + Application_Paths.installer_package_url, Application_Paths.c_temp_netlock_dir + Application_Paths.installer_package_path, Service.package_guid);
 
                 // Get the hash of the new version
                 Logging.Handler.Debug("Initialization.Version_Handler.Update", "Getting hash of new version", "true");
-                string hash = await Http.GetHashAsync(true, Service.update_server + Application_Paths.installer_package_url + ".sha512", Service.package_guid);
+                string hash = await Http.GetHashAsync(Service.ssl, Service.update_server + Application_Paths.installer_package_url + ".sha512", Service.package_guid);
 
                 // Get the hash of the downloaded file
                 Logging.Handler.Debug("Initialization.Version_Handler.Update", "Getting hash of downloaded file", "true");
