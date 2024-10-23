@@ -68,7 +68,21 @@ namespace NetLock_RMM_Comm_Agent_Windows.Helper
         {
             try
             {
-                RegistryKey regkey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(path, true);
+                RegistryKey regkey = null;
+
+                // Prüfen, ob das System 64-Bit ist, um die richtige Registry-Ansicht zu öffnen
+                if (Environment.Is64BitOperatingSystem)
+                {
+                    // Für ein 64-Bit Betriebssystem öffne den 64-Bit-Registry-Pfad
+                    regkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).CreateSubKey(path, true);
+                }
+                else
+                {
+                    // Für ein 32-Bit Betriebssystem öffne den 32-Bit-Registry-Pfad
+                    regkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).CreateSubKey(path, true);
+                }
+
+                if (regkey != null)
                 {
                     regkey.SetValue(value, content, RegistryValueKind.String);
                     regkey.Close();
@@ -76,6 +90,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Helper
 
                     Logging.Handler.Registry("Helper.Registry_Handler.HKLM_Write_Value", "Path: " + path + " Value: " + value + " Content: " + content, "Done.");
                     return true;
+                }
+                else
+                {
+                    Logging.Handler.Error("Helper.Registry_Handler.HKLM_Write_Value", "Path: " + path + " konnte nicht geöffnet werden.", "Failed");
+                    return false;
                 }
             }
             catch (Exception ex)

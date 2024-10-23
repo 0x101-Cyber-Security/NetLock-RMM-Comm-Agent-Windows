@@ -19,6 +19,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string netlock_health_service_exe = @"C:\Program Files\0x101 Cyber Security\NetLock RMM\Health\NetLock RMM Health Agent.exe";
         public static string netlock_installer_exe = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Installer\Installer.exe";
         public static string netlock_uninstaller_exe = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Uninstaller\Uninstaller.exe";
+        public static string netlock_user_process_exe = @"C:\Program Files\0x101 Cyber Security\NetLock RMM\User Process\NetLock RMM User Process.exe";
 
         public static string program_data = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent";
         public static string program_data_logs = @"C:\ProgramData\0x101 Cyber Security\NetLock RMM\Comm Agent\Logs";

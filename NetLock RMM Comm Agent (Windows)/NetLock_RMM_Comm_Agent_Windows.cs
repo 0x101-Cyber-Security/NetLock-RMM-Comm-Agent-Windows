@@ -127,6 +127,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
             Health.Check_Registry();
             Health.Check_Firewall();
             Health.Check_Databases();
+            Health.User_Process();
 
             // Check OS version (legacy code for Windows 7. Need to verify it's still working and not causing security issues)
             string osVersion = Environment.OSVersion.Version.ToString();
