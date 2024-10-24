@@ -1,1 +1,6 @@
-bin
+/.vs/
+/bin/
+/obj/
+/NetLock RMM Comm Agent (Windows)/.vs/
+/NetLock RMM Comm Agent (Windows)/bin/
+/NetLock RMM Comm Agent (Windows)/obj/
