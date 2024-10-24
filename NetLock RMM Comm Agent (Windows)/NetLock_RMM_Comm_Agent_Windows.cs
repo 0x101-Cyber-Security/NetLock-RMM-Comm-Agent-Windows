@@ -463,7 +463,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
             _client = client;
             _stream = _client.GetStream();
 
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[2096];
 
             try
             {
