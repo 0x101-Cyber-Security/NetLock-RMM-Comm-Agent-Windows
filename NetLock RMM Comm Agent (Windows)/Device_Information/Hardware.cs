@@ -30,41 +30,61 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                     {
                         HashSet<string> uniqueSockets = new HashSet<string>();
 
-                        string socket_designation = obj["SocketDesignation"].ToString();
-
-                        //To determine the number of sockets, you can query the number of unique values for the "SocketDesignation" attribute across all processors. Each unique value for "SocketDesignation" corresponds to a single socket.
-                        if (!string.IsNullOrEmpty(socket_designation))
+                        try
                         {
-                            uniqueSockets.Add(socket_designation);
+                            if (obj != null && obj["SocketDesignation"] != null)
+                            {
+                                string socket_designation = obj["SocketDesignation"].ToString();
+
+                                // Check if the socket_designation is not empty and add to uniqueSockets
+                                if (!string.IsNullOrEmpty(socket_designation))
+                                {
+                                    uniqueSockets.Add(socket_designation);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Handler.Error("Device_Information.Hardware.CPU_Information", "CPU_Information", "An error occurred while querying for WMI data: " + ex.ToString());
                         }
 
                         int numberOfSockets = uniqueSockets.Count;
-
-                        CPU_Information cpuInfo = new CPU_Information
+                       
+                        try
                         {
-                            name = obj["Name"].ToString(),
-                            socket_designation = obj["SocketDesignation"].ToString(),
-                            processor_id = obj["ProcessorId"].ToString(),
-                            revision = obj["Revision"].ToString(),
-                            usage = obj["LoadPercentage"].ToString(),
-                            voltage = obj["CurrentVoltage"].ToString(),
-                            currentclockspeed = obj["CurrentClockSpeed"].ToString(),
-                            processes = Process.GetProcesses().Length.ToString(),
-                            threads = Process.GetCurrentProcess().Threads.Count.ToString(),
-                            handles = Process.GetCurrentProcess().HandleCount.ToString(),
-                            maxclockspeed = obj["MaxClockSpeed"].ToString(),
-                            sockets = numberOfSockets.ToString(),
-                            cores = obj["NumberOfCores"].ToString(),
-                            logical_processors = obj["NumberOfLogicalProcessors"].ToString(),
-                            virtualization = obj["VirtualizationFirmwareEnabled"].ToString(),
-                            l1_cache = Math.Round(Convert.ToDouble(obj["L2CacheSize"]) / 1024).ToString(), //l1cache is not available in WMI
-                            l2_cache = Math.Round(Convert.ToDouble(obj["L2CacheSize"]) / 1024).ToString(),
-                            l3_cache = Math.Round(Convert.ToDouble(obj["L3CacheSize"]) / 1024).ToString()
-                        };
+                            CPU_Information cpuInfo = new CPU_Information
+                            {
+                                name = obj["Name"]?.ToString() ?? "N/A",
+                                socket_designation = obj["SocketDesignation"]?.ToString() ?? "N/A",
+                                processor_id = obj["ProcessorId"]?.ToString() ?? "N/A",
+                                revision = obj["Revision"]?.ToString() ?? "N/A",
+                                usage = obj["LoadPercentage"]?.ToString() ?? "0", // Default to "0" if usage isn't available
+                                voltage = obj["CurrentVoltage"]?.ToString() ?? "N/A",
+                                currentclockspeed = obj["CurrentClockSpeed"]?.ToString() ?? "N/A",
 
-                        // Serialize the process object into a JSON string and add it to the list
-                        cpu_information_json = JsonConvert.SerializeObject(cpuInfo, Formatting.Indented);
-                        Logging.Handler.Device_Information("Device_Information.Hardware.CPU_Information", "cpu_information_json", cpu_information_json);
+                                // Use fallback if there are any issues retrieving process information
+                                processes = GetSafeProcessCount(),
+                                threads = GetSafeThreadCount(),
+                                handles = GetSafeHandleCount(),
+
+                                maxclockspeed = obj["MaxClockSpeed"]?.ToString() ?? "N/A",
+                                sockets = numberOfSockets.ToString(),
+                                cores = obj["NumberOfCores"]?.ToString() ?? "N/A",
+                                logical_processors = obj["NumberOfLogicalProcessors"]?.ToString() ?? "N/A",
+                                virtualization = obj["VirtualizationFirmwareEnabled"]?.ToString() ?? "N/A",
+                                l1_cache = SafeCacheSize(obj["L1CacheSize"]),
+                                l2_cache = SafeCacheSize(obj["L2CacheSize"]),
+                                l3_cache = SafeCacheSize(obj["L3CacheSize"])
+                            };
+
+                            // Serialize the process object into a JSON string and add it to the list
+                            cpu_information_json = JsonConvert.SerializeObject(cpuInfo, Formatting.Indented);
+                            Logging.Handler.Device_Information("Device_Information.Hardware.CPU_Information", "cpu_information_json", cpu_information_json);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Handler.Error("Device_Information.Hardware.CPU_Information", "CPU_Information", "An error occurred while querying for WMI data: " + ex.ToString());
+                        }
                     }
                 }
 
@@ -75,6 +95,63 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                 Logging.Handler.Error("Device_Information.Hardware.CPU_Information", "CPU_Information", "An error occurred while querying for WMI data: " + ex.ToString());
                 return "{}";
             }
+        }
+
+        // Helper function to safely convert cache size
+        private static string SafeCacheSize(object cacheSize)
+        {
+            try
+            {
+                if (cacheSize != null)
+                {
+                    return Math.Round(Convert.ToDouble(cacheSize) / 1024).ToString(); // Convert to MB
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.SafeCacheSize", "An error occurred while converting cache size: ", ex.ToString());
+            }
+            return "N/A"; // Fallback if the value is not available or conversion fails
+        }
+
+        // Helper functions to retrieve process information safely
+        private static string GetSafeProcessCount()
+        {
+            try
+            {
+                return Process.GetProcesses().Length.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.GetSafeProcessCount", "An error occurred while retrieving process count: ", ex.ToString());
+            }
+            return "0"; // Fallback
+        }
+
+        private static string GetSafeThreadCount()
+        {
+            try
+            {
+                return Process.GetCurrentProcess().Threads.Count.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.GetSafeThreadCount", "An error occurred while retrieving thread count: ", ex.ToString());
+            }
+            return "0"; // Fallback
+        }
+
+        private static string GetSafeHandleCount()
+        {
+            try
+            {
+                return Process.GetCurrentProcess().HandleCount.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.GetSafeHandleCount", "An error occurred while retrieving handle count: ", ex.ToString());
+            }
+            return "0"; // Fallback
         }
 
         public static string CPU_Usage()
@@ -116,39 +193,72 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
                 string form_factor = string.Empty;
                 string hardware_reserved = string.Empty;
 
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PerfRawData_PerfOS_Memory"))
+                try
                 {
-                    foreach (ManagementObject obj in searcher.Get())
+                    // Query for memory performance data
+                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PerfRawData_PerfOS_Memory"))
                     {
-                        cache = Math.Floor(Convert.ToDouble(obj["AvailableBytes"]) / (1024 * 1024)).ToString(); // currently no way known to get the cache size. This is a placeholder
-                        outsourced_pool = Math.Floor(Convert.ToDouble(obj["PoolPagedBytes"]) / (1024 * 1024)).ToString();
-                        not_outsourced_pool = Math.Floor(Convert.ToDouble(obj["PoolNonpagedBytes"]) / (1024 * 1024)).ToString();
+                        foreach (ManagementObject obj in searcher.Get())
+                        {
+                            if (obj != null)
+                            {
+                                cache = Math.Floor(Convert.ToDouble(obj["AvailableBytes"] ?? 0) / (1024 * 1024)).ToString(); // Placeholder for cache size
+                                outsourced_pool = Math.Floor(Convert.ToDouble(obj["PoolPagedBytes"] ?? 0) / (1024 * 1024)).ToString();
+                                not_outsourced_pool = Math.Floor(Convert.ToDouble(obj["PoolNonpagedBytes"] ?? 0) / (1024 * 1024)).ToString();
+                            }
+                        }
                     }
                 }
-
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT TotalVisibleMemorySize, FreePhysicalMemory FROM Win32_OperatingSystem"))
+                catch (Exception ex)
                 {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        ulong totalMemory = Convert.ToUInt64(obj["TotalVisibleMemorySize"]); // Gesamtspeicher in KB
-                        ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"]); // Freier Speicher in KB
-                        ulong hardwareReservedMemory = totalMemory - freeMemory; // Hardware-reservierter Speicherplatz in KB
-
-                        hardware_reserved = (hardwareReservedMemory / 1024d).ToString();
-                    }
+                    Logging.Handler.Error("Device_Information.Hardware.RAM_Information", "RAM_Information", "An error occurred while querying for WMI data: " + ex.ToString());
                 }
 
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PhysicalMemory"))
+                try
                 {
-                    foreach (ManagementObject obj in searcher.Get())
+                    // Query for OS memory info
+                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT TotalVisibleMemorySize, FreePhysicalMemory FROM Win32_OperatingSystem"))
                     {
-                        slots_used++;
+                        foreach (ManagementObject obj in searcher.Get())
+                        {
+                            if (obj != null)
+                            {
+                                ulong totalMemory = Convert.ToUInt64(obj["TotalVisibleMemorySize"] ?? 0); // Total memory in KB
+                                ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"] ?? 0); // Free memory in KB
+                                ulong hardwareReservedMemory = totalMemory - freeMemory; // Reserved memory
 
-                        name = obj["Name"].ToString();
-                        available = available = (Convert.ToDouble(obj["Capacity"]) / (1024 * 1024)).ToString();
-                        speed = obj["Speed"].ToString();
-                        form_factor = obj["DeviceLocator"].ToString();
+                                hardware_reserved = (hardwareReservedMemory / 1024d).ToString(); // Convert to MB
+                            }
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Handler.Error("Device_Information.Hardware.RAM_Information", "RAM_Information", "An error occurred while querying for WMI data: " + ex.ToString());
+                }
+
+                try
+                {
+                    // Query for physical memory info
+                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PhysicalMemory"))
+                    {
+                        foreach (ManagementObject obj in searcher.Get())
+                        {
+                            if (obj != null)
+                            {
+                                slots_used++;
+
+                                name = obj["Name"]?.ToString() ?? "Unknown"; // Check if Name exists
+                                available = (Convert.ToDouble(obj["Capacity"] ?? 0) / (1024 * 1024)).ToString(); // Convert Capacity to MB
+                                speed = obj["Speed"]?.ToString() ?? "Unknown"; // Check if Speed exists
+                                form_factor = obj["DeviceLocator"]?.ToString() ?? "Unknown"; // Check if DeviceLocator exists
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Handler.Error("Device_Information.Hardware.RAM_Information", "RAM_Information", "An error occurred while querying for WMI data: " + ex.ToString());
                 }
 
                 // Create JSON

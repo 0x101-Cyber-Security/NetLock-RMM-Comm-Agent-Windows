@@ -105,6 +105,28 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "Trust server connection failed.", "");
                     }
                 }
+
+                // Check connections to file server. Split file_servers with "," and check each server
+                values = new List<string>(Service.file_servers.Split(','));
+
+                foreach (var value in values) 
+                {
+                    // Remove whitespace
+                    value.Trim();
+
+                    if (await Hostname_IP_Port(value, "file_servers"))
+                    {
+                        Service.file_server = value;
+                        Service.file_server_status = true;
+                        Logging.Handler.Debug("Initialization.Check_Connection.Check_Servers", "File server connection successful.", "");
+                        break;
+                    }
+                    else
+                    {
+                        Service.file_server_status = false;
+                        Logging.Handler.Error("Initialization.Check_Connection.Check_Servers", "File server connection failed.", "");
+                    }
+                }
             }
             catch (Exception ex)
             {

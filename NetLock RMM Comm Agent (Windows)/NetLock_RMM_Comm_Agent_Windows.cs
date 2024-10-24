@@ -35,6 +35,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string remote_servers = String.Empty;
         public static string update_servers = String.Empty;
         public static string trust_servers = String.Empty;
+        public static string file_servers = String.Empty;
         public static string tenant_guid = String.Empty;
         public static string location_guid = String.Empty;
         public static string language = String.Empty;
@@ -46,10 +47,12 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string remote_server = String.Empty;
         public static string update_server = String.Empty;
         public static string trust_server = String.Empty;
+        public static string file_server = String.Empty;
         public static bool communication_server_status = false;
         public static bool remote_server_status = false;
         public static bool trust_server_status = false;
         public static bool update_server_status = false;
+        public static bool file_server_status = false;
         public static string http_https = String.Empty;
 
         // Device identity
@@ -479,7 +482,7 @@ namespace NetLock_RMM_Comm_Agent_Windows
                     if (message == "get_device_identity")
                     {
                         if (!String.IsNullOrEmpty(device_identity_json))
-                            await Local_Server_Send_Message($"device_identity${device_identity_json}${http_https}{remote_server}");
+                            await Local_Server_Send_Message($"device_identity${device_identity_json}${http_https}${remote_server}${file_server}");
                     }
 
                     // Force sync

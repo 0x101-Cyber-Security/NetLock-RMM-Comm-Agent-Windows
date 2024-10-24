@@ -99,6 +99,18 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                         Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (trust_servers) - Parsing", ex.ToString());
                     }
 
+                    // Get the main file servers
+                    try
+                    {
+                        JsonElement element = document.RootElement.GetProperty("file_servers");
+                        Service.file_servers = element.ToString();
+                        Logging.Handler.Debug("Server_Config_Handler", "Server_Config_Handler.Load (file_servers)", Service.file_servers);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Handler.Error("Server_Config_Handler", "Server_Config_Handler.Load (file_servers) - Parsing", ex.ToString());
+                    }
+
                     // Get the tenant guid
                     try
                     {
@@ -177,6 +189,7 @@ namespace NetLock_RMM_Comm_Agent_Windows.Initialization
                             remote_servers = Service.remote_servers,
                             update_servers = Service.update_servers,
                             trust_servers = Service.trust_servers,
+                            file_servers = Service.file_servers,
                             tenant_guid = Service.tenant_guid,
                             location_guid = Service.location_guid,
                             language = Service.language,
