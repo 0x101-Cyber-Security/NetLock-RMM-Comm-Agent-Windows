@@ -68,19 +68,8 @@ namespace NetLock_RMM_Comm_Agent_Windows.Helper
         {
             try
             {
-                RegistryKey regkey = null;
-
-                // Prüfen, ob das System 64-Bit ist, um die richtige Registry-Ansicht zu öffnen
-                if (Environment.Is64BitOperatingSystem)
-                {
-                    // Für ein 64-Bit Betriebssystem öffne den 64-Bit-Registry-Pfad
-                    regkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).CreateSubKey(path, true);
-                }
-                else
-                {
-                    // Für ein 32-Bit Betriebssystem öffne den 32-Bit-Registry-Pfad
-                    regkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).CreateSubKey(path, true);
-                }
+                // Immer die 64-Bit-Registry verwenden
+                RegistryKey regkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).CreateSubKey(path, true);
 
                 if (regkey != null)
                 {

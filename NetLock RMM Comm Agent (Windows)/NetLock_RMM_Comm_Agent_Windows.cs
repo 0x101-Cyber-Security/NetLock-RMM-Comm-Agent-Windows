@@ -105,9 +105,11 @@ namespace NetLock_RMM_Comm_Agent_Windows
         public static string last_boot = String.Empty;
         public static string timezone = String.Empty;
         public static string cpu = String.Empty;
+        public static string cpu_usage = String.Empty;
         public static string mainboard = String.Empty;
         public static string gpu = String.Empty;
         public static string ram = String.Empty;
+        public static string ram_usage = String.Empty;
         public static string tpm = String.Empty;
 
         public void ServiceAsync()

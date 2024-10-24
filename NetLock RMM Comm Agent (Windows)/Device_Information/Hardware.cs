@@ -77,6 +77,26 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
             }
         }
 
+        public static string CPU_Usage()
+        {
+            try
+            {
+                // CPU-Nutzung unter Windows
+                PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                cpuCounter.NextValue(); // Ignore first measurement
+                Thread.Sleep(1000); // Wait 1 second
+
+                int cpuUsage = Convert.ToInt32(Math.Round(cpuCounter.NextValue()));
+
+                return cpuUsage.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.CPU_Utilization", "General error.", ex.ToString());
+                return "0";
+            }
+        }
+
         // needs rework some day to support gathering of multiple RAM sticks
         public static string RAM_Information()
         {
@@ -158,6 +178,29 @@ namespace NetLock_RMM_Comm_Agent_Windows.Device_Information
             {
                 Logging.Handler.Error("Device_Information.Hardware.RAM_Information", "RAM_Information", "An error occurred while querying for WMI data: " + ex.ToString());
                 return "{}";
+            }
+        }
+
+        public static string RAM_Usage()
+        {
+            try
+            {
+                ulong totalVisibleMemorySize = ulong.Parse(WMI.Search("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem", "TotalVisibleMemorySize"));
+                ulong freePhysicalMemory = ulong.Parse(WMI.Search("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem", "FreePhysicalMemory"));
+
+                float usedMemory = totalVisibleMemorySize - freePhysicalMemory;
+                float usedMemoryPercentage = ((float)usedMemory / totalVisibleMemorySize) * 100;
+
+                int usedMemoryPercentageInt = Convert.ToInt32(Math.Round(usedMemoryPercentage));
+
+                Logging.Handler.Device_Information("Device_Information.Hardware.RAM_Utilization", "Current RAM Usage (%)", usedMemoryPercentageInt.ToString());
+
+                return usedMemoryPercentageInt.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.Handler.Error("Device_Information.Hardware.RAM_Utilization", "General error.", ex.ToString());
+                return "0";
             }
         }
 

@@ -42,9 +42,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
             public string last_boot { get; set; }
             public string timezone { get; set; }
             public string cpu { get; set; }
+            public string cpu_usage { get; set; }
             public string mainboard { get; set; }
             public string gpu { get; set; }
             public string ram { get; set; }
+            public string ram_usage { get; set; }
             public string tpm { get; set; }
         }
 
@@ -271,6 +273,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 Service.cpu = WMI.Search("root\\CIMV2", "SELECT Name FROM Win32_Processor", "Name");
                 Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "cpu", Service.cpu);
 
+                // Get CPU usage
+                Service.cpu_usage = Hardware.CPU_Usage();
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "cpu_usage", Service.cpu_usage);
+
                 // Get Mainboard
                 string _mainboard = WMI.Search("root\\CIMV2", "SELECT Product FROM Win32_BaseBoard", "Product");
                 string mainboard_manufacturer = WMI.Search("root\\CIMV2", "SELECT Manufacturer FROM Win32_BaseBoard", "Manufacturer");
@@ -286,6 +292,10 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                 string _ram = WMI.Search("root\\CIMV2", "SELECT TotalPhysicalMemory FROM Win32_ComputerSystem", "TotalPhysicalMemory");
                 Service.ram = Math.Round(Convert.ToDouble(_ram) / 1024 / 1024 / 1024).ToString();
                 Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "ram", Service.ram);
+
+                // Get RAM usage
+                Service.ram_usage = Hardware.RAM_Usage();
+                Logging.Handler.Debug("Online_Mode.Handler.Authenticate", "ram_usage", Service.ram_usage);
 
                 // Get TPM
                 //string tpm_IsActivated_InitialValue = WMI.Search("root\\CIMV2", "SELECT IsActivated_InitialValue FROM Win32_Tpm", "IsActivated_InitialValue");
@@ -322,9 +332,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     last_boot = Service.last_boot,
                     timezone = Service.timezone,
                     cpu = Service.cpu,
+                    cpu_usage = Service.cpu_usage,
                     mainboard = Service.mainboard,
                     gpu = Service.gpu,
                     ram = Service.ram,
+                    ram_usage = Service.ram_usage,
                     tpm = Service.tpm,                
                 };
 
@@ -455,9 +467,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     last_boot = Service.last_boot,
                     timezone = Service.timezone,
                     cpu = Service.cpu,
+                    cpu_usage = Service.cpu_usage,
                     mainboard = Service.mainboard,
                     gpu = Service.gpu,
                     ram = Service.ram,
+                    ram_usage = Service.ram_usage,
                     tpm = Service.tpm,
                 };
 
@@ -626,9 +640,11 @@ namespace NetLock_RMM_Comm_Agent_Windows.Online_Mode
                     last_boot = Service.last_boot,
                     timezone = Service.timezone,
                     cpu = Service.cpu,
+                    cpu_usage = Service.cpu_usage,
                     mainboard = Service.mainboard,
                     gpu = Service.gpu,
                     ram = Service.ram,
+                    ram_usage = Service.ram_usage,
                     tpm = Service.tpm,
                 };
 
